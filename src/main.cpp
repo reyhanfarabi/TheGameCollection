@@ -1,7 +1,17 @@
-#include <iostream>
+#include "sfml_window.hpp"
+
+#include <exception>
 
 int main()
 {
-	std::cout << "Hello C++\n";
+	SFMLWindow sfmlWindow;
+
+	try {
+		sfmlWindow.Run();
+	}
+	catch (std::exception& e) {
+		throw e;
+	}
+
 	return 0;
 }
