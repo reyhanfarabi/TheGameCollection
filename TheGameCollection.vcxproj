@@ -19,10 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sfml_window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\board.hpp" />
     <ClInclude Include="src\sfml_window.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -10,12 +10,8 @@ SFMLWindow::SFMLWindow()
 		WINDOW_NAME,
 		sf::Style::Titlebar | sf::Style::Close
 	),
-	shape(100.0f)
-{
-	shape.setFillColor(sf::Color::Magenta);
-	shape.setOrigin(100.0f, 100.0f);
-	shape.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-}
+	board(window)
+{}
 
 void SFMLWindow::Run()
 {
@@ -50,5 +46,5 @@ void SFMLWindow::Update()
 void SFMLWindow::Draw()
 {
 	// draw assets here
-	window.draw(shape);
+	board.DrawBoard();
 }

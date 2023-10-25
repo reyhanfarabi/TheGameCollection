@@ -1,3 +1,5 @@
+#include "board.hpp"
+
 #include <SFML\Graphics.hpp>
 #include <SFML\System\Clock.hpp>
 
@@ -14,7 +16,7 @@ public:
 private:
 	sf::RenderWindow window;
 	sf::Clock clock;
-	sf::CircleShape shape;
+	Board board;
 
 	static constexpr int WINDOW_WIDTH = 800;
 	static constexpr int WINDOW_HEIGHT = 600;
