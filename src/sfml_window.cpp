@@ -10,7 +10,7 @@ SFMLWindow::SFMLWindow()
 		WINDOW_NAME,
 		sf::Style::Titlebar | sf::Style::Close
 	),
-	board(window)
+	tictactoe(window)
 {}
 
 void SFMLWindow::Run()
@@ -46,5 +46,5 @@ void SFMLWindow::Update()
 void SFMLWindow::Draw()
 {
 	// draw assets here
-	board.DrawBoard();
+	tictactoe.Draw();
 }

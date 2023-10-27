@@ -3,22 +3,32 @@
 class Board
 {
 public:
-	Board(sf::RenderWindow& wnd);
+	Board(
+		int tileSize,
+		int gridWidth,
+		int gridHeight,
+		float xOffset,
+		float yOffset,
+		sf::RenderWindow& wnd
+	);
 	void DrawBoard();
-	void DrawTile(sf::RectangleShape& tile);
+	void DrawTile(const sf::Vector2i& tilePos);
+
+	void SetTileColor(const sf::Vector2i& tilePos, const sf::Color color);
 
 private:
 	int GetTileIndex(const sf::Vector2i& tilePos);
 	bool IsInsideTile(const sf::RectangleShape& tile, const sf::Vector2i& target);
 	void HoverTile(sf::RectangleShape& tile);
+	sf::RectangleShape& GetTile(const sf::Vector2i tilePos);
 
 private:
-	static constexpr int TILE_SIZE = 50;
-	static constexpr int GRID_WIDTH = 3;
-	static constexpr int GRID_HEIGHT = 3;
-	static constexpr float X_OFFSET = 100;
-	static constexpr float Y_OFFSET = 100;
+	const int TILE_SIZE;
+	const int GRID_WIDTH;
+	const int GRID_HEIGHT;
+	const float X_OFFSET;
+	const float Y_OFFSET;
 
 	sf::RenderWindow& window;
-	sf::RectangleShape tiles[GRID_WIDTH * GRID_HEIGHT];
+	std::vector<sf::RectangleShape> tiles;
 };

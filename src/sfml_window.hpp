@@ -1,4 +1,4 @@
-#include "board.hpp"
+#include "tictactoe.hpp"
 
 #include <SFML\Graphics.hpp>
 #include <SFML\System\Clock.hpp>
@@ -16,7 +16,7 @@ public:
 private:
 	sf::RenderWindow window;
 	sf::Clock clock;
-	Board board;
+	TicTacToe tictactoe;
 
 	static constexpr int WINDOW_WIDTH = 800;
 	static constexpr int WINDOW_HEIGHT = 600;

@@ -22,10 +22,12 @@
     <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\sfml_window.cpp" />
+    <ClCompile Include="src\tictactoe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\board.hpp" />
     <ClInclude Include="src\sfml_window.hpp" />
+    <ClInclude Include="src\tictactoe.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

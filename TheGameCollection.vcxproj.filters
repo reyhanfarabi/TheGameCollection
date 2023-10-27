@@ -24,12 +24,18 @@
     <ClCompile Include="src\board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\tictactoe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\sfml_window.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\board.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tictactoe.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

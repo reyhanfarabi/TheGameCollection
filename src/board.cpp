@@ -1,22 +1,34 @@
 #include "board.hpp"
 
-Board::Board(sf::RenderWindow& wnd)
-	:
-	window(wnd)
+Board::Board(
+	int tileSize, 
+	int gridWidth,
+	int gridHeight,
+	float xOffset,
+	float yOffset,
+	sf::RenderWindow& window
+)	:
+	TILE_SIZE(tileSize),
+	GRID_WIDTH(gridWidth),
+	GRID_HEIGHT(gridHeight),
+	X_OFFSET(xOffset),
+	Y_OFFSET(yOffset),
+	window(window),
+	tiles(GRID_WIDTH * GRID_HEIGHT)
 {
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			tiles[GetTileIndex({ x, y })].setSize({ TILE_SIZE, TILE_SIZE });
-			tiles[GetTileIndex({ x, y })].setPosition(
+			GetTile({ x, y }).setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
+			GetTile({ x, y }).setPosition(
 				static_cast<float>(x * TILE_SIZE + X_OFFSET),
 				static_cast<float>(y * TILE_SIZE + Y_OFFSET)
 			);
 
-			tiles[GetTileIndex({ x, y })].setFillColor(sf::Color::Black);
-			tiles[GetTileIndex({ x, y })].setOutlineThickness(1);
-			tiles[GetTileIndex({ x, y })].setOutlineColor(sf::Color::White);
+			GetTile({ x, y }).setFillColor(sf::Color::Black);
+			GetTile({ x, y }).setOutlineThickness(1);
+			GetTile({ x, y }).setOutlineColor(sf::Color::White);
 		}
 	}
 }
@@ -27,18 +39,23 @@ void Board::DrawBoard()
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			DrawTile(tiles[GetTileIndex({ x, y })]);
+			DrawTile({ x, y });
 		}
 	}
 }
 
-void Board::DrawTile(sf::RectangleShape& tile)
+void Board::DrawTile(const sf::Vector2i& tilePos)
 {
 	// highlight tile when hover
-	HoverTile(tile);
+	HoverTile(GetTile(tilePos));
 
 	// draw tile
-	window.draw(tile);
+	window.draw(GetTile(tilePos));
+}
+
+void Board::SetTileColor(const sf::Vector2i& tilePos, const sf::Color color)
+{
+	GetTile(tilePos).setFillColor(color);
 }
 
 int Board::GetTileIndex(const sf::Vector2i& tilePos)
@@ -61,8 +78,9 @@ void Board::HoverTile(sf::RectangleShape& tile)
 	{
 		tile.setFillColor(sf::Color::White);
 	}
-	else
-	{
-		tile.setFillColor(sf::Color::Black);
-	}
+}
+
+sf::RectangleShape& Board::GetTile(const sf::Vector2i tilePos)
+{
+	return tiles[GetTileIndex(tilePos)];
 }
