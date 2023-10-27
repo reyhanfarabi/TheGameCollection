@@ -5,9 +5,12 @@ class Board
 public:
 	Board(sf::RenderWindow& wnd);
 	void DrawBoard();
+	void DrawTile(sf::RectangleShape& tile);
 
 private:
-	int GetTileIndex(const sf::Vector2i tilePos);
+	int GetTileIndex(const sf::Vector2i& tilePos);
+	bool IsInsideTile(const sf::RectangleShape& tile, const sf::Vector2i& target);
+	void HoverTile(sf::RectangleShape& tile);
 
 private:
 	static constexpr int TILE_SIZE = 50;
