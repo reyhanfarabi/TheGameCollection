@@ -1,5 +1,4 @@
 #include "tictactoe.hpp"
-#include <iostream>
 
 TicTacToe::TicTacToe(sf::RenderWindow& window)
 	:
@@ -24,8 +23,11 @@ void TicTacToe::Update(sf::Event& event)
 	{
 		if (event.mouseButton.button == sf::Mouse::Left)
 		{
-			SetTileState(board.GetTileIndex(board.GetHoveredTilePos()));
-			isPlayerTurn = !isPlayerTurn;
+			if (tileState[board.GetTileIndex(board.GetHoveredTilePos())] == State::Empty)
+			{
+				SetTileState(board.GetTileIndex(board.GetHoveredTilePos()));
+				isPlayerTurn = !isPlayerTurn;
+			}
 		}
 	}
 }
