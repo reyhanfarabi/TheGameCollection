@@ -24,7 +24,8 @@ void TicTacToe::Update(sf::Event& event)
 	{
 		if (event.mouseButton.button == sf::Mouse::Left)
 		{
-			tileState[board.GetTileIndex(board.GetHoveredTilePos())] = State::Cross;
+			SetTileState(board.GetTileIndex(board.GetHoveredTilePos()));
+			isPlayerTurn = !isPlayerTurn;
 		}
 	}
 }
@@ -53,5 +54,17 @@ void TicTacToe::Draw()
 
 			board.DrawTile({ x, y });
 		}
+	}
+}
+
+void TicTacToe::SetTileState(const int tileIndex)
+{
+	if (isPlayerTurn)
+	{
+		tileState[tileIndex] = State::Circle;
+	}
+	else
+	{
+		tileState[tileIndex] = State::Cross;
 	}
 }
