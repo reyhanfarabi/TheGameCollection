@@ -33,17 +33,6 @@ Board::Board(
 	}
 }
 
-void Board::DrawBoard()
-{
-	for (int y = 0; y < GRID_HEIGHT; y++)
-	{
-		for (int x = 0; x < GRID_WIDTH; x++)
-		{
-			DrawTile({ x, y });
-		}
-	}
-}
-
 void Board::DrawTile(const sf::Vector2i& tilePos)
 {
 	// highlight tile when hover
@@ -56,6 +45,22 @@ void Board::DrawTile(const sf::Vector2i& tilePos)
 void Board::SetTileColor(const sf::Vector2i& tilePos, const sf::Color color)
 {
 	GetTile(tilePos).setFillColor(color);
+}
+
+sf::Vector2i Board::GetHoveredTilePos()
+{
+	for (int y = 0; y < GRID_HEIGHT; y++)
+	{
+		for (int x = 0; x < GRID_WIDTH; x++)
+		{
+			if (IsInsideTile(GetTile({ x, y }), sf::Mouse::getPosition(window)))
+			{
+				return sf::Vector2i(x, y);
+			}
+		}
+	}
+
+	return sf::Vector2i();
 }
 
 int Board::GetTileIndex(const sf::Vector2i& tilePos)

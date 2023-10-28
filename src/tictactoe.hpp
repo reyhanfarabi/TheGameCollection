@@ -14,7 +14,7 @@ public:
 
 public:
 	TicTacToe(sf::RenderWindow& window);
-	void Update();
+	void Update(sf::Event& event);
 	void Draw();
 
 private:

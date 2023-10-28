@@ -27,20 +27,22 @@ void SFMLWindow::Run()
 			{
 				window.close();
 			}
+
+			Update(event);
 		}
 
 		window.clear();
 
-		Update();
 		Draw();
 
 		window.display();
 	}
 }
 
-void SFMLWindow::Update()
+void SFMLWindow::Update(sf::Event& event)
 {
 	// update game logic here
+	tictactoe.Update(event);
 }
 
 void SFMLWindow::Draw()

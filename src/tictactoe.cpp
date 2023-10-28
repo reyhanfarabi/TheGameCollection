@@ -1,4 +1,5 @@
 #include "tictactoe.hpp"
+#include <iostream>
 
 TicTacToe::TicTacToe(sf::RenderWindow& window)
 	:
@@ -17,8 +18,15 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	}
 }
 
-void TicTacToe::Update()
+void TicTacToe::Update(sf::Event& event)
 {
+	if (event.type == sf::Event::MouseButtonPressed)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			tileState[board.GetTileIndex(board.GetHoveredTilePos())] = State::Cross;
+		}
+	}
 }
 
 void TicTacToe::Draw()

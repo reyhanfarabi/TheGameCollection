@@ -11,13 +11,13 @@ public:
 		float yOffset,
 		sf::RenderWindow& wnd
 	);
-	void DrawBoard();
 	void DrawTile(const sf::Vector2i& tilePos);
 
 	void SetTileColor(const sf::Vector2i& tilePos, const sf::Color color);
+	int GetTileIndex(const sf::Vector2i& tilePos);
+	sf::Vector2i GetHoveredTilePos();
 
 private:
-	int GetTileIndex(const sf::Vector2i& tilePos);
 	bool IsInsideTile(const sf::RectangleShape& tile, const sf::Vector2i& target);
 	void HoverTile(sf::RectangleShape& tile);
 	sf::RectangleShape& GetTile(const sf::Vector2i tilePos);

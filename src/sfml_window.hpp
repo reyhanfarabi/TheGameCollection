@@ -10,7 +10,7 @@ class SFMLWindow
 public:
 	SFMLWindow();
 	void Run();
-	void Update();
+	void Update(sf::Event& event);
 	void Draw();
 
 private:
