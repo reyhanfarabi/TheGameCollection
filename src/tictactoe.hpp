@@ -19,7 +19,9 @@ public:
 
 private:
 	void SetTileState(const int tileIndex);
+	void SetGameFinishText();
 	bool IsAllTilesFilled();
+	bool IsPatternMet(const State state);
 
 private:
 	static constexpr int TILE_SIZE = 100;
@@ -30,6 +32,7 @@ private:
 	const float Y_OFFSET;
 	bool isPlayerTurn = true;
 	bool isGameOver = false;
+	State winState = State::Empty;
 
 	sf::RenderWindow& window;
 	Board board;
@@ -39,4 +42,7 @@ private:
 	sf::Text txtPlayerTurn;
 	sf::Text txtOpponentTurn;
 	sf::Text txtGameFinish;
+	std::string tGF_Default = "GAME FINISH!";
+	std::string tGF_Player = "GAME FINISH! PLAYER WINS";
+	std::string tGF_Opponent = "GAME FINISH! OPPONENT WINS";
 };

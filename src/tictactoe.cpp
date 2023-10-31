@@ -67,43 +67,49 @@ void TicTacToe::Update(sf::Event& event)
 
 		// set game over if all tile is filled
 		isGameOver = IsAllTilesFilled();
+
+		// set winstate if win condition is met
+		if (IsPatternMet(State::Circle))
+		{
+			isGameOver = true;
+			winState = State::Circle;
+		}
+		if (IsPatternMet(State::Cross))
+		{
+			isGameOver = true;
+			winState = State::Cross;
+		}
 	}
 }
 
 void TicTacToe::Draw()
 {
-	for (int y = 0; y < GRID_HEIGHT; y++)
+	if (!isGameOver)
 	{
-		for (int x = 0; x < GRID_WIDTH; x++)
+		for (int y = 0; y < GRID_HEIGHT; y++)
 		{
-			// set tile color base on current state of each tile
-			switch (tileState[GRID_HEIGHT * y + x])
+			for (int x = 0; x < GRID_WIDTH; x++)
 			{
-			case State::Empty:
-				board.SetTileColor({ x, y }, sf::Color::Black);
-				break;
-			case State::Cross:
-				board.SetTileColor({ x, y }, sf::Color::Magenta);
-				break;
-			case State::Circle:
-				board.SetTileColor({ x, y }, sf::Color::Cyan);
-				break;
-			default:
-				break;
+				// set tile color base on current state of each tile
+				switch (tileState[GRID_HEIGHT * y + x])
+				{
+				case State::Empty:
+					board.SetTileColor({ x, y }, sf::Color::Black);
+					break;
+				case State::Cross:
+					board.SetTileColor({ x, y }, sf::Color::Magenta);
+					break;
+				case State::Circle:
+					board.SetTileColor({ x, y }, sf::Color::Cyan);
+					break;
+				default:
+					break;
+				}
+
+				board.DrawTile({ x, y });
 			}
-
-			board.DrawTile({ x, y });
 		}
-	}
 
-	// check if the game is over
-	if (isGameOver)
-	{
-		// show game over text
-		window.draw(txtGameFinish);
-	}
-	else
-	{
 		// show text base on whose turn
 		if (isPlayerTurn)
 		{
@@ -113,6 +119,14 @@ void TicTacToe::Draw()
 		{
 			window.draw(txtOpponentTurn);
 		}
+	}
+	else
+	{
+		// set finish game text
+		SetGameFinishText();
+
+		// show game over text
+		window.draw(txtGameFinish);
 	}
 }
 
@@ -128,9 +142,70 @@ void TicTacToe::SetTileState(const int tileIndex)
 	}
 }
 
+void TicTacToe::SetGameFinishText()
+{
+	if (winState == State::Circle)
+	{
+		txtGameFinish.setString(tGF_Player);
+		txtGameFinish.setFillColor(sf::Color::Cyan);
+	}
+	else if (winState == State::Cross)
+	{
+		txtGameFinish.setString(tGF_Opponent);
+		txtGameFinish.setFillColor(sf::Color::Magenta);
+	}
+	else
+	{
+		txtGameFinish.setString(tGF_Default);
+		txtGameFinish.setFillColor(sf::Color::White);
+	}
+}
+
 bool TicTacToe::IsAllTilesFilled()
 {
 	return std::all_of(tileState.begin(), tileState.end(), [](State state) {
 		return state != State::Empty;
 	});
+}
+
+bool TicTacToe::IsPatternMet(const State state)
+{
+	// horizontal pattern
+	for (int i = 0; i < GRID_HEIGHT; i++)
+	{
+		if (tileState[0 + i] == state &&
+			tileState[3 + i] == state &&
+			tileState[6 + i] == state)
+		{
+			return true;
+		}
+	}
+
+	// vertical pattern
+	for (int i = 0; i < 3; i++)
+	{
+		if (tileState[(GRID_WIDTH * i) + 0] == state &&
+			tileState[(GRID_WIDTH * i) + 1] == state &&
+			tileState[(GRID_WIDTH * i) + 2] == state)
+		{
+			return true;
+		}
+	}
+
+	// diagonal pattern
+	if (tileState[0] == state &&
+		tileState[4] == state &&
+		tileState[8] == state)
+	{
+		return true;
+	}
+
+	if (tileState[2] == state &&
+		tileState[4] == state &&
+		tileState[6] == state)
+	{
+		return true;
+	}
+
+	return false;
 }
