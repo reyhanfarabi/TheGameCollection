@@ -5,7 +5,7 @@
 class TicTacToe
 {
 public:
-	enum State
+	enum class State
 	{
 		Empty,
 		Cross,
@@ -19,16 +19,24 @@ public:
 
 private:
 	void SetTileState(const int tileIndex);
+	bool IsAllTilesFilled();
 
 private:
 	static constexpr int TILE_SIZE = 100;
 	static constexpr int GRID_WIDTH = 3;
 	static constexpr int GRID_HEIGHT = 3;
 	static constexpr int TILE_STATE_SIZE = GRID_WIDTH * GRID_HEIGHT;
-	static constexpr float X_OFFSET = 100;
-	static constexpr float Y_OFFSET = 100;
+	const float X_OFFSET;
+	const float Y_OFFSET;
 	bool isPlayerTurn = true;
+	bool isGameOver = false;
 
+	sf::RenderWindow& window;
 	Board board;
-	State tileState[TILE_STATE_SIZE];
+	std::vector<State> tileState;
+
+	sf::Font font;
+	sf::Text txtPlayerTurn;
+	sf::Text txtOpponentTurn;
+	sf::Text txtGameFinish;
 };
