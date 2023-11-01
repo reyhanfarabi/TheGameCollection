@@ -34,15 +34,23 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		txtPlayerTurn.setCharacterSize(24);
 		txtPlayerTurn.setFillColor(sf::Color::Cyan);
 		txtPlayerTurn.setStyle(sf::Text::Bold);
+		txtPlayerTurn.setPosition({
+			(window.getSize().x / 2) - (txtPlayerTurn.getGlobalBounds().width / 2),
+			(Y_OFFSET / 2) - (txtPlayerTurn.getGlobalBounds().height / 2)
+		});
 
 		txtOpponentTurn.setFont(font);
 		txtOpponentTurn.setString("OPPONENT TURN!");
 		txtOpponentTurn.setCharacterSize(24);
 		txtOpponentTurn.setFillColor(sf::Color::Magenta);
 		txtOpponentTurn.setStyle(sf::Text::Bold);
+		txtOpponentTurn.setPosition({
+			(window.getSize().x / 2) - (txtOpponentTurn.getGlobalBounds().width / 2),
+			(Y_OFFSET / 2) - (txtOpponentTurn.getGlobalBounds().height / 2)
+		});
 		
 		txtGameFinish.setFont(font);
-		txtGameFinish.setString(tGF_DEFAULT);
+		txtGameFinish.setString(tGF_DRAW);
 		txtGameFinish.setCharacterSize(24);
 		txtGameFinish.setFillColor(sf::Color::White);
 		txtGameFinish.setStyle(sf::Text::Bold);
@@ -156,9 +164,15 @@ void TicTacToe::SetGameFinishText()
 	}
 	else
 	{
-		txtGameFinish.setString(tGF_DEFAULT);
+		txtGameFinish.setString(tGF_DRAW);
 		txtGameFinish.setFillColor(sf::Color::White);
 	}
+
+	// recalculate text position after changing string
+	txtGameFinish.setPosition({
+		(window.getSize().x / 2) - (txtGameFinish.getGlobalBounds().width / 2),
+		(window.getSize().y / 2) - (txtGameFinish.getGlobalBounds().height / 2)
+	});
 }
 
 bool TicTacToe::IsAllTilesFilled()
