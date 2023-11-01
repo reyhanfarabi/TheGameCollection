@@ -42,7 +42,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		txtOpponentTurn.setStyle(sf::Text::Bold);
 		
 		txtGameFinish.setFont(font);
-		txtGameFinish.setString("GAME FINISH!");
+		txtGameFinish.setString(tGF_DEFAULT);
 		txtGameFinish.setCharacterSize(24);
 		txtGameFinish.setFillColor(sf::Color::White);
 		txtGameFinish.setStyle(sf::Text::Bold);
@@ -146,17 +146,17 @@ void TicTacToe::SetGameFinishText()
 {
 	if (winState == State::Circle)
 	{
-		txtGameFinish.setString(tGF_Player);
+		txtGameFinish.setString(tGF_PLAYER);
 		txtGameFinish.setFillColor(sf::Color::Cyan);
 	}
 	else if (winState == State::Cross)
 	{
-		txtGameFinish.setString(tGF_Opponent);
+		txtGameFinish.setString(tGF_OPPONENT);
 		txtGameFinish.setFillColor(sf::Color::Magenta);
 	}
 	else
 	{
-		txtGameFinish.setString(tGF_Default);
+		txtGameFinish.setString(tGF_DEFAULT);
 		txtGameFinish.setFillColor(sf::Color::White);
 	}
 }

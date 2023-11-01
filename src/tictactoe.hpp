@@ -42,7 +42,7 @@ private:
 	sf::Text txtPlayerTurn;
 	sf::Text txtOpponentTurn;
 	sf::Text txtGameFinish;
-	std::string tGF_Default = "GAME FINISH!";
-	std::string tGF_Player = "GAME FINISH! PLAYER WINS";
-	std::string tGF_Opponent = "GAME FINISH! OPPONENT WINS";
+	const std::string tGF_DEFAULT = "GAME FINISH!";
+	const std::string tGF_PLAYER = "GAME FINISH! PLAYER WINS";
+	const std::string tGF_OPPONENT = "GAME FINISH! OPPONENT WINS";
 };
