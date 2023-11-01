@@ -39,10 +39,6 @@ private:
 	Board board;
 	std::vector<State> tileState;
 
-	//sf::Font font;
-	//sf::Text txtPlayerTurn;
-	//sf::Text txtOpponentTurn;
-	//sf::Text txtGameFinish;
 	UI::Text txtPlayerTurn;
 	UI::Text txtOpponentTurn;
 	UI::Text txtGameFinish;
