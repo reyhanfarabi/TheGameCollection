@@ -21,6 +21,7 @@ public:
 private:
 	void SetTileState(const int tileIndex);
 	void SetGameFinishText();
+	static void RestartGame();
 	bool IsAllTilesFilled();
 	bool IsPatternMet(const State state);
 
@@ -45,4 +46,6 @@ private:
 	const std::string tGF_DRAW = "GAME FINISH! DRAW";
 	const std::string tGF_PLAYER = "GAME FINISH! PLAYER WINS";
 	const std::string tGF_OPPONENT = "GAME FINISH! OPPONENT WINS";
+
+	UI::Button btnRestart;
 };

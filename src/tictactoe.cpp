@@ -27,7 +27,14 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	txtGameFinish(tGF_DRAW, 24, sf::Color::White, sf::Vector2f(
 		window.getSize().x / 2,
 		window.getSize().y / 2
-	), window)
+	), window),
+	btnRestart(
+		"Restart Game", 24,
+		sf::Color::White, sf::Color::Black, 
+		sf::Color::Black, sf::Color::White,
+		1, sf::Color::White, sf::Color::White,
+		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2 + 50),
+		window)
 {
 	for (int i = 0; i < TILE_STATE_SIZE; i++)
 	{
@@ -64,6 +71,16 @@ void TicTacToe::Update(sf::Event& event)
 		{
 			isGameOver = true;
 			winState = State::Cross;
+		}
+	}
+	else
+	{
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left)
+			{
+				btnRestart.TriggerEvent(TicTacToe::RestartGame);
+			}
 		}
 	}
 }
@@ -113,6 +130,9 @@ void TicTacToe::Draw()
 
 		// show game over text
 		txtGameFinish.Draw();
+
+		// show restart button
+		btnRestart.Draw();
 	}
 }
 
@@ -151,6 +171,11 @@ void TicTacToe::SetGameFinishText()
 		window.getSize().x / 2,
 		window.getSize().y / 2
 	));
+}
+
+void TicTacToe::RestartGame()
+{
+	std::cout << "Restart Game\n";
 }
 
 bool TicTacToe::IsAllTilesFilled()
