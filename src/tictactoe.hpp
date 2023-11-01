@@ -1,6 +1,7 @@
 #include <SFML\Graphics.hpp>
 
 #include "board.hpp"
+#include "ui.hpp"
 
 class TicTacToe
 {
@@ -38,10 +39,13 @@ private:
 	Board board;
 	std::vector<State> tileState;
 
-	sf::Font font;
-	sf::Text txtPlayerTurn;
-	sf::Text txtOpponentTurn;
-	sf::Text txtGameFinish;
+	//sf::Font font;
+	//sf::Text txtPlayerTurn;
+	//sf::Text txtOpponentTurn;
+	//sf::Text txtGameFinish;
+	UI::Text txtPlayerTurn;
+	UI::Text txtOpponentTurn;
+	UI::Text txtGameFinish;
 	const std::string tGF_DRAW = "GAME FINISH! DRAW";
 	const std::string tGF_PLAYER = "GAME FINISH! PLAYER WINS";
 	const std::string tGF_OPPONENT = "GAME FINISH! OPPONENT WINS";
