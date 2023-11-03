@@ -114,7 +114,7 @@ namespace UI
 
 	void Button::HoverButton()
 	{
-		if (IsInsideButton())
+		if (IsMouseInsideButton())
 		{
 			text.SetFillColor(hoverTextColor);
 			shape.setFillColor(hoverBgColor);
@@ -128,24 +128,18 @@ namespace UI
 		}
 	}
 
-	void Button::TriggerEvent(void(&f)())
-	{
-		// for now only intended for mouse
-		// will add keyboard and controller support in the future.
-		// event will also trigger when mouse is inside button bounds
-		if (IsInsideButton())
-		{
-			f();
-		}
-	}
-
-	bool Button::IsInsideButton()
+	bool Button::IsMouseInsideButton()
 	{
 		return 
 			sf::Mouse::getPosition(window).x >= shape.getPosition().x &&
 			sf::Mouse::getPosition(window).x <= shape.getPosition().x + shape.getSize().x &&
 			sf::Mouse::getPosition(window).y >= shape.getPosition().y &&
 			sf::Mouse::getPosition(window).y <= shape.getPosition().y + shape.getSize().y;
+	}
+
+	bool Button::IsTriggerable()
+	{
+		return IsMouseInsideButton();
 	}
 }
 

@@ -79,7 +79,7 @@ void TicTacToe::Update(sf::Event& event)
 		{
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
-				btnRestart.TriggerEvent(TicTacToe::RestartGame);
+				// add trigger event here
 			}
 		}
 	}
