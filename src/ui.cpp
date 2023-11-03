@@ -90,10 +90,10 @@ namespace UI
 		shape.setFillColor(bgColor);
 		shape.setOutlineThickness(outlineThickness);
 		shape.setOutlineColor(outlineColor);
-		SetPosition(position);
+		SetShapePosition(position);
 	}
 
-	void Button::SetPosition(const sf::Vector2f& position)
+	void Button::SetShapePosition(const sf::Vector2f& position)
 	{
 		// position will be set base on text center point instead of default 
 		// top left corner
@@ -126,6 +126,12 @@ namespace UI
 			shape.setFillColor(bgColor);
 			shape.setOutlineColor(outlineColor);
 		}
+	}
+
+	void Button::SetButtonPosition(const sf::Vector2f& position)
+	{
+		text.SetPosition(position);
+		SetShapePosition(position);
 	}
 
 	bool Button::IsMouseInsideButton()
