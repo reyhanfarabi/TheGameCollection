@@ -64,7 +64,7 @@ namespace UI
 			const std::string& str,
 			const int& characterSize,
 			const sf::Vector2f& position,
-			const Padding& padding,
+			const UI::Padding& padding,
 			const sf::Color& textColor,
 			const sf::Color& hoverTextColor,
 			const sf::Color& bgColor,
