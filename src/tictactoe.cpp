@@ -29,11 +29,12 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		window.getSize().y / 2
 	), window),
 	btnRestart(
-		"Restart Game", 24,
+		"Restart Game", 20,
+		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2),
+		UI::Padding(14.0f, 0.0f),
 		sf::Color::White, sf::Color::Black, 
 		sf::Color::Black, sf::Color::White,
 		1, sf::Color::White, sf::Color::White,
-		sf::Vector2f(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2)),
 		window)
 {
 	ResetTileState();

@@ -103,8 +103,8 @@ namespace UI
 		// position will be set base on text center point instead of default 
 		// top left corner
 		shape.setPosition({
-			// offset shape x-axis by 1/10 shape width to make it center in the x-axis
-			position.x - shape.getSize().x / 2 + shape.getSize().y / 10,
+			// offset shape x-axis by 1/80 shape width to make it center in the x-axis
+			position.x - shape.getSize().x / 2 + shape.getSize().x / 80,
 			// offset shape y-axis by 1/5 shape height to make it center in the y-axis
 			position.y - shape.getSize().y / 2 + shape.getSize().y / 5
 		});
