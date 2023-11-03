@@ -66,6 +66,8 @@ namespace UI
 	Button::Button(
 		const std::string& str,
 		const int& characterSize,
+		const sf::Vector2f& position,
+		const UI::Padding& padding,
 		const sf::Color& textColor,
 		const sf::Color& hoverTextColor,
 		const sf::Color& bgColor,
@@ -73,9 +75,9 @@ namespace UI
 		const int& outlineThickness,
 		const sf::Color& outlineColor,
 		const sf::Color& hoverOutlineColor,
-		const sf::Vector2f& position,
 		sf::RenderWindow& window)
 		:
+		PADDING(padding),
 		textColor(textColor),
 		hoverTextColor(hoverTextColor),
 		bgColor(bgColor),
@@ -86,7 +88,10 @@ namespace UI
 		text(str, characterSize, textColor, position, window)
 	{
 
-		shape.setSize(sf::Vector2f(text.GetSize().x, text.GetSize().y * 2));
+		shape.setSize(sf::Vector2f(
+			text.GetSize().x + padding.right + padding.left,
+			text.GetSize().y * 2 + padding.top + padding.bottom
+		));
 		shape.setFillColor(bgColor);
 		shape.setOutlineThickness(outlineThickness);
 		shape.setOutlineColor(outlineColor);
@@ -98,10 +103,10 @@ namespace UI
 		// position will be set base on text center point instead of default 
 		// top left corner
 		shape.setPosition({
-			// x-axis need to add 2 to make it center in the x-axis
-			position.x - shape.getSize().x / 2 + X_CENTER_OFFSET,
-			// y-axis need to add 8 to make it center in the y-axis
-			position.y - shape.getSize().y / 2 + Y_CENTER_OFFSET
+			// offset shape x-axis by 1/10 shape width to make it center in the x-axis
+			position.x - shape.getSize().x / 2 + shape.getSize().y / 10,
+			// offset shape y-axis by 1/5 shape height to make it center in the y-axis
+			position.y - shape.getSize().y / 2 + shape.getSize().y / 5
 		});
 	}
 
