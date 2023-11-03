@@ -3,6 +3,32 @@
 namespace UI
 {
 	//
+	// PADDING STRUCT
+	//
+	struct Padding
+	{
+		float top;
+		float right;
+		float bottom;
+		float left;
+
+		Padding(float x, float y)
+			:
+			top(y),
+			right(x),
+			bottom(y),
+			left(x)
+		{}
+		Padding(float top, float right, float bottom, float left)
+			:
+			top(top),
+			right(right),
+			bottom(bottom),
+			left(left)
+		{}
+	};
+
+	//
 	// TEXT UI
 	//
 	class Text
@@ -37,6 +63,8 @@ namespace UI
 		Button(
 			const std::string& str,
 			const int& characterSize,
+			const sf::Vector2f& position,
+			const Padding& padding,
 			const sf::Color& textColor,
 			const sf::Color& hoverTextColor,
 			const sf::Color& bgColor,
@@ -44,7 +72,6 @@ namespace UI
 			const int& outlineThickness,
 			const sf::Color& outlineColor,
 			const sf::Color& hoverOutlineColor,
-			const sf::Vector2f& position,
 			sf::RenderWindow& window
 		);
 
@@ -60,6 +87,7 @@ namespace UI
 	private:
 		static constexpr int X_CENTER_OFFSET = 2;
 		static constexpr int Y_CENTER_OFFSET = 8;
+		const UI::Padding PADDING;
 
 		const sf::Color textColor;
 		const sf::Color hoverTextColor;
