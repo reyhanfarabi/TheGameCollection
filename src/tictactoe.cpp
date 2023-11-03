@@ -33,13 +33,10 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		sf::Color::White, sf::Color::Black, 
 		sf::Color::Black, sf::Color::White,
 		1, sf::Color::White, sf::Color::White,
-		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2 + 50),
+		sf::Vector2f(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2)),
 		window)
 {
-	for (int i = 0; i < TILE_STATE_SIZE; i++)
-	{
-		tileState[i] = State::Empty;
-	}
+	ResetTileState();
 }
 
 void TicTacToe::Update(sf::Event& event)
@@ -77,9 +74,10 @@ void TicTacToe::Update(sf::Event& event)
 	{
 		if (event.type == sf::Event::MouseButtonPressed)
 		{
-			if (event.mouseButton.button == sf::Mouse::Left)
+			if (event.mouseButton.button == sf::Mouse::Left &&
+				btnRestart.IsTriggerable())
 			{
-				// add trigger event here
+				EventRestartGame();
 			}
 		}
 	}
@@ -125,14 +123,10 @@ void TicTacToe::Draw()
 	}
 	else
 	{
-		// set finish game text
-		SetGameFinishText();
-
-		// show game over text
-		txtGameFinish.Draw();
-
-		// show restart button
-		btnRestart.Draw();
+		DrawEndScreen(sf::Vector2f(
+			window.getSize().x / 2,
+			window.getSize().y / 2 - 50	// subtract 50 to offset endscreen content
+		));
 	}
 }
 
@@ -148,7 +142,7 @@ void TicTacToe::SetTileState(const int tileIndex)
 	}
 }
 
-void TicTacToe::SetGameFinishText()
+void TicTacToe::SetGameFinishText(const sf::Vector2f& position)
 {
 	if (winState == State::Circle)
 	{
@@ -167,15 +161,40 @@ void TicTacToe::SetGameFinishText()
 	}
 
 	// recalculate text position after changing string
-	txtGameFinish.SetPosition(sf::Vector2f(
-		window.getSize().x / 2,
-		window.getSize().y / 2
-	));
+	txtGameFinish.SetPosition(position);
 }
 
-void TicTacToe::RestartGame()
+void TicTacToe::EventRestartGame()
 {
-	std::cout << "Restart Game\n";
+	isGameOver = false;
+	isPlayerTurn = true;
+	winState = State::Empty;
+	ResetTileState();
+}
+
+void TicTacToe::ResetTileState()
+{
+	for (int i = 0; i < TILE_STATE_SIZE; i++)
+	{
+		tileState[i] = State::Empty;
+	}
+}
+
+void TicTacToe::DrawEndScreen(const sf::Vector2f& position)
+{
+	// set finish game text
+	SetGameFinishText(position);
+
+	// show game over text
+	txtGameFinish.Draw();
+
+	btnRestart.SetButtonPosition(sf::Vector2f(
+		position.x,
+		position.y + 50		// add 50 for spacing
+	));
+
+	// show restart button
+	btnRestart.Draw();
 }
 
 bool TicTacToe::IsAllTilesFilled()

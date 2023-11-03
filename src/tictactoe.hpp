@@ -20,8 +20,10 @@ public:
 
 private:
 	void SetTileState(const int tileIndex);
-	void SetGameFinishText();
-	static void RestartGame();
+	void SetGameFinishText(const sf::Vector2f& position);
+	void EventRestartGame();
+	void ResetTileState();
+	void DrawEndScreen(const sf::Vector2f& position);
 	bool IsAllTilesFilled();
 	bool IsPatternMet(const State state);
 

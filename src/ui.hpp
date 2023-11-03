@@ -48,11 +48,14 @@ namespace UI
 			sf::RenderWindow& window
 		);
 
-		void SetPosition(const sf::Vector2f& position);
 		void Draw();
 		void HoverButton();
+		void SetButtonPosition(const sf::Vector2f& position);
 		bool IsMouseInsideButton();
 		bool IsTriggerable();
+
+	private:
+		void SetShapePosition(const sf::Vector2f& position);
 
 	private:
 		static constexpr int X_CENTER_OFFSET = 2;
