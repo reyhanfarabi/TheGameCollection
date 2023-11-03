@@ -16,7 +16,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	tileState(TILE_STATE_SIZE),
 	X_OFFSET((window.getSize().x / 2) - (GRID_WIDTH * TILE_SIZE / 2)),
 	Y_OFFSET((window.getSize().y / 2) - (GRID_HEIGHT * TILE_SIZE / 2)),
-	txtPlayerTurn("PLAYER TURN", 24, sf::Color::Cyan, sf::Vector2f(
+	txtPlayerTurn("YOUR TURN", 24, sf::Color::Cyan, sf::Vector2f(
 		window.getSize().x / 2,
 		Y_OFFSET / 2
 	), window),
