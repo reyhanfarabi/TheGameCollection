@@ -85,8 +85,6 @@ namespace UI
 		void SetShapePosition(const sf::Vector2f& position);
 
 	private:
-		static constexpr int X_CENTER_OFFSET = 2;
-		static constexpr int Y_CENTER_OFFSET = 8;
 		const UI::Padding PADDING;
 
 		const sf::Color textColor;
