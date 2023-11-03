@@ -46,8 +46,8 @@ private:
 	UI::Text txtOpponentTurn;
 	UI::Text txtGameFinish;
 	const std::string tGF_DRAW = "GAME FINISH! DRAW";
-	const std::string tGF_PLAYER = "GAME FINISH! PLAYER WINS";
-	const std::string tGF_OPPONENT = "GAME FINISH! OPPONENT WINS";
+	const std::string tGF_PLAYER = "GAME FINISH! YOU WIN";
+	const std::string tGF_OPPONENT = "GAME FINISH! OPPONENT WIN";
 
 	UI::Button btnRestart;
 };
