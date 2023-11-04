@@ -87,27 +87,72 @@ namespace UI
 		window(window),
 		text(str, characterSize, textColor, position, window)
 	{
-
 		shape.setSize(sf::Vector2f(
 			text.GetSize().x + padding.right + padding.left,
-			text.GetSize().y * 2 + padding.top + padding.bottom
+			text.GetSize().y + padding.top + padding.bottom
 		));
 		shape.setFillColor(bgColor);
 		shape.setOutlineThickness(outlineThickness);
 		shape.setOutlineColor(outlineColor);
 		SetShapePosition(position);
+		SetTextPosition();
+	}
+
+	Button::Button(
+		const std::string& str,
+		const int& characterSize,
+		const sf::Vector2f& position,
+		const sf::Vector2f& size,
+		const UI::Padding& padding,
+		const sf::Color& textColor,
+		const sf::Color& hoverTextColor,
+		const sf::Color& bgColor,
+		const sf::Color& hoverBgColor,
+		const int& outlineThickness,
+		const sf::Color& outlineColor,
+		const sf::Color& hoverOutlineColor,
+		sf::RenderWindow& window)
+		:
+		PADDING(padding),
+		textColor(textColor),
+		hoverTextColor(hoverTextColor),
+		bgColor(bgColor),
+		hoverBgColor(hoverBgColor),
+		outlineColor(outlineColor),
+		hoverOutlineColor(hoverOutlineColor),
+		window(window),
+		text(str, characterSize, textColor, position, window)
+	{
+		shape.setSize(sf::Vector2f(
+			size.x + padding.right + padding.left,
+			size.y + padding.top + padding.bottom
+		));
+		shape.setFillColor(bgColor);
+		shape.setOutlineThickness(outlineThickness);
+		shape.setOutlineColor(outlineColor);
+		SetShapePosition(position);
+		SetTextPosition();
 	}
 
 	void Button::SetShapePosition(const sf::Vector2f& position)
 	{
-		// position will be set base on text center point instead of default 
-		// top left corner
+		// position will be set base center point instead of default top left corner
 		shape.setPosition({
-			// offset shape x-axis by 1/80 shape width to make it center in the x-axis
-			position.x - shape.getSize().x / 2 + shape.getSize().x / 80,
-			// offset shape y-axis by 1/5 shape height to make it center in the y-axis
-			position.y - shape.getSize().y / 2 + shape.getSize().y / 5
+			position.x - shape.getSize().x / 2,
+			position.y - shape.getSize().y / 2
 		});
+	}
+
+	void Button::SetTextPosition()
+	{
+		// position will be set automatically base center point of shape
+		// instead of default top left corner.
+		// no need for parameter.
+		text.SetPosition(sf::Vector2f(
+			shape.getPosition().x + shape.getSize().x / 2,
+			shape.getPosition().y + shape.getSize().y / 2 -
+			text.GetSize().y / 2 + text.GetSize().y / 5
+		));
 	}
 
 	void Button::Draw()
@@ -135,8 +180,8 @@ namespace UI
 
 	void Button::SetButtonPosition(const sf::Vector2f& position)
 	{
-		text.SetPosition(position);
 		SetShapePosition(position);
+		SetTextPosition();
 	}
 
 	bool Button::IsMouseInsideButton()

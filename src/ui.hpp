@@ -77,6 +77,22 @@ namespace UI
 			sf::RenderWindow& window
 		);
 
+		Button(
+			const std::string& str,
+			const int& characterSize,
+			const sf::Vector2f& position,
+			const sf::Vector2f& size,
+			const UI::Padding& padding,
+			const sf::Color& textColor,
+			const sf::Color& hoverTextColor,
+			const sf::Color& bgColor,
+			const sf::Color& hoverBgColor,
+			const int& outlineThickness,
+			const sf::Color& outlineColor,
+			const sf::Color& hoverOutlineColor,
+			sf::RenderWindow& window
+		);
+
 		void Draw();
 		void HoverButton();
 		void SetButtonPosition(const sf::Vector2f& position);
@@ -84,7 +100,9 @@ namespace UI
 		bool IsTriggerable();
 
 	private:
+		// set position base on center componentn instead of top left
 		void SetShapePosition(const sf::Vector2f& position);
+		void SetTextPosition();
 
 	private:
 		const UI::Padding PADDING;
