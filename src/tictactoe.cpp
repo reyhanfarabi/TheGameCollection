@@ -28,6 +28,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		window.getSize().x / 2,
 		window.getSize().y / 2
 	), window),
+	txtScore(score.GetFormattedScore(), 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	btnRestart(
 		STR_CONST::RESTART_GAME, 20,
 		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2),
@@ -86,6 +87,8 @@ void TicTacToe::Update(sf::Event& event)
 
 void TicTacToe::Draw()
 {
+	DrawScores();
+
 	if (!isGameOver)
 	{
 		for (int y = 0; y < GRID_HEIGHT; y++)
@@ -167,6 +170,16 @@ void TicTacToe::SetGameFinishText(const sf::Vector2f& position)
 
 void TicTacToe::EventRestartGame()
 {
+	switch (winState)
+	{
+	case State::Circle:
+		score.you++;
+		break;
+	case State::Cross:
+		score.opponent++;
+		break;
+	}
+
 	isGameOver = false;
 	isPlayerTurn = true;
 	winState = State::Empty;
@@ -196,6 +209,18 @@ void TicTacToe::DrawEndScreen(const sf::Vector2f& position)
 
 	// show restart button
 	btnRestart.Draw();
+}
+
+void TicTacToe::DrawScores()
+{
+	txtScore.SetPosition(sf::Vector2f(
+		// subtract 10 for spacing
+		window.getSize().x - txtScore.GetSize().x / 2 - 10,
+		// add 10 for spacing
+		txtScore.GetSize().y /2 + 10
+	));
+	txtScore.SetString(score.GetFormattedScore());
+	txtScore.Draw();
 }
 
 bool TicTacToe::IsAllTilesFilled()

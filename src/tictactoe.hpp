@@ -19,12 +19,24 @@ private:
 		Circle
 	};
 
+	struct Score
+	{
+		int you = 0;
+		int opponent = 0;
+
+		std::string GetFormattedScore()
+		{
+			return "You: " + std::to_string(you) + " | " + "Opponent: " + std::to_string(opponent);
+		}
+	};
+
 private:
 	void SetTileState(const int tileIndex);
 	void SetGameFinishText(const sf::Vector2f& position);
 	void EventRestartGame();
 	void ResetTileState();
 	void DrawEndScreen(const sf::Vector2f& position);
+	void DrawScores();
 	bool IsAllTilesFilled();
 	bool IsPatternMet(const State state);
 
@@ -38,6 +50,7 @@ private:
 	bool isPlayerTurn = true;
 	bool isGameOver = false;
 	State winState = State::Empty;
+	Score score;
 
 	sf::RenderWindow& window;
 	Board board;
@@ -46,6 +59,7 @@ private:
 	UI::Text txtYourTurn;
 	UI::Text txtOpponentTurn;
 	UI::Text txtGameFinish;
+	UI::Text txtScore;
 	const std::string tGF_DRAW = STR_CONST::GAME_FINISH + " DRAW";
 	const std::string tGF_YOU = STR_CONST::GAME_FINISH + " YOU WIN";
 	const std::string tGF_OPPONENT = STR_CONST::GAME_FINISH + " OPPONENT WIN";
