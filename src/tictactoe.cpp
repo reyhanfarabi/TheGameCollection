@@ -237,8 +237,10 @@ void TicTacToe::SwitchCurrentPlayer()
 	{
 	case Player::You:
 		currentPlayer = Player::Opponent;
+		break;
 	case Player::Opponent:
 		currentPlayer = Player::You;
+		break;
 	default:
 		break;
 	}
