@@ -16,11 +16,11 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	tileState(TILE_STATE_SIZE),
 	X_OFFSET((window.getSize().x / 2) - (GRID_WIDTH * TILE_SIZE / 2)),
 	Y_OFFSET((window.getSize().y / 2) - (GRID_HEIGHT * TILE_SIZE / 2)),
-	txtPlayerTurn("YOUR TURN", 24, sf::Color::Cyan, sf::Vector2f(
+	txtYourTurn(STR_CONST::YOUR_TURN, 24, sf::Color::Cyan, sf::Vector2f(
 		window.getSize().x / 2,
 		Y_OFFSET / 2
 	), window),
-	txtOpponentTurn("OPPONENT TURN", 24, sf::Color::Magenta, sf::Vector2f(
+	txtOpponentTurn(STR_CONST::OPPONENT_TURN, 24, sf::Color::Magenta, sf::Vector2f(
 		window.getSize().x / 2,
 		Y_OFFSET / 2
 	), window),
@@ -29,7 +29,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		window.getSize().y / 2
 	), window),
 	btnRestart(
-		"Restart Game", 20,
+		STR_CONST::RESTART_GAME, 20,
 		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2),
 		UI::Padding(14.0f, 0.0f),
 		sf::Color::White, sf::Color::Black, 
@@ -115,7 +115,7 @@ void TicTacToe::Draw()
 		// show text base on whose turn
 		if (isPlayerTurn)
 		{
-			txtPlayerTurn.Draw();
+			txtYourTurn.Draw();
 		}
 		else
 		{
@@ -147,7 +147,7 @@ void TicTacToe::SetGameFinishText(const sf::Vector2f& position)
 {
 	if (winState == State::Circle)
 	{
-		txtGameFinish.SetString(tGF_PLAYER);
+		txtGameFinish.SetString(tGF_YOU);
 		txtGameFinish.SetFillColor(sf::Color::Cyan);
 	}
 	else if (winState == State::Cross)

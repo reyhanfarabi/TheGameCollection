@@ -1,22 +1,23 @@
 #include <SFML\Graphics.hpp>
 
+#include "constants.hpp"
 #include "board.hpp"
 #include "ui.hpp"
 
 class TicTacToe
 {
 public:
+	TicTacToe(sf::RenderWindow& window);
+	void Update(sf::Event& event);
+	void Draw();
+
+private:
 	enum class State
 	{
 		Empty,
 		Cross,
 		Circle
 	};
-
-public:
-	TicTacToe(sf::RenderWindow& window);
-	void Update(sf::Event& event);
-	void Draw();
 
 private:
 	void SetTileState(const int tileIndex);
@@ -42,12 +43,12 @@ private:
 	Board board;
 	std::vector<State> tileState;
 
-	UI::Text txtPlayerTurn;
+	UI::Text txtYourTurn;
 	UI::Text txtOpponentTurn;
 	UI::Text txtGameFinish;
-	const std::string tGF_DRAW = "GAME FINISH! DRAW";
-	const std::string tGF_PLAYER = "GAME FINISH! YOU WIN";
-	const std::string tGF_OPPONENT = "GAME FINISH! OPPONENT WIN";
+	const std::string tGF_DRAW = STR_CONST::GAME_FINISH + " DRAW";
+	const std::string tGF_YOU = STR_CONST::GAME_FINISH + " YOU WIN";
+	const std::string tGF_OPPONENT = STR_CONST::GAME_FINISH + " OPPONENT WIN";
 
 	UI::Button btnRestart;
 };
