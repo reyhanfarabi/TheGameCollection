@@ -71,6 +71,19 @@ void TicTacToe::Update(sf::Event& event)
 			isGameOver = true;
 			winState = State::Cross;
 		}
+
+		// calculate score
+		switch (winState)
+		{
+		case State::Circle:
+			score.you++;
+			break;
+		case State::Cross:
+			score.opponent++;
+			break;
+		default:
+			break;
+		}
 	}
 	else
 	{
@@ -176,18 +189,6 @@ void TicTacToe::SetGameFinishText(const sf::Vector2f& position)
 
 void TicTacToe::EventRestartGame()
 {
-	switch (winState)
-	{
-	case State::Circle:
-		score.you++;
-		break;
-	case State::Cross:
-		score.opponent++;
-		break;
-	default:
-		break;
-	}
-
 	isGameOver = false;
 	currentPlayer = Player::You;
 	winState = State::Empty;
