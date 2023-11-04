@@ -16,11 +16,11 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	tileState(TILE_STATE_SIZE),
 	X_OFFSET((window.getSize().x / 2) - (GRID_WIDTH * TILE_SIZE / 2)),
 	Y_OFFSET((window.getSize().y / 2) - (GRID_HEIGHT * TILE_SIZE / 2)),
-	txtPlayerTurn("YOUR TURN", 24, sf::Color::Cyan, sf::Vector2f(
+	txtYourTurn(STR_CONST::YOUR_TURN, 24, sf::Color::Cyan, sf::Vector2f(
 		window.getSize().x / 2,
 		Y_OFFSET / 2
 	), window),
-	txtOpponentTurn("OPPONENT TURN", 24, sf::Color::Magenta, sf::Vector2f(
+	txtOpponentTurn(STR_CONST::OPPONENT_TURN, 24, sf::Color::Magenta, sf::Vector2f(
 		window.getSize().x / 2,
 		Y_OFFSET / 2
 	), window),
@@ -28,8 +28,9 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		window.getSize().x / 2,
 		window.getSize().y / 2
 	), window),
+	txtScore(score.GetFormattedScore(), 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	btnRestart(
-		"Restart Game", 20,
+		STR_CONST::RESTART_GAME, 20,
 		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2),
 		UI::Padding(14.0f, 0.0f),
 		sf::Color::White, sf::Color::Black, 
@@ -51,7 +52,7 @@ void TicTacToe::Update(sf::Event& event)
 				if (tileState[board.GetTileIndex(board.GetHoveredTilePos())] == State::Empty)
 				{
 					SetTileState(board.GetTileIndex(board.GetHoveredTilePos()));
-					isPlayerTurn = !isPlayerTurn;
+					SwitchCurrentPlayer();
 				}
 			}
 		}
@@ -86,6 +87,8 @@ void TicTacToe::Update(sf::Event& event)
 
 void TicTacToe::Draw()
 {
+	DrawScores();
+
 	if (!isGameOver)
 	{
 		for (int y = 0; y < GRID_HEIGHT; y++)
@@ -113,13 +116,16 @@ void TicTacToe::Draw()
 		}
 
 		// show text base on whose turn
-		if (isPlayerTurn)
+		switch (currentPlayer)
 		{
-			txtPlayerTurn.Draw();
-		}
-		else
-		{
+		case Player::You:
+			txtYourTurn.Draw();
+			break;
+		case Player::Opponent:
 			txtOpponentTurn.Draw();
+			break;
+		default:
+			break;
 		}
 	}
 	else
@@ -133,13 +139,16 @@ void TicTacToe::Draw()
 
 void TicTacToe::SetTileState(const int tileIndex)
 {
-	if (isPlayerTurn)
+	switch (currentPlayer)
 	{
+	case Player::You:
 		tileState[tileIndex] = State::Circle;
-	}
-	else
-	{
+		break;
+	case Player::Opponent:
 		tileState[tileIndex] = State::Cross;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -147,7 +156,7 @@ void TicTacToe::SetGameFinishText(const sf::Vector2f& position)
 {
 	if (winState == State::Circle)
 	{
-		txtGameFinish.SetString(tGF_PLAYER);
+		txtGameFinish.SetString(tGF_YOU);
 		txtGameFinish.SetFillColor(sf::Color::Cyan);
 	}
 	else if (winState == State::Cross)
@@ -167,8 +176,20 @@ void TicTacToe::SetGameFinishText(const sf::Vector2f& position)
 
 void TicTacToe::EventRestartGame()
 {
+	switch (winState)
+	{
+	case State::Circle:
+		score.you++;
+		break;
+	case State::Cross:
+		score.opponent++;
+		break;
+	default:
+		break;
+	}
+
 	isGameOver = false;
-	isPlayerTurn = true;
+	currentPlayer = Player::You;
 	winState = State::Empty;
 	ResetTileState();
 }
@@ -196,6 +217,33 @@ void TicTacToe::DrawEndScreen(const sf::Vector2f& position)
 
 	// show restart button
 	btnRestart.Draw();
+}
+
+void TicTacToe::DrawScores()
+{
+	txtScore.SetPosition(sf::Vector2f(
+		// subtract 10 for spacing
+		window.getSize().x - txtScore.GetSize().x / 2 - 10,
+		// add 10 for spacing
+		txtScore.GetSize().y /2 + 10
+	));
+	txtScore.SetString(score.GetFormattedScore());
+	txtScore.Draw();
+}
+
+void TicTacToe::SwitchCurrentPlayer()
+{
+	switch (currentPlayer)
+	{
+	case Player::You:
+		currentPlayer = Player::Opponent;
+		break;
+	case Player::Opponent:
+		currentPlayer = Player::You;
+		break;
+	default:
+		break;
+	}
 }
 
 bool TicTacToe::IsAllTilesFilled()

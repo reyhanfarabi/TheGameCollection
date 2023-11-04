@@ -28,6 +28,7 @@
   <ItemGroup>
     <ClInclude Include="src\board.hpp" />
     <ClInclude Include="src\sfml_window.hpp" />
+    <ClInclude Include="src\constants.hpp" />
     <ClInclude Include="src\tictactoe.hpp" />
     <ClInclude Include="src\ui.hpp" />
   </ItemGroup>
