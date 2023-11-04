@@ -19,6 +19,12 @@ private:
 		Circle
 	};
 
+	enum class Player
+	{
+		You,
+		Opponent
+	};
+
 	struct Score
 	{
 		int you = 0;
@@ -37,6 +43,7 @@ private:
 	void ResetTileState();
 	void DrawEndScreen(const sf::Vector2f& position);
 	void DrawScores();
+	void SwitchCurrentPlayer();
 	bool IsAllTilesFilled();
 	bool IsPatternMet(const State state);
 
@@ -47,8 +54,8 @@ private:
 	static constexpr int TILE_STATE_SIZE = GRID_WIDTH * GRID_HEIGHT;
 	const float X_OFFSET;
 	const float Y_OFFSET;
-	bool isPlayerTurn = true;
 	bool isGameOver = false;
+	Player currentPlayer = Player::You;
 	State winState = State::Empty;
 	Score score;
 

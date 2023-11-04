@@ -52,7 +52,7 @@ void TicTacToe::Update(sf::Event& event)
 				if (tileState[board.GetTileIndex(board.GetHoveredTilePos())] == State::Empty)
 				{
 					SetTileState(board.GetTileIndex(board.GetHoveredTilePos()));
-					isPlayerTurn = !isPlayerTurn;
+					SwitchCurrentPlayer();
 				}
 			}
 		}
@@ -116,13 +116,16 @@ void TicTacToe::Draw()
 		}
 
 		// show text base on whose turn
-		if (isPlayerTurn)
+		switch (currentPlayer)
 		{
+		case Player::You:
 			txtYourTurn.Draw();
-		}
-		else
-		{
+			break;
+		case Player::Opponent:
 			txtOpponentTurn.Draw();
+			break;
+		default:
+			break;
 		}
 	}
 	else
@@ -136,13 +139,16 @@ void TicTacToe::Draw()
 
 void TicTacToe::SetTileState(const int tileIndex)
 {
-	if (isPlayerTurn)
+	switch (currentPlayer)
 	{
+	case Player::You:
 		tileState[tileIndex] = State::Circle;
-	}
-	else
-	{
+		break;
+	case Player::Opponent:
 		tileState[tileIndex] = State::Cross;
+		break;
+	default:
+		break;
 	}
 }
 
@@ -178,10 +184,12 @@ void TicTacToe::EventRestartGame()
 	case State::Cross:
 		score.opponent++;
 		break;
+	default:
+		break;
 	}
 
 	isGameOver = false;
-	isPlayerTurn = true;
+	currentPlayer = Player::You;
 	winState = State::Empty;
 	ResetTileState();
 }
@@ -221,6 +229,19 @@ void TicTacToe::DrawScores()
 	));
 	txtScore.SetString(score.GetFormattedScore());
 	txtScore.Draw();
+}
+
+void TicTacToe::SwitchCurrentPlayer()
+{
+	switch (currentPlayer)
+	{
+	case Player::You:
+		currentPlayer = Player::Opponent;
+	case Player::Opponent:
+		currentPlayer = Player::You;
+	default:
+		break;
+	}
 }
 
 bool TicTacToe::IsAllTilesFilled()
