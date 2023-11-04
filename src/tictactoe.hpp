@@ -1,8 +1,10 @@
-#include <SFML\Graphics.hpp>
+#pragma once
 
 #include "constants.hpp"
 #include "board.hpp"
 #include "ui.hpp"
+
+#include <SFML\Graphics.hpp>
 
 class TicTacToe
 {

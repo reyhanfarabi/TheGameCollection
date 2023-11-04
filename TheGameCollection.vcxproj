@@ -21,12 +21,14 @@
   <ItemGroup>
     <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\main_menu.cpp" />
     <ClCompile Include="src\sfml_window.cpp" />
     <ClCompile Include="src\tictactoe.cpp" />
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\board.hpp" />
+    <ClInclude Include="src\main_menu.hpp" />
     <ClInclude Include="src\sfml_window.hpp" />
     <ClInclude Include="src\constants.hpp" />
     <ClInclude Include="src\tictactoe.hpp" />
