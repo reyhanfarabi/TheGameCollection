@@ -10,12 +10,8 @@ SFMLWindow::SFMLWindow()
 		WINDOW_NAME,
 		sf::Style::Titlebar | sf::Style::Close
 	),
-	shape(100.0f)
-{
-	shape.setFillColor(sf::Color::Magenta);
-	shape.setOrigin(100.0f, 100.0f);
-	shape.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
-}
+	mainMenu(window)
+{}
 
 void SFMLWindow::Run()
 {
@@ -31,24 +27,26 @@ void SFMLWindow::Run()
 			{
 				window.close();
 			}
+
+			Update(event);
 		}
 
 		window.clear();
 
-		Update();
 		Draw();
 
 		window.display();
 	}
 }
 
-void SFMLWindow::Update()
+void SFMLWindow::Update(sf::Event& event)
 {
 	// update game logic here
+	mainMenu.Update(event);
 }
 
 void SFMLWindow::Draw()
 {
 	// draw assets here
-	window.draw(shape);
+	mainMenu.Draw();
 }
