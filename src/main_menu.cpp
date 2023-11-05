@@ -11,15 +11,16 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 {
 	gameTitlesButtons.reserve(gameTitles.size());
 
-	for (std::string gameTitle : gameTitles)
+	for (int i = 0; i < gameTitles.size(); i++)
 	{
 		gameTitlesButtons.emplace_back(
-			gameTitle, 20,
+			gameTitles[i], 20,
 			sf::Vector2f(
-				window.getSize().x / 2,
-				window.getSize().y / 2
+				window.getSize().x / 2 + (BTN_CHOOSE_SIZE.x * i) - (BTN_CHOOSE_SIZE.x / 2),
+				// add 50 for spacing on y-axis
+				window.getSize().y / 2 + 50
 			),
-			sf::Vector2f(140.0f, 50.0f),
+			BTN_CHOOSE_SIZE,
 			UI::Padding(0.0f, 0.0f),
 			sf::Color::White, sf::Color::Black,
 			sf::Color::Black, sf::Color::White,
@@ -60,6 +61,7 @@ void MainMenu::Draw()
 		DrawChooseMenu();
 		break;
 	case GameState::Tictactoe:
+	case GameState::Minesweeper:
 		currentGame[0]->Draw();
 		break;
 	default:
@@ -84,10 +86,6 @@ void MainMenu::DrawChooseMenu()
 
 	for (int i = 0; i < gameTitlesButtons.size(); i++)
 	{
-		gameTitlesButtons[i].SetButtonPosition(sf::Vector2f(
-			window.getSize().x / 2,
-			window.getSize().y / 2 + 50
-		));
 		gameTitlesButtons[i].Draw();
 	}
 }
@@ -100,6 +98,10 @@ void MainMenu::SetGame(const int& gameTitleIndex)
 	case 0:
 		currentGameState = GameState::Tictactoe;
 		currentGame.emplace_back(std::make_unique<TicTacToe>(window));
+		break;
+	case 1:
+		currentGameState = GameState::Minesweeper;
+		currentGame.emplace_back(std::make_unique<Minesweeper>(window));
 		break;
 	default:
 		currentGameState = GameState::NoGame;

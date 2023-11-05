@@ -83,6 +83,10 @@ void Board::HoverTile(sf::RectangleShape& tile)
 	{
 		tile.setFillColor(sf::Color::White);
 	}
+	else
+	{
+		tile.setFillColor(sf::Color::Black);
+	}
 }
 
 sf::RectangleShape& Board::GetTile(const sf::Vector2i tilePos)
