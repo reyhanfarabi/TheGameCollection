@@ -29,10 +29,36 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 	}
 }
 
+void MainMenu::Update(sf::Event& event)
+{
+	for (int i = 0; i < gameTitlesButtons.size(); i++)
+	{
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left &&
+				gameTitlesButtons[i].IsTriggerable())
+			{
+				SetGameState(i);
+			}
+		}
+	}
+}
+
 void MainMenu::Draw()
 {
-	DrawTitle();
-	DrawChooseMenu();
+	switch (currentGame)
+	{
+	case GameState::NoGame:
+		DrawTitle();
+		DrawChooseMenu();
+		break;
+	case GameState::Tictactoe:
+		break;
+	default:
+		DrawTitle();
+		DrawChooseMenu();
+		break;
+	}
 }
 
 void MainMenu::DrawTitle()
@@ -48,12 +74,25 @@ void MainMenu::DrawChooseMenu()
 	));
 	chooseGame.Draw();
 
-	for (UI::Button button : gameTitlesButtons)
+	for (int i = 0; i < gameTitlesButtons.size(); i++)
 	{
-		button.SetButtonPosition(sf::Vector2f(
+		gameTitlesButtons[i].SetButtonPosition(sf::Vector2f(
 			window.getSize().x / 2,
 			window.getSize().y / 2 + 50
 		));
-		button.Draw();
+		gameTitlesButtons[i].Draw();
+	}
+}
+
+void MainMenu::SetGameState(const int& gameTitleIndex)
+{
+	switch (gameTitleIndex)
+	{
+	case 0:
+		currentGame = GameState::Tictactoe;
+		break;
+	default:
+		currentGame = GameState::NoGame;
+		break;
 	}
 }

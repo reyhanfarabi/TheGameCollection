@@ -19,7 +19,6 @@ public:
 private:
 	sf::RenderWindow window;
 	sf::Clock clock;
-	TicTacToe tictactoe;
 	MainMenu mainMenu;
 
 	static constexpr int WINDOW_WIDTH = 800;
