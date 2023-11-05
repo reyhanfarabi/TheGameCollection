@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ui.hpp"
+#include "base_game.hpp"
+#include "tictactoe.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -22,13 +24,15 @@ private:
 	};
 
 private:
-	void SetGameState(const int& gameTitleIndex);
+	void SetGame(const int& gameTitleIndex);
 
 private:
 	sf::RenderWindow& window;
 	UI::Text title;
 	UI::Text chooseGame;
-	GameState currentGame = GameState::NoGame;
+
+	GameState currentGameState = GameState::NoGame;
+	std::vector<std::unique_ptr<BaseGame>> currentGame;
 	
 	std::vector<std::string> gameTitles = { "Tic-tac-toe" };
 	std::vector<UI::Button> gameTitlesButtons;

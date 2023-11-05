@@ -31,28 +31,36 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 
 void MainMenu::Update(sf::Event& event)
 {
-	for (int i = 0; i < gameTitlesButtons.size(); i++)
+	if (currentGameState == GameState::NoGame)
 	{
-		if (event.type == sf::Event::MouseButtonPressed)
+		for (int i = 0; i < gameTitlesButtons.size(); i++)
 		{
-			if (event.mouseButton.button == sf::Mouse::Left &&
-				gameTitlesButtons[i].IsTriggerable())
+			if (event.type == sf::Event::MouseButtonPressed)
 			{
-				SetGameState(i);
+				if (event.mouseButton.button == sf::Mouse::Left &&
+					gameTitlesButtons[i].IsTriggerable())
+				{
+					SetGame(i);
+				}
 			}
 		}
+	}
+	else
+	{
+		currentGame[0]->Update(event);
 	}
 }
 
 void MainMenu::Draw()
 {
-	switch (currentGame)
+	switch (currentGameState)
 	{
 	case GameState::NoGame:
 		DrawTitle();
 		DrawChooseMenu();
 		break;
 	case GameState::Tictactoe:
+		currentGame[0]->Draw();
 		break;
 	default:
 		DrawTitle();
@@ -84,15 +92,17 @@ void MainMenu::DrawChooseMenu()
 	}
 }
 
-void MainMenu::SetGameState(const int& gameTitleIndex)
+void MainMenu::SetGame(const int& gameTitleIndex)
 {
+	currentGame.clear();
 	switch (gameTitleIndex)
 	{
 	case 0:
-		currentGame = GameState::Tictactoe;
+		currentGameState = GameState::Tictactoe;
+		currentGame.emplace_back(std::make_unique<TicTacToe>(window));
 		break;
 	default:
-		currentGame = GameState::NoGame;
+		currentGameState = GameState::NoGame;
 		break;
 	}
 }

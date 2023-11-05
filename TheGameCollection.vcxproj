@@ -27,6 +27,7 @@
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\base_game.hpp" />
     <ClInclude Include="src\board.hpp" />
     <ClInclude Include="src\main_menu.hpp" />
     <ClInclude Include="src\sfml_window.hpp" />

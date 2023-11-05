@@ -1,17 +1,18 @@
 #pragma once
 
+#include "base_game.hpp"
 #include "constants.hpp"
 #include "board.hpp"
 #include "ui.hpp"
 
 #include <SFML\Graphics.hpp>
 
-class TicTacToe
+class TicTacToe : public BaseGame
 {
 public:
 	TicTacToe(sf::RenderWindow& window);
-	void Update(sf::Event& event);
-	void Draw();
+	void Update(sf::Event& event) override;
+	void Draw() override;
 
 private:
 	enum class State
