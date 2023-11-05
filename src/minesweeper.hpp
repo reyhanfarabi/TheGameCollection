@@ -13,9 +13,9 @@ public:
 	void Draw() override;
 
 private:
-	static constexpr int TILE_SIZE = 50;
-	static constexpr int GRID_WIDTH = 10;
-	static constexpr int GRID_HEIGHT = 10;
+	static constexpr int TILE_SIZE = 30;
+	static constexpr int GRID_WIDTH = 12;
+	static constexpr int GRID_HEIGHT = 12;
 	const float X_OFFSET;
 	const float Y_OFFSET;
 
