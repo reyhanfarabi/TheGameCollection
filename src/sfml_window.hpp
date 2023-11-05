@@ -1,4 +1,7 @@
+#pragma once
+
 #include "tictactoe.hpp"
+#include "main_menu.hpp"
 
 #include <SFML\Graphics.hpp>
 #include <SFML\System\Clock.hpp>
@@ -16,7 +19,7 @@ public:
 private:
 	sf::RenderWindow window;
 	sf::Clock clock;
-	TicTacToe tictactoe;
+	MainMenu mainMenu;
 
 	static constexpr int WINDOW_WIDTH = 800;
 	static constexpr int WINDOW_HEIGHT = 600;

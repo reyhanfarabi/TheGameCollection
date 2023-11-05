@@ -10,7 +10,7 @@ SFMLWindow::SFMLWindow()
 		WINDOW_NAME,
 		sf::Style::Titlebar | sf::Style::Close
 	),
-	tictactoe(window)
+	mainMenu(window)
 {}
 
 void SFMLWindow::Run()
@@ -42,11 +42,11 @@ void SFMLWindow::Run()
 void SFMLWindow::Update(sf::Event& event)
 {
 	// update game logic here
-	tictactoe.Update(event);
+	mainMenu.Update(event);
 }
 
 void SFMLWindow::Draw()
 {
 	// draw assets here
-	tictactoe.Draw();
+	mainMenu.Draw();
 }
