@@ -6,13 +6,42 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	X_OFFSET((wnd.getSize().x / 2) - (GRID_WIDTH * TILE_SIZE / 2)),
 	Y_OFFSET((wnd.getSize().y / 2) - (GRID_HEIGHT * TILE_SIZE / 2)),
 	board(TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, X_OFFSET, Y_OFFSET, window),
-	tileState(TILE_STATE_SIZE)
+	tileState(TILE_STATE_SIZE),
+	bombLoc(TILE_STATE_SIZE)
 {
 	SetAllStateDefault();
+	bombLoc[0] = true;	// [DELETE LATER] for testing purposes will be deleted later
 }
 
 void Minesweeper::Update(sf::Event& event)
 {
+	if (!isGameOver)
+	{
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left)
+			{
+				// set tile to opened if current state is hidden
+				if (tileState[GetHoveredTileIndex()] == State::Hidden)
+				{
+					tileState[GetHoveredTileIndex()] = State::Opened;
+				}
+			}
+			else if (event.mouseButton.button == sf::Mouse::Right)
+			{
+				// set tile to be flagged if current state is hidden
+				if (tileState[GetHoveredTileIndex()] == State::Hidden)
+				{
+					tileState[GetHoveredTileIndex()] = State::Flagged;
+				}
+				// remove flag if current state is flagged
+				else if (tileState[GetHoveredTileIndex()] == State::Flagged)
+				{
+					tileState[GetHoveredTileIndex()] = State::Hidden;
+				}
+			}
+		}
+	}
 }
 
 void Minesweeper::Draw()
@@ -24,19 +53,24 @@ void Minesweeper::Draw()
 			// set tile color base on current state of each tile
 			switch (tileState[GRID_HEIGHT * y + x])
 			{
-			case State::EmptyHidden:
+			case State::Hidden:
+				// [CHANGE LATER] set color to cyan if tile is hidden (adjust to other color later)
 				board.SetTileColor({ x, y }, sf::Color::Cyan);
 				break;
-			case State::EmptyShowed:
-				board.SetTileColor({ x, y }, sf::Color::Black);
-				break;
-			case State::BombHidden:
-				board.SetTileColor({ x, y }, sf::Color::Magenta);
-				break;
-			case State::BombShowed:
-				board.SetTileColor({ x, y }, sf::Color::Red);
+			case State::Opened:
+				if (bombLoc[board.GetTileIndex({ x, y })])
+				{
+					// set color to red if there is bomb
+					board.SetTileColor({ x, y }, sf::Color::Red);
+				}
+				else
+				{
+					// set color to black if there isn't a bomb
+					board.SetTileColor({ x, y }, sf::Color::Black);
+				}
 				break;
 			case State::Flagged:
+				// set color to yellow if it's flagged
 				board.SetTileColor({ x, y }, sf::Color::Yellow);
 				break;
 			default:
@@ -52,6 +86,11 @@ void Minesweeper::SetAllStateDefault()
 {
 	for (int i = 0; i < TILE_STATE_SIZE; i++)
 	{
-		tileState[i] = State::EmptyHidden;
+		tileState[i] = State::Hidden;
 	}
+}
+
+int Minesweeper::GetHoveredTileIndex()
+{
+	return board.GetTileIndex(board.GetHoveredTilePos());
 }

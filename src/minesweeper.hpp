@@ -15,15 +15,14 @@ public:
 private:
 	enum class State
 	{
-		EmptyHidden,	// this is default state when game start
-		EmptyShowed,
-		BombHidden,
-		BombShowed,
+		Hidden,	// this is default state when game start
+		Opened,
 		Flagged
 	};
 
 private:
 	void SetAllStateDefault();
+	int GetHoveredTileIndex();
 
 private:
 	static constexpr int TILE_SIZE = 30;
@@ -32,8 +31,10 @@ private:
 	static constexpr int TILE_STATE_SIZE = GRID_WIDTH * GRID_HEIGHT;
 	const float X_OFFSET;
 	const float Y_OFFSET;
+	bool isGameOver = false;
 
 	sf::RenderWindow& window;
 	Board board;
 	std::vector<State> tileState;
+	std::vector<bool> bombLoc;
 };
