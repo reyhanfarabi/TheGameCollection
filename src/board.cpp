@@ -83,10 +83,9 @@ void Board::HoverTile(sf::RectangleShape& tile)
 	{
 		tile.setFillColor(sf::Color::White);
 	}
-	else
-	{
-		tile.setFillColor(sf::Color::Black);
-	}
+	// do not add else condition, color is intended to be stuck after hover
+	// stuck issue should be fix on game module by setting color to it
+	// see example on tictactoe update method
 }
 
 sf::RectangleShape& Board::GetTile(const sf::Vector2i tilePos)
