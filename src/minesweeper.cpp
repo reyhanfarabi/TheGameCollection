@@ -7,10 +7,11 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	Y_OFFSET((wnd.getSize().y / 2) - (GRID_HEIGHT * TILE_SIZE / 2)),
 	board(TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, X_OFFSET, Y_OFFSET, window),
 	tileState(TILE_STATE_SIZE),
-	bombLoc(TILE_STATE_SIZE)
+	bombLoc(TILE_STATE_SIZE),
+	gen(rd()),
+	dist(0, 3)	// max set to 3 is to generate more true value instead of false
 {
 	SetAllStateDefault();
-	bombLoc[0] = true;	// [DELETE LATER] for testing purposes will be deleted later
 }
 
 void Minesweeper::Update(sf::Event& event)
@@ -21,6 +22,13 @@ void Minesweeper::Update(sf::Event& event)
 		{
 			if (event.mouseButton.button == sf::Mouse::Left)
 			{
+				// place bombs on first tile click (start of game)
+				if (!isBombPlaced)
+				{
+					PlaceBombToTiles(GetHoveredTileIndex());
+					isBombPlaced = true;
+				}
+
 				// set tile to opened if current state is hidden
 				if (tileState[GetHoveredTileIndex()] == State::Hidden)
 				{
@@ -29,6 +37,13 @@ void Minesweeper::Update(sf::Event& event)
 			}
 			else if (event.mouseButton.button == sf::Mouse::Right)
 			{
+				// place bombs on first tile click (start of game)
+				if (!isBombPlaced)
+				{
+					PlaceBombToTiles(GetHoveredTileIndex());
+					isBombPlaced = true;
+				}
+				
 				// set tile to be flagged if current state is hidden
 				if (tileState[GetHoveredTileIndex()] == State::Hidden)
 				{
@@ -87,6 +102,18 @@ void Minesweeper::SetAllStateDefault()
 	for (int i = 0; i < TILE_STATE_SIZE; i++)
 	{
 		tileState[i] = State::Hidden;
+	}
+}
+
+void Minesweeper::PlaceBombToTiles(const int& clickedTileIndex)
+{
+	for (int i = 0; i < TILE_STATE_SIZE; i++)
+	{
+		if (i != clickedTileIndex)
+		{
+			// random number is negated to get lower amount of bomb
+			bombLoc[i] = !dist(gen);
+		}
 	}
 }
 

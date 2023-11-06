@@ -4,6 +4,7 @@
 #include "board.hpp"
 
 #include <SFML\Graphics.hpp>
+#include <random>
 
 class Minesweeper : public BaseGame
 {
@@ -22,6 +23,7 @@ private:
 
 private:
 	void SetAllStateDefault();
+	void PlaceBombToTiles(const int& clickedTileIndex);
 	int GetHoveredTileIndex();
 
 private:
@@ -32,6 +34,11 @@ private:
 	const float X_OFFSET;
 	const float Y_OFFSET;
 	bool isGameOver = false;
+	bool isBombPlaced = false;
+
+	std::random_device rd;
+	std::mt19937 gen;
+	std::uniform_int_distribution<int> dist;
 
 	sf::RenderWindow& window;
 	Board board;
