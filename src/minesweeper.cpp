@@ -8,6 +8,7 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	board(TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, X_OFFSET, Y_OFFSET, window),
 	tileState(TILE_STATE_SIZE),
 	bombLoc(TILE_STATE_SIZE),
+	tileAdjoiningBombCount(TILE_STATE_SIZE),
 	gen(rd()),
 	dist(0, 3)	// max set to 3 is to generate more true value instead of false
 {
@@ -27,6 +28,7 @@ void Minesweeper::Update(sf::Event& event)
 				{
 					PlaceBombToTiles(GetHoveredTileIndex());
 					isBombPlaced = true;
+					SetTilesAdjoiningBombCount();
 				}
 
 				// set tile to opened if current state is hidden
@@ -42,6 +44,7 @@ void Minesweeper::Update(sf::Event& event)
 				{
 					PlaceBombToTiles(GetHoveredTileIndex());
 					isBombPlaced = true;
+					SetTilesAdjoiningBombCount();
 				}
 				
 				// set tile to be flagged if current state is hidden
@@ -113,6 +116,78 @@ void Minesweeper::PlaceBombToTiles(const int& clickedTileIndex)
 		{
 			// random number is negated to get lower amount of bomb
 			bombLoc[i] = !dist(gen);
+		}
+	}
+}
+
+void Minesweeper::SetTilesAdjoiningBombCount()
+{
+	for (int y = 0; y < GRID_HEIGHT; y++)
+	{
+		for (int x = 0; x < GRID_WIDTH; x++)
+		{
+			int count = 0;
+			int tileIndex = board.GetTileIndex({ x, y });
+
+			// tile bound
+			int rightBound = (GRID_WIDTH - 1) + (GRID_HEIGHT * y);
+			int leftBound = GRID_HEIGHT * y;
+			int topBound = x - GRID_WIDTH;
+			int bottomBound = x + GRID_WIDTH * GRID_HEIGHT;
+
+			// check tile right bound
+			if (tileIndex + 1 <= rightBound)
+			{
+				// increment count when there is bomb on right adjoining tile
+				if (bombLoc[tileIndex + 1]) { count++; }
+
+				if (tileIndex - GRID_WIDTH > topBound)
+				{
+					// increment count when there is bomb on top right adjoining tile
+					if (bombLoc[tileIndex + 1 - GRID_WIDTH]) { count++; }
+				}
+
+				if (tileIndex + GRID_WIDTH < bottomBound)
+				{
+					// increment count when there is bomb on bottom right adjoining tile
+					if (bombLoc[tileIndex + 1 + GRID_WIDTH]) { count++; }
+				}
+			}
+
+			// check tile left bound
+			if (tileIndex - 1 >= leftBound)
+			{
+				// increment count when there is bomb on left adjoining tile
+				if (bombLoc[tileIndex - 1]) { count++; }
+
+				if (tileIndex - GRID_WIDTH > topBound)
+				{
+					// increment count when there is bomb on top left adjoining tile
+					if (bombLoc[tileIndex - 1 - GRID_WIDTH]) { count++; }
+				}
+
+				if (tileIndex + GRID_WIDTH < bottomBound)
+				{
+					// increment count when there is bomb on bottom left adjoining tile
+					if (bombLoc[tileIndex - 1 + GRID_WIDTH]) { count++; }
+				}
+			}
+
+			// check tile top bound
+			if (tileIndex - GRID_WIDTH > topBound)
+			{
+				// increment count when there is bomb on top adjoining tile
+				if (bombLoc[tileIndex - GRID_WIDTH]) { count++; }
+			}
+
+			// check tile bottom bound
+			if (tileIndex + GRID_WIDTH < bottomBound)
+			{
+				// increment count when there is bomb on bottom adjoining tile
+				if (bombLoc[tileIndex + GRID_WIDTH]) { count++; }
+			}
+
+			tileAdjoiningBombCount[tileIndex] = count;
 		}
 	}
 }

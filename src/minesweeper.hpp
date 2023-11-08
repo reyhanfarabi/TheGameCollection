@@ -24,6 +24,7 @@ private:
 private:
 	void SetAllStateDefault();
 	void PlaceBombToTiles(const int& clickedTileIndex);
+	void SetTilesAdjoiningBombCount();
 	int GetHoveredTileIndex();
 
 private:
@@ -36,12 +37,13 @@ private:
 	bool isGameOver = false;
 	bool isBombPlaced = false;
 
-	std::random_device rd;
-	std::mt19937 gen;
-	std::uniform_int_distribution<int> dist;
-
 	sf::RenderWindow& window;
 	Board board;
 	std::vector<State> tileState;
 	std::vector<bool> bombLoc;
+	std::vector<int> tileAdjoiningBombCount;
+
+	std::random_device rd;
+	std::mt19937 gen;
+	std::uniform_int_distribution<int> dist;
 };
