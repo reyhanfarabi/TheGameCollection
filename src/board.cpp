@@ -6,20 +6,28 @@ Board::Board(
 	int gridHeight,
 	float xOffset,
 	float yOffset,
-	sf::RenderWindow& window
+	sf::RenderWindow& window,
+	bool enableWithSymbol
 )	:
 	TILE_SIZE(tileSize),
 	GRID_WIDTH(gridWidth),
 	GRID_HEIGHT(gridHeight),
 	X_OFFSET(xOffset),
 	Y_OFFSET(yOffset),
+	enableWithSymbol(enableWithSymbol),
 	window(window),
 	tiles(GRID_WIDTH * GRID_HEIGHT)
 {
+	if (enableWithSymbol)
+	{
+		tileSymbols.reserve(GRID_WIDTH * GRID_HEIGHT);
+	}
+
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
+			// set tile properties
 			GetTile({ x, y }).setSize(sf::Vector2f(TILE_SIZE, TILE_SIZE));
 			GetTile({ x, y }).setPosition(
 				static_cast<float>(x * TILE_SIZE + X_OFFSET),
@@ -29,6 +37,14 @@ Board::Board(
 			GetTile({ x, y }).setFillColor(sf::Color::Black);
 			GetTile({ x, y }).setOutlineThickness(1);
 			GetTile({ x, y }).setOutlineColor(sf::Color::White);
+
+			if (enableWithSymbol)
+			{
+				tileSymbols.emplace_back("", 14, sf::Color::White, sf::Vector2f(
+					GetTile({ x, y }).getPosition().x + TILE_SIZE / 3,
+					GetTile({ x, y }).getPosition().y + TILE_SIZE / 4
+				), window);
+			}
 		}
 	}
 }
@@ -40,6 +56,14 @@ void Board::DrawTile(const sf::Vector2i& tilePos)
 
 	// draw tile
 	window.draw(GetTile(tilePos));
+}
+
+void Board::DrawTileWithSymbol(const sf::Vector2i& tilePos, const std::string& symbol)
+{
+	DrawTile(tilePos);
+
+	tileSymbols[GetTileIndex(tilePos)].SetString(symbol);
+	tileSymbols[GetTileIndex(tilePos)].Draw();
 }
 
 void Board::SetTileColor(const sf::Vector2i& tilePos, const sf::Color color)

@@ -5,7 +5,7 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	window(wnd),
 	X_OFFSET((wnd.getSize().x / 2) - (GRID_WIDTH * TILE_SIZE / 2)),
 	Y_OFFSET((wnd.getSize().y / 2) - (GRID_HEIGHT * TILE_SIZE / 2)),
-	board(TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, X_OFFSET, Y_OFFSET, window),
+	board(TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, X_OFFSET, Y_OFFSET, window, true),
 	tileState(TILE_STATE_SIZE),
 	bombLoc(TILE_STATE_SIZE),
 	tileAdjoiningBombCount(TILE_STATE_SIZE),
@@ -95,7 +95,29 @@ void Minesweeper::Draw()
 				break;
 			}
 
-			board.DrawTile({ x, y });
+			// draw tile base on state
+			switch (tileState[GRID_HEIGHT * y + x])
+			{
+			case State::Hidden:
+			case State::Flagged:
+				board.DrawTile({ x, y });
+				break;
+			case State::Opened:
+				if (bombLoc[board.GetTileIndex({ x, y })])
+				{
+					board.DrawTile({ x, y });
+				}
+				else
+				{
+					board.DrawTileWithSymbol(
+						{ x, y },
+						std::to_string(tileAdjoiningBombCount[board.GetTileIndex({ x, y })])
+					);
+				}
+				break;
+			default:
+				break;
+			}
 		}
 	}
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ui.hpp"
+
 #include <SFML\Graphics.hpp>
 
 class Board
@@ -11,9 +13,11 @@ public:
 		int gridHeight,
 		float xOffset,
 		float yOffset,
-		sf::RenderWindow& wnd
+		sf::RenderWindow& wnd,
+		bool enableWithSymbol = false
 	);
 	void DrawTile(const sf::Vector2i& tilePos);
+	void DrawTileWithSymbol(const sf::Vector2i& tilePos, const std::string& symbol);
 
 	void SetTileColor(const sf::Vector2i& tilePos, const sf::Color color);
 	int GetTileIndex(const sf::Vector2i& tilePos);
@@ -30,7 +34,9 @@ private:
 	const int GRID_HEIGHT;
 	const float X_OFFSET;
 	const float Y_OFFSET;
+	bool enableWithSymbol;
 
 	sf::RenderWindow& window;
 	std::vector<sf::RectangleShape> tiles;
+	std::vector<UI::Text> tileSymbols;
 };
