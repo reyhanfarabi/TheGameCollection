@@ -12,7 +12,7 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 		X_OFFSET, Y_OFFSET,
 		window,
 		Board::TileType::Sprite,
-		ASSETS::MINESWEEPER_TILES,
+		ASSETS::MINESWEEPER_SPRITES,
 		sf::Vector2i(64, 0),
 		ASSETS::MINESWEEPER_TILE_SIZE
 	),
@@ -78,97 +78,69 @@ void Minesweeper::Draw()
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			// set tile color base on current state of each tile
+			sf::Vector2i tileSprite = ASSETS::MS_SPRITE_POS::HIDDEN;
+
+			// set tile sprite base on current state of each tile
 			switch (tileState[GRID_HEIGHT * y + x])
 			{
 			case State::Hidden:
-				board.SetTileTextureRect({ x, y }, sf::IntRect(
-					sf::Vector2i(64, 0),
-					ASSETS::MINESWEEPER_TILE_SIZE
-				));
-				board.SetTileColor({ x, y }, sf::Color::White);
+				tileSprite = ASSETS::MS_SPRITE_POS::HIDDEN;
 				break;
 			case State::Opened:
 				if (bombLoc[board.GetTileIndex({ x, y })])
 				{
-					board.SetTileTextureRect({ x, y }, sf::IntRect(
-						sf::Vector2i(192, 0),
-						ASSETS::MINESWEEPER_TILE_SIZE
-					));
+					tileSprite = ASSETS::MS_SPRITE_POS::BOMB_EXPLODE;
 				}
 				else
 				{
 					switch (tileAdjoiningBombCount[board.GetTileIndex({ x, y })])
 					{
 					case 0:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(0, 0),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_0;
 						break;
 					case 1:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(0, 64),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_1;
 						break;
 					case 2:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(64, 64),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_2;
 						break;
 					case 3:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(128, 64),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_3;
 						break;
 					case 4:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(192, 64),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_4;
 						break;
 					case 5:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(0, 128),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_5;
 						break;
 					case 6:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(64, 128),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_6;
 						break;
 					case 7:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(128, 128),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_7;
 						break;
 					case 8:
-						board.SetTileTextureRect({ x, y }, sf::IntRect(
-							sf::Vector2i(192, 128),
-							ASSETS::MINESWEEPER_TILE_SIZE
-						));
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_8;
 						break;
 					default:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_0;
 						break;
 					}
 				}
 				break;
 			case State::Flagged:
-				board.SetTileTextureRect({ x, y }, sf::IntRect(
-					sf::Vector2i(128, 0),
-					ASSETS::MINESWEEPER_TILE_SIZE
-				));
+				tileSprite = ASSETS::MS_SPRITE_POS::FLAGGED;
 				break;
 			default:
+				tileSprite = ASSETS::MS_SPRITE_POS::TILE_0;
 				break;
 			}
 
+			board.SetTileTextureRect({ x, y }, sf::IntRect(
+				tileSprite,
+				ASSETS::MINESWEEPER_TILE_SIZE
+			));
+			board.SetTileColor({ x, y }, sf::Color::White);
 			board.DrawTile({ x, y });
 		}
 	}
