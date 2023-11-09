@@ -1,11 +1,21 @@
 #include "minesweeper.hpp"
+#include "constants.hpp"
 
 Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	:
 	window(wnd),
 	X_OFFSET((wnd.getSize().x / 2) - (GRID_WIDTH * TILE_SIZE / 2)),
 	Y_OFFSET((wnd.getSize().y / 2) - (GRID_HEIGHT * TILE_SIZE / 2)),
-	board(TILE_SIZE, GRID_WIDTH, GRID_HEIGHT, X_OFFSET, Y_OFFSET, window, true),
+	board(
+		TILE_SIZE,
+		GRID_WIDTH, GRID_HEIGHT,
+		X_OFFSET, Y_OFFSET,
+		window,
+		Board::TileType::Sprite,
+		ASSETS::MINESWEEPER_SPRITES,
+		sf::Vector2i(64, 0),
+		ASSETS::MINESWEEPER_TILE_SIZE
+	),
 	tileState(TILE_STATE_SIZE),
 	bombLoc(TILE_STATE_SIZE),
 	tileAdjoiningBombCount(TILE_STATE_SIZE),
@@ -68,56 +78,70 @@ void Minesweeper::Draw()
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			// set tile color base on current state of each tile
+			sf::Vector2i tileSprite = ASSETS::MS_SPRITE_POS::HIDDEN;
+
+			// set tile sprite base on current state of each tile
 			switch (tileState[GRID_HEIGHT * y + x])
 			{
 			case State::Hidden:
-				// [CHANGE LATER] set color to cyan if tile is hidden (adjust to other color later)
-				board.SetTileColor({ x, y }, sf::Color::Cyan);
+				tileSprite = ASSETS::MS_SPRITE_POS::HIDDEN;
 				break;
 			case State::Opened:
 				if (bombLoc[board.GetTileIndex({ x, y })])
 				{
-					// set color to red if there is bomb
-					board.SetTileColor({ x, y }, sf::Color::Red);
+					tileSprite = ASSETS::MS_SPRITE_POS::BOMB_EXPLODE;
 				}
 				else
 				{
-					// set color to black if there isn't a bomb
-					board.SetTileColor({ x, y }, sf::Color::Black);
+					switch (tileAdjoiningBombCount[board.GetTileIndex({ x, y })])
+					{
+					case 0:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_0;
+						break;
+					case 1:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_1;
+						break;
+					case 2:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_2;
+						break;
+					case 3:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_3;
+						break;
+					case 4:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_4;
+						break;
+					case 5:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_5;
+						break;
+					case 6:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_6;
+						break;
+					case 7:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_7;
+						break;
+					case 8:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_8;
+						break;
+					default:
+						tileSprite = ASSETS::MS_SPRITE_POS::TILE_0;
+						break;
+					}
 				}
 				break;
 			case State::Flagged:
-				// set color to yellow if it's flagged
-				board.SetTileColor({ x, y }, sf::Color::Yellow);
+				tileSprite = ASSETS::MS_SPRITE_POS::FLAGGED;
 				break;
 			default:
+				tileSprite = ASSETS::MS_SPRITE_POS::TILE_0;
 				break;
 			}
 
-			// draw tile base on state
-			switch (tileState[GRID_HEIGHT * y + x])
-			{
-			case State::Hidden:
-			case State::Flagged:
-				board.DrawTile({ x, y });
-				break;
-			case State::Opened:
-				if (bombLoc[board.GetTileIndex({ x, y })])
-				{
-					board.DrawTile({ x, y });
-				}
-				else
-				{
-					board.DrawTileWithSymbol(
-						{ x, y },
-						std::to_string(tileAdjoiningBombCount[board.GetTileIndex({ x, y })])
-					);
-				}
-				break;
-			default:
-				break;
-			}
+			board.SetTileTextureRect({ x, y }, sf::IntRect(
+				tileSprite,
+				ASSETS::MINESWEEPER_TILE_SIZE
+			));
+			board.SetTileColor({ x, y }, sf::Color::White);
+			board.DrawTile({ x, y });
 		}
 	}
 }

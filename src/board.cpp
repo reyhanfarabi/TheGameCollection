@@ -1,5 +1,7 @@
 #include "board.hpp"
 
+#include <iostream>
+
 Board::Board(
 	int tileSize, 
 	int gridWidth,
@@ -7,22 +9,17 @@ Board::Board(
 	float xOffset,
 	float yOffset,
 	sf::RenderWindow& window,
-	bool enableWithSymbol
+	TileType type = Board::TileType::Empty
 )	:
 	TILE_SIZE(tileSize),
 	GRID_WIDTH(gridWidth),
 	GRID_HEIGHT(gridHeight),
 	X_OFFSET(xOffset),
 	Y_OFFSET(yOffset),
-	enableWithSymbol(enableWithSymbol),
+	tileType(type),
 	window(window),
 	tiles(GRID_WIDTH * GRID_HEIGHT)
 {
-	if (enableWithSymbol)
-	{
-		tileSymbols.reserve(GRID_WIDTH * GRID_HEIGHT);
-	}
-
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
@@ -37,13 +34,49 @@ Board::Board(
 			GetTile({ x, y }).setFillColor(sf::Color::Black);
 			GetTile({ x, y }).setOutlineThickness(1);
 			GetTile({ x, y }).setOutlineColor(sf::Color::White);
+		}
+	}
+}
 
-			if (enableWithSymbol)
+Board::Board(
+	int tileSize,
+	int gridWidth,
+	int gridHeight,
+	float xOffset,
+	float yOffset,
+	sf::RenderWindow& wnd,
+	TileType type,
+	std::string spriteFile,
+	sf::Vector2i spritePosition,
+	sf::Vector2i spriteSize
+)	:
+	Board(
+		tileSize,
+		gridWidth, gridHeight,
+		xOffset, yOffset,
+		wnd, type
+	)
+{
+	if (!texture.loadFromFile(spriteFile))
+	{
+		std::cout << "Failed to load texture file\n";
+	}
+	else
+	{
+		texture.setSmooth(true);
+
+		for (int y = 0; y < GRID_HEIGHT; y++)
+		{
+			for (int x = 0; x < GRID_WIDTH; x++)
 			{
-				tileSymbols.emplace_back("", 14, sf::Color::White, sf::Vector2f(
-					GetTile({ x, y }).getPosition().x + TILE_SIZE / 3,
-					GetTile({ x, y }).getPosition().y + TILE_SIZE / 4
-				), window);
+				// set tile texture properties
+				GetTile({ x, y }).setFillColor(sf::Color::White);
+				GetTile({ x, y }).setOutlineThickness(0);
+				GetTile({ x, y }).setTexture(&texture, true);
+				GetTile({ x, y }).setTextureRect(sf::IntRect(
+					spritePosition,
+					spriteSize
+				));
 			}
 		}
 	}
@@ -58,17 +91,14 @@ void Board::DrawTile(const sf::Vector2i& tilePos)
 	window.draw(GetTile(tilePos));
 }
 
-void Board::DrawTileWithSymbol(const sf::Vector2i& tilePos, const std::string& symbol)
-{
-	DrawTile(tilePos);
-
-	tileSymbols[GetTileIndex(tilePos)].SetString(symbol);
-	tileSymbols[GetTileIndex(tilePos)].Draw();
-}
-
 void Board::SetTileColor(const sf::Vector2i& tilePos, const sf::Color color)
 {
 	GetTile(tilePos).setFillColor(color);
+}
+
+void Board::SetTileTextureRect(const sf::Vector2i& tilePos, const sf::IntRect& textureRect)
+{
+	GetTile(tilePos).setTextureRect(textureRect);
 }
 
 sf::Vector2i Board::GetHoveredTilePos()
@@ -105,7 +135,7 @@ void Board::HoverTile(sf::RectangleShape& tile)
 {
 	if (IsInsideTile(tile, sf::Mouse::getPosition(window)))
 	{
-		tile.setFillColor(sf::Color::White);
+		tile.setFillColor(sf::Color(255, 255, 255, 225));
 	}
 	// do not add else condition, color is intended to be stuck after hover
 	// stuck issue should be fix on game module by setting color to it

@@ -11,7 +11,8 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		GRID_HEIGHT,
 		X_OFFSET,
 		Y_OFFSET,
-		window
+		window,
+		Board::TileType::Empty
 	),
 	tileState(TILE_STATE_SIZE),
 	X_OFFSET((window.getSize().x / 2) - (GRID_WIDTH * TILE_SIZE / 2)),
