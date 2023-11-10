@@ -7,7 +7,7 @@ SFMLWindow::SFMLWindow()
 			WINDOW_WIDTH,
 			WINDOW_HEIGHT
 		),
-		WINDOW_NAME,
+		"The Game Collection",
 		sf::Style::Titlebar | sf::Style::Close
 	),
 	mainMenu(window)
