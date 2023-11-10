@@ -27,11 +27,13 @@ private:
 
 private:
 	void SetGame(const int& gameTitleIndex);
+	void GoBackToMainMenu();
 
 private:
 	sf::RenderWindow& window;
 	UI::Text title;
 	UI::Text chooseGame;
+	UI::Button btnMainMenu;
 
 	GameState currentGameState = GameState::NoGame;
 	std::vector<std::unique_ptr<BaseGame>> currentGame;
