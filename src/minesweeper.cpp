@@ -48,6 +48,9 @@ void Minesweeper::Update(sf::Event& event)
 				{
 					tileState[GetHoveredTileIndex()] = State::Opened;
 				}
+
+				// set game over when clicked tile have bomb
+				TriggerGameOver();
 			}
 			else if (event.mouseButton.button == sf::Mouse::Right)
 			{
@@ -96,7 +99,14 @@ void Minesweeper::Draw()
 			case State::Opened:
 				if (bombLoc[board.GetTileIndex({ x, y })])
 				{
-					tileSprite = ASSETS::MS_SPRITE_POS::BOMB_EXPLODE;
+					if (board.GetTileIndex({ x, y }) == clickedBombIndex)
+					{
+						tileSprite = ASSETS::MS_SPRITE_POS::BOMB_EXPLODE;
+					}
+					else
+					{
+						tileSprite = ASSETS::MS_SPRITE_POS::BOMB_HIDDEN;
+					}
 				}
 				else
 				{
@@ -376,6 +386,24 @@ void Minesweeper::AutoOpenTile()
 						tileState[tileIndex] = State::Opened;
 					}
 				}
+			}
+		}
+	}
+}
+
+void Minesweeper::TriggerGameOver()
+{
+	if (bombLoc[GetHoveredTileIndex()])
+	{
+		isGameOver = true;
+		clickedBombIndex = GetHoveredTileIndex();
+
+		// set tile to open if it has bomb
+		for (int i = 0; i < TILE_STATE_SIZE; i++)
+		{
+			if (bombLoc[i])
+			{
+				tileState[i] = State::Opened;
 			}
 		}
 	}
