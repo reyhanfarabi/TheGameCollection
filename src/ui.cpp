@@ -197,5 +197,10 @@ namespace UI
 	{
 		return IsMouseInsideButton();
 	}
+
+	sf::Vector2f Button::GetButtonSize()
+	{
+		return shape.getSize();
+	}
 }
 

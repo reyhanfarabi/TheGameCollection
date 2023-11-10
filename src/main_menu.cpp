@@ -7,9 +7,24 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 		window.getSize().x / 2,
 		200
 	), window),
-	chooseGame("Choose Game to Play", 18, sf::Color::White, sf::Vector2f(), window)
+	chooseGame("Choose Game to Play", 18, sf::Color::White, sf::Vector2f(), window),
+	btnMainMenu(
+		"Esc | Main Menu", 16,
+		sf::Vector2f(),
+		UI::Padding(14.0f, 8.0f),
+		sf::Color::White, sf::Color::Black,
+		sf::Color::Black, sf::Color::White,
+		1, sf::Color::White, sf::Color::White,
+		window)
 {
 	gameTitlesButtons.reserve(gameTitles.size());
+
+	// set btnMainMenu position
+	btnMainMenu.SetButtonPosition(sf::Vector2f(
+		// both subtract by 10 for spacing
+		window.getSize().x - btnMainMenu.GetButtonSize().x / 2 - 10,
+		window.getSize().y - btnMainMenu.GetButtonSize().y / 2 - 10
+	));
 
 	for (int i = 0; i < gameTitles.size(); i++)
 	{
@@ -50,6 +65,30 @@ void MainMenu::Update(sf::Event& event)
 	{
 		currentGame[0]->Update(event);
 	}
+
+	// game module event
+	if (currentGameState != GameState::NoGame)
+	{
+		// mouse event
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			// go back to menu when button main menu is clicked
+			if (event.mouseButton.button == sf::Mouse::Left && btnMainMenu.IsTriggerable())
+			{
+				GoBackToMainMenu();
+			}
+		}
+
+		// keyboard event
+		if (event.type == sf::Event::KeyPressed)
+		{
+			// go back to menu when escape key is pressed 
+			if (event.key.scancode == sf::Keyboard::Scan::Escape)
+			{
+				GoBackToMainMenu();
+			}
+		}
+	}
 }
 
 void MainMenu::Draw()
@@ -63,6 +102,7 @@ void MainMenu::Draw()
 	case GameState::Tictactoe:
 	case GameState::Minesweeper:
 		currentGame[0]->Draw();
+		btnMainMenu.Draw();
 		break;
 	default:
 		DrawTitle();
@@ -88,6 +128,12 @@ void MainMenu::DrawChooseMenu()
 	{
 		gameTitlesButtons[i].Draw();
 	}
+}
+
+void MainMenu::GoBackToMainMenu()
+{
+	currentGameState = GameState::NoGame;
+	currentGame.clear();
 }
 
 void MainMenu::SetGame(const int& gameTitleIndex)
