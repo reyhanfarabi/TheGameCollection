@@ -283,7 +283,8 @@ void Minesweeper::AutoOpenTile()
 					// open tile if right adjoining tile bomb count is 0 and state is hidden
 					if (
 						tileAdjoiningBombCount[tileIndex + 1] == 0 &&
-						tileState[tileIndex + 1] == State::Opened)
+						tileState[tileIndex + 1] == State::Opened &&
+						!bombLoc[tileIndex + 1])
 					{
 						tileState[tileIndex] = State::Opened;
 					}
@@ -293,7 +294,8 @@ void Minesweeper::AutoOpenTile()
 						// open tile if top right adjoining tile bomb count is 0 and state is hidden
 						if (
 							tileAdjoiningBombCount[tileIndex + 1 - GRID_WIDTH] == 0 &&
-							tileState[tileIndex + 1 - GRID_WIDTH] == State::Opened)
+							tileState[tileIndex + 1 - GRID_WIDTH] == State::Opened &&
+							!bombLoc[tileIndex + 1 - GRID_WIDTH])
 						{
 							tileState[tileIndex] = State::Opened;
 						}
@@ -304,7 +306,8 @@ void Minesweeper::AutoOpenTile()
 						// open tile if bottom right adjoining tile bomb count is 0 and state is hidden
 						if (
 							tileAdjoiningBombCount[tileIndex + 1 + GRID_WIDTH] == 0 &&
-							tileState[tileIndex + 1 + GRID_WIDTH] == State::Opened)
+							tileState[tileIndex + 1 + GRID_WIDTH] == State::Opened &&
+							!bombLoc[tileIndex + 1 + GRID_WIDTH])
 						{
 							tileState[tileIndex] = State::Opened;
 						}
@@ -317,7 +320,8 @@ void Minesweeper::AutoOpenTile()
 					// open tile if left adjoining tile bomb count is 0 and state is hidden
 					if (
 						tileAdjoiningBombCount[tileIndex - 1] == 0 &&
-						tileState[tileIndex - 1] == State::Opened)
+						tileState[tileIndex - 1] == State::Opened &&
+						!bombLoc[tileIndex - 1])
 					{
 						tileState[tileIndex] = State::Opened;
 					}
@@ -327,7 +331,8 @@ void Minesweeper::AutoOpenTile()
 						// open tile if top left adjoining tile bomb count is 0 and state is hidden
 						if (
 							tileAdjoiningBombCount[tileIndex - 1 - GRID_WIDTH] == 0 &&
-							tileState[tileIndex - 1 - GRID_WIDTH] == State::Opened)
+							tileState[tileIndex - 1 - GRID_WIDTH] == State::Opened &&
+							!bombLoc[tileIndex - 1 - GRID_WIDTH])
 						{
 							tileState[tileIndex] = State::Opened;
 						}
@@ -338,7 +343,8 @@ void Minesweeper::AutoOpenTile()
 						// open tile if bottom left adjoining tile bomb count is 0 and state is hidden
 						if (
 							tileAdjoiningBombCount[tileIndex - 1 + GRID_WIDTH] == 0 &&
-							tileState[tileIndex - 1 + GRID_WIDTH] == State::Opened)
+							tileState[tileIndex - 1 + GRID_WIDTH] == State::Opened &&
+							!bombLoc[tileIndex - 1 + GRID_WIDTH])
 						{
 							tileState[tileIndex] = State::Opened;
 						}
@@ -351,7 +357,8 @@ void Minesweeper::AutoOpenTile()
 					// open tile if top adjoining tile bomb count is 0 and state is hidden
 					if (
 						tileAdjoiningBombCount[tileIndex - GRID_WIDTH] == 0 &&
-						tileState[tileIndex - GRID_WIDTH] == State::Opened)
+						tileState[tileIndex - GRID_WIDTH] == State::Opened &&
+						!bombLoc[tileIndex - GRID_WIDTH])
 					{
 						tileState[tileIndex] = State::Opened;
 					}
@@ -363,7 +370,8 @@ void Minesweeper::AutoOpenTile()
 					// open tile if bottom adjoining tile bomb count is 0 and state is hidden
 					if (
 						tileAdjoiningBombCount[tileIndex + GRID_WIDTH] == 0 &&
-						tileState[tileIndex + GRID_WIDTH] == State::Opened)
+						tileState[tileIndex + GRID_WIDTH] == State::Opened &&
+						!bombLoc[tileIndex + GRID_WIDTH])
 					{
 						tileState[tileIndex] = State::Opened;
 					}
