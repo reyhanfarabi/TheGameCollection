@@ -70,6 +70,7 @@ private:
 	UI::Text txtOpponentTurn;
 	UI::Text txtGameFinish;
 	UI::Text txtScore;
+	UI::Text txtTitle;
 	const std::string tGF_DRAW = STR_CONST::GAME_FINISH + " DRAW";
 	const std::string tGF_YOU = STR_CONST::GAME_FINISH + " YOU WIN";
 	const std::string tGF_OPPONENT = STR_CONST::GAME_FINISH + " OPPONENT WIN";

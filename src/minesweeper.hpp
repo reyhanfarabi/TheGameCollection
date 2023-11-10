@@ -47,6 +47,7 @@ private:
 	Board board;
 	UI::Button btnRestart;
 	UI::Text txtEndGame;
+	UI::Text txtTitle;
 
 	std::vector<State> tileState;
 	std::vector<bool> bombLoc;
