@@ -45,6 +45,7 @@ private:
 	sf::RenderWindow& window;
 	Board board;
 	UI::Button btnRestart;
+	UI::Text txtLose;
 
 	std::vector<State> tileState;
 	std::vector<bool> bombLoc;

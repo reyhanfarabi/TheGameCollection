@@ -8,6 +8,7 @@ namespace STR_CONST
 	const std::string OPPONENT_TURN = "OPPONENT TURN";
 	const std::string GAME_FINISH = "GAME FINISH!";
 	const std::string RESTART_GAME = "RESTART GAME";
+	const std::string YOU_LOSE = "YOU LOSE";
 }
 
 namespace ASSETS

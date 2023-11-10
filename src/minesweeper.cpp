@@ -26,6 +26,10 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 		sf::Color::Black, sf::Color::White,
 		1, sf::Color::White, sf::Color::White,
 		window),
+	txtLose(STR_CONST::YOU_LOSE, 24, sf::Color::White, sf::Vector2f(
+		window.getSize().x / 2,
+		window.getSize().y / 2 - 210
+	), window),
 	tileState(TILE_STATE_SIZE),
 	bombLoc(TILE_STATE_SIZE),
 	tileAdjoiningBombCount(TILE_STATE_SIZE),
@@ -183,6 +187,7 @@ void Minesweeper::Draw()
 	if (isGameOver)
 	{
 		btnRestart.Draw();
+		txtLose.Draw();
 	}
 }
 
