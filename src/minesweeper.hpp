@@ -2,6 +2,7 @@
 
 #include "base_game.hpp"
 #include "board.hpp"
+#include "ui.hpp"
 
 #include <SFML\Graphics.hpp>
 #include <random>
@@ -26,6 +27,9 @@ private:
 	void PlaceBombToTiles(const int& clickedTileIndex);
 	void SetTilesAdjoiningBombCount();
 	void AutoOpenTile();
+	void TriggerGameOver();
+	void TriggerRestart();
+	bool IsAllEmptyTileOpen();
 	int GetHoveredTileIndex();
 
 private:
@@ -33,6 +37,7 @@ private:
 	static constexpr int GRID_WIDTH = 12;
 	static constexpr int GRID_HEIGHT = 12;
 	static constexpr int TILE_STATE_SIZE = GRID_WIDTH * GRID_HEIGHT;
+	int clickedBombIndex = -1;
 	const float X_OFFSET;
 	const float Y_OFFSET;
 	bool isGameOver = false;
@@ -40,6 +45,9 @@ private:
 
 	sf::RenderWindow& window;
 	Board board;
+	UI::Button btnRestart;
+	UI::Text txtEndGame;
+
 	std::vector<State> tileState;
 	std::vector<bool> bombLoc;
 	std::vector<int> tileAdjoiningBombCount;

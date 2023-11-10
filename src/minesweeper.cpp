@@ -18,11 +18,23 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 		sf::Vector2i(64, 0),
 		ASSETS::MINESWEEPER_TILE_SIZE
 	),
+	btnRestart(
+		STR_CONST::RESTART_GAME, 20,
+		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2 + 210),
+		UI::Padding(14.0f, 8.0f),
+		sf::Color::White, sf::Color::Black,
+		sf::Color::Black, sf::Color::White,
+		1, sf::Color::White, sf::Color::White,
+		window),
+	txtEndGame(STR_CONST::YOU_LOSE, 24, sf::Color::White, sf::Vector2f(
+		window.getSize().x / 2,
+		window.getSize().y / 2 - 210
+	), window),
 	tileState(TILE_STATE_SIZE),
 	bombLoc(TILE_STATE_SIZE),
 	tileAdjoiningBombCount(TILE_STATE_SIZE),
 	gen(rd()),
-	dist(0, 3)	// max set to 3 is to generate more true value instead of false
+	dist(0, 4)	// max set to 4 is to generate more true value instead of false
 {
 	SetAllStateDefault();
 }
@@ -48,6 +60,9 @@ void Minesweeper::Update(sf::Event& event)
 				{
 					tileState[GetHoveredTileIndex()] = State::Opened;
 				}
+
+				// set game over when clicked tile have bomb
+				TriggerGameOver();
 			}
 			else if (event.mouseButton.button == sf::Mouse::Right)
 			{
@@ -77,6 +92,16 @@ void Minesweeper::Update(sf::Event& event)
 			AutoOpenTile();
 		}
 	}
+	else
+	{
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left && btnRestart.IsTriggerable())
+			{
+				TriggerRestart();
+			}
+		}
+	}
 }
 
 void Minesweeper::Draw()
@@ -96,7 +121,14 @@ void Minesweeper::Draw()
 			case State::Opened:
 				if (bombLoc[board.GetTileIndex({ x, y })])
 				{
-					tileSprite = ASSETS::MS_SPRITE_POS::BOMB_EXPLODE;
+					if (board.GetTileIndex({ x, y }) == clickedBombIndex)
+					{
+						tileSprite = ASSETS::MS_SPRITE_POS::BOMB_EXPLODE;
+					}
+					else
+					{
+						tileSprite = ASSETS::MS_SPRITE_POS::BOMB_HIDDEN;
+					}
 				}
 				else
 				{
@@ -150,6 +182,12 @@ void Minesweeper::Draw()
 			board.SetTileColor({ x, y }, sf::Color::White);
 			board.DrawTile({ x, y });
 		}
+	}
+
+	if (isGameOver)
+	{
+		btnRestart.Draw();
+		txtEndGame.Draw();
 	}
 }
 
@@ -379,6 +417,59 @@ void Minesweeper::AutoOpenTile()
 			}
 		}
 	}
+}
+
+void Minesweeper::TriggerGameOver()
+{
+	if (bombLoc[GetHoveredTileIndex()])
+	{
+		isGameOver = true;
+		clickedBombIndex = GetHoveredTileIndex();
+		txtEndGame.SetString(STR_CONST::YOU_LOSE);
+
+		// set tile to open if it has bomb
+		for (int i = 0; i < TILE_STATE_SIZE; i++)
+		{
+			if (bombLoc[i])
+			{
+				tileState[i] = State::Opened;
+			}
+		}
+	}
+	else if (IsAllEmptyTileOpen())
+	{
+		isGameOver = true;
+		txtEndGame.SetString(STR_CONST::YOU_WIN);
+	}
+}
+
+void Minesweeper::TriggerRestart()
+{
+	isGameOver = false;
+	isBombPlaced = false;
+	clickedBombIndex = -1;
+	
+	// set all tile state to hidden
+	SetAllStateDefault();
+
+	// set all bombLoc to false
+	std::fill(bombLoc.begin(), bombLoc.end(), false);
+
+	// set all tile adjoining bomb count to 0
+	std::fill(tileAdjoiningBombCount.begin(), tileAdjoiningBombCount.end(), 0);
+}
+
+bool Minesweeper::IsAllEmptyTileOpen()
+{
+	for (int i = 0; i < TILE_STATE_SIZE; i++)
+	{
+		if (!bombLoc[i] && tileState[i] == State::Hidden)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 int Minesweeper::GetHoveredTileIndex()
