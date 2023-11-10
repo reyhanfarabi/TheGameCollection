@@ -1,6 +1,8 @@
 #include "minesweeper.hpp"
 #include "constants.hpp"
 
+#include <set>
+
 Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	:
 	window(wnd),
@@ -161,12 +163,27 @@ void Minesweeper::SetAllStateDefault()
 
 void Minesweeper::PlaceBombToTiles(const int& clickedTileIndex)
 {
+	std::set<int> adjoiningIndex;
+	adjoiningIndex.insert(clickedTileIndex - GRID_WIDTH);		// top
+	adjoiningIndex.insert(clickedTileIndex + GRID_WIDTH);		// bottom
+	adjoiningIndex.insert(clickedTileIndex + 1);				// right
+	adjoiningIndex.insert(clickedTileIndex + 1 - GRID_WIDTH);	// top right
+	adjoiningIndex.insert(clickedTileIndex + 1 + GRID_WIDTH);	// bottom right
+	adjoiningIndex.insert(clickedTileIndex - 1);				// left
+	adjoiningIndex.insert(clickedTileIndex - 1 - GRID_WIDTH);	// top left
+	adjoiningIndex.insert(clickedTileIndex - 1 + GRID_WIDTH);	// bottom left
+
 	for (int i = 0; i < TILE_STATE_SIZE; i++)
 	{
-		if (i != clickedTileIndex)
+		// place bomb outside one tile range base on clicked index
+		if (adjoiningIndex.find(i) == adjoiningIndex.end())
 		{
 			// random number is negated to get lower amount of bomb
 			bombLoc[i] = !dist(gen);
+		}
+		else
+		{
+			bombLoc[i] = false;
 		}
 	}
 }
