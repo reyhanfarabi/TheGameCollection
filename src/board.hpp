@@ -1,9 +1,18 @@
 #pragma once
 
+#include "ui.hpp"
+
 #include <SFML\Graphics.hpp>
 
 class Board
 {
+public:
+	enum class TileType
+	{
+		Empty,
+		Sprite
+	};
+
 public:
 	Board(
 		int tileSize,
@@ -11,11 +20,25 @@ public:
 		int gridHeight,
 		float xOffset,
 		float yOffset,
-		sf::RenderWindow& wnd
+		sf::RenderWindow& wnd,
+		TileType type
+	);
+	Board(
+		int tileSize,
+		int gridWidth,
+		int gridHeight,
+		float xOffset,
+		float yOffset,
+		sf::RenderWindow& wnd,
+		TileType type,
+		std::string spriteFile,
+		sf::Vector2i spritePosition,
+		sf::Vector2i spriteSize
 	);
 	void DrawTile(const sf::Vector2i& tilePos);
 
 	void SetTileColor(const sf::Vector2i& tilePos, const sf::Color color);
+	void SetTileTextureRect(const sf::Vector2i& tilePos, const sf::IntRect& textureRect);
 	int GetTileIndex(const sf::Vector2i& tilePos);
 	sf::Vector2i GetHoveredTilePos();
 
@@ -30,7 +53,10 @@ private:
 	const int GRID_HEIGHT;
 	const float X_OFFSET;
 	const float Y_OFFSET;
+	TileType tileType;
 
 	sf::RenderWindow& window;
 	std::vector<sf::RectangleShape> tiles;
+
+	sf::Texture texture;
 };
