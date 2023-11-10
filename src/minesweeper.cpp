@@ -18,6 +18,14 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 		sf::Vector2i(64, 0),
 		ASSETS::MINESWEEPER_TILE_SIZE
 	),
+	btnRestart(
+		STR_CONST::RESTART_GAME, 20,
+		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2 + 210),
+		UI::Padding(14.0f, 8.0f),
+		sf::Color::White, sf::Color::Black,
+		sf::Color::Black, sf::Color::White,
+		1, sf::Color::White, sf::Color::White,
+		window),
 	tileState(TILE_STATE_SIZE),
 	bombLoc(TILE_STATE_SIZE),
 	tileAdjoiningBombCount(TILE_STATE_SIZE),
@@ -78,6 +86,16 @@ void Minesweeper::Update(sf::Event& event)
 		if (isBombPlaced)
 		{
 			AutoOpenTile();
+		}
+	}
+	else
+	{
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left && btnRestart.IsTriggerable())
+			{
+				TriggerRestart();
+			}
 		}
 	}
 }
@@ -160,6 +178,11 @@ void Minesweeper::Draw()
 			board.SetTileColor({ x, y }, sf::Color::White);
 			board.DrawTile({ x, y });
 		}
+	}
+
+	if (isGameOver)
+	{
+		btnRestart.Draw();
 	}
 }
 
@@ -407,6 +430,22 @@ void Minesweeper::TriggerGameOver()
 			}
 		}
 	}
+}
+
+void Minesweeper::TriggerRestart()
+{
+	isGameOver = false;
+	isBombPlaced = false;
+	clickedBombIndex = -1;
+	
+	// set all tile state to hidden
+	SetAllStateDefault();
+
+	// set all bombLoc to false
+	std::fill(bombLoc.begin(), bombLoc.end(), false);
+
+	// set all tile adjoining bomb count to 0
+	std::fill(tileAdjoiningBombCount.begin(), tileAdjoiningBombCount.end(), 0);
 }
 
 int Minesweeper::GetHoveredTileIndex()

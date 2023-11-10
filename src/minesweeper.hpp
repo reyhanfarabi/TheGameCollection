@@ -2,6 +2,7 @@
 
 #include "base_game.hpp"
 #include "board.hpp"
+#include "ui.hpp"
 
 #include <SFML\Graphics.hpp>
 #include <random>
@@ -27,6 +28,7 @@ private:
 	void SetTilesAdjoiningBombCount();
 	void AutoOpenTile();
 	void TriggerGameOver();
+	void TriggerRestart();
 	int GetHoveredTileIndex();
 
 private:
@@ -42,6 +44,8 @@ private:
 
 	sf::RenderWindow& window;
 	Board board;
+	UI::Button btnRestart;
+
 	std::vector<State> tileState;
 	std::vector<bool> bombLoc;
 	std::vector<int> tileAdjoiningBombCount;
