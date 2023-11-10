@@ -29,6 +29,7 @@ private:
 	void AutoOpenTile();
 	void TriggerGameOver();
 	void TriggerRestart();
+	bool IsAllEmptyTileOpen();
 	int GetHoveredTileIndex();
 
 private:
@@ -45,7 +46,7 @@ private:
 	sf::RenderWindow& window;
 	Board board;
 	UI::Button btnRestart;
-	UI::Text txtLose;
+	UI::Text txtEndGame;
 
 	std::vector<State> tileState;
 	std::vector<bool> bombLoc;
