@@ -30,6 +30,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		window.getSize().y / 2
 	), window),
 	txtScore(score.GetFormattedScore(), 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
+	txtTitle("TIC-TAC-TOE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	btnRestart(
 		STR_CONST::RESTART_GAME, 20,
 		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2),
@@ -40,6 +41,14 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		window)
 {
 	ResetTileState();
+
+	// set position to text title
+	txtTitle.SetPosition(sf::Vector2f(
+		// subtract 10 for spacing
+		txtTitle.GetSize().x / 2 + 10,
+		// add 10 for spacing
+		txtTitle.GetSize().y / 2 + 10
+	));
 }
 
 void TicTacToe::Update(sf::Event& event)
@@ -102,6 +111,7 @@ void TicTacToe::Update(sf::Event& event)
 void TicTacToe::Draw()
 {
 	DrawScores();
+	txtTitle.Draw();
 
 	if (!isGameOver)
 	{

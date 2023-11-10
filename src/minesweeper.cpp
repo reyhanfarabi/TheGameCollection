@@ -30,6 +30,7 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 		window.getSize().x / 2,
 		window.getSize().y / 2 - 210
 	), window),
+	txtTitle("MINESWEEPER", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	tileState(TILE_STATE_SIZE),
 	bombLoc(TILE_STATE_SIZE),
 	tileAdjoiningBombCount(TILE_STATE_SIZE),
@@ -37,6 +38,14 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	dist(0, 4)	// max set to 4 is to generate more true value instead of false
 {
 	SetAllStateDefault();
+
+	// set position to text title
+	txtTitle.SetPosition(sf::Vector2f(
+		// subtract 10 for spacing
+		txtTitle.GetSize().x / 2 + 10,
+		// add 10 for spacing
+		txtTitle.GetSize().y / 2 + 10
+	));
 }
 
 void Minesweeper::Update(sf::Event& event)
@@ -106,6 +115,8 @@ void Minesweeper::Update(sf::Event& event)
 
 void Minesweeper::Draw()
 {
+	txtTitle.Draw();
+
 	for (int y = 0; y < GRID_HEIGHT; y++)
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
