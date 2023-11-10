@@ -69,6 +69,11 @@ void Minesweeper::Update(sf::Event& event)
 				}
 			}
 		}
+
+		if (isBombPlaced)
+		{
+			AutoOpenTile();
+		}
 	}
 }
 
@@ -234,6 +239,119 @@ void Minesweeper::SetTilesAdjoiningBombCount()
 			}
 
 			tileAdjoiningBombCount[tileIndex] = count;
+		}
+	}
+}
+
+void Minesweeper::AutoOpenTile()
+{
+	// auto open tile when adjoining bomb count is 0 and state is hidden
+	for (int y = 0; y < GRID_HEIGHT; y++)
+	{
+		for (int x = 0; x < GRID_WIDTH; x++)
+		{
+			int tileIndex = board.GetTileIndex({ x, y });
+
+			// tile bound
+			int rightBound = (GRID_WIDTH - 1) + (GRID_HEIGHT * y);
+			int leftBound = GRID_HEIGHT * y;
+			int topBound = x - GRID_WIDTH;
+			int bottomBound = x + GRID_WIDTH * GRID_HEIGHT;
+
+			if (tileState[tileIndex] == State::Hidden)
+			{
+				// check tile right bound
+				if (tileIndex + 1 <= rightBound)
+				{
+					// open tile if right adjoining tile bomb count is 0 and state is hidden
+					if (
+						tileAdjoiningBombCount[tileIndex + 1] == 0 &&
+						tileState[tileIndex + 1] == State::Opened)
+					{
+						tileState[tileIndex] = State::Opened;
+					}
+
+					if (tileIndex - GRID_WIDTH > topBound)
+					{
+						// open tile if top right adjoining tile bomb count is 0 and state is hidden
+						if (
+							tileAdjoiningBombCount[tileIndex + 1 - GRID_WIDTH] == 0 &&
+							tileState[tileIndex + 1 - GRID_WIDTH] == State::Opened)
+						{
+							tileState[tileIndex] = State::Opened;
+						}
+					}
+
+					if (tileIndex + GRID_WIDTH < bottomBound)
+					{
+						// open tile if bottom right adjoining tile bomb count is 0 and state is hidden
+						if (
+							tileAdjoiningBombCount[tileIndex + 1 + GRID_WIDTH] == 0 &&
+							tileState[tileIndex + 1 + GRID_WIDTH] == State::Opened)
+						{
+							tileState[tileIndex] = State::Opened;
+						}
+					}
+				}
+
+				// check tile left bound
+				if (tileIndex - 1 >= leftBound)
+				{
+					// open tile if left adjoining tile bomb count is 0 and state is hidden
+					if (
+						tileAdjoiningBombCount[tileIndex - 1] == 0 &&
+						tileState[tileIndex - 1] == State::Opened)
+					{
+						tileState[tileIndex] = State::Opened;
+					}
+
+					if (tileIndex - GRID_WIDTH > topBound)
+					{
+						// open tile if top left adjoining tile bomb count is 0 and state is hidden
+						if (
+							tileAdjoiningBombCount[tileIndex - 1 - GRID_WIDTH] == 0 &&
+							tileState[tileIndex - 1 - GRID_WIDTH] == State::Opened)
+						{
+							tileState[tileIndex] = State::Opened;
+						}
+					}
+
+					if (tileIndex + GRID_WIDTH < bottomBound)
+					{
+						// open tile if bottom left adjoining tile bomb count is 0 and state is hidden
+						if (
+							tileAdjoiningBombCount[tileIndex - 1 + GRID_WIDTH] == 0 &&
+							tileState[tileIndex - 1 + GRID_WIDTH] == State::Opened)
+						{
+							tileState[tileIndex] = State::Opened;
+						}
+					}
+				}
+
+				// check tile top bound
+				if (tileIndex - GRID_WIDTH > topBound)
+				{
+					// open tile if top adjoining tile bomb count is 0 and state is hidden
+					if (
+						tileAdjoiningBombCount[tileIndex - GRID_WIDTH] == 0 &&
+						tileState[tileIndex - GRID_WIDTH] == State::Opened)
+					{
+						tileState[tileIndex] = State::Opened;
+					}
+				}
+
+				// check tile bottom bound
+				if (tileIndex + GRID_WIDTH < bottomBound)
+				{
+					// open tile if bottom adjoining tile bomb count is 0 and state is hidden
+					if (
+						tileAdjoiningBombCount[tileIndex + GRID_WIDTH] == 0 &&
+						tileState[tileIndex + GRID_WIDTH] == State::Opened)
+					{
+						tileState[tileIndex] = State::Opened;
+					}
+				}
+			}
 		}
 	}
 }

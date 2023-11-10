@@ -25,6 +25,7 @@ private:
 	void SetAllStateDefault();
 	void PlaceBombToTiles(const int& clickedTileIndex);
 	void SetTilesAdjoiningBombCount();
+	void AutoOpenTile();
 	int GetHoveredTileIndex();
 
 private:
