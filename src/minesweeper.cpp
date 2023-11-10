@@ -34,7 +34,7 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	bombLoc(TILE_STATE_SIZE),
 	tileAdjoiningBombCount(TILE_STATE_SIZE),
 	gen(rd()),
-	dist(0, 3)	// max set to 3 is to generate more true value instead of false
+	dist(0, 4)	// max set to 4 is to generate more true value instead of false
 {
 	SetAllStateDefault();
 }
