@@ -23,6 +23,5 @@ private:
 
 	static constexpr int WINDOW_WIDTH = 800;
 	static constexpr int WINDOW_HEIGHT = 600;
-	const std::string WINDOW_NAME = "SFML App";
 	float dt = 0.0f;
 };

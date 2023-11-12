@@ -98,6 +98,7 @@ namespace UI
 		void SetButtonPosition(const sf::Vector2f& position);
 		bool IsMouseInsideButton();
 		bool IsTriggerable();
+		sf::Vector2f GetButtonSize();
 
 	private:
 		// set position base on center componentn instead of top left
