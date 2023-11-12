@@ -8,7 +8,7 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 		200
 	), window),
 	chooseGame("Choose Game to Play", 18, sf::Color::White, sf::Vector2f(), window),
-	buildVersion("v1.1.0", 18, sf::Color::White, sf::Vector2f(), window),
+	buildVersion("", 18, sf::Color::White, sf::Vector2f(), window),
 	btnMainMenu(
 		"Esc | Main Menu", 16,
 		sf::Vector2f(),
