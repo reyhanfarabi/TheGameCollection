@@ -12,6 +12,7 @@ class MainMenu
 {
 public:
 	MainMenu(sf::RenderWindow& wnd);
+	void InitBackground();
 	void Update(sf::Event& event);
 	void Draw();
 	void DrawTitle();
@@ -43,4 +44,7 @@ private:
 	std::vector<UI::Button> gameTitlesButtons;
 	const sf::Vector2f BTN_CHOOSE_SIZE = { 140.0f, 50.0f };
 
+	sf::VertexArray gradOverlay;
+	sf::RectangleShape bgRect;
+	sf::Texture bgImages[ASSETS::MAINMENU_BACKGROUND_SIZE];
 };

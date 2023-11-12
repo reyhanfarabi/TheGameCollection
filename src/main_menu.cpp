@@ -1,5 +1,7 @@
 #include "main_menu.hpp"
 
+#include <iostream>
+
 MainMenu::MainMenu(sf::RenderWindow& wnd)
 	:
 	window(wnd),
@@ -16,9 +18,13 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 		sf::Color::White, sf::Color::Black,
 		sf::Color::Black, sf::Color::White,
 		1, sf::Color::White, sf::Color::White,
-		window)
+		window),
+	gradOverlay(sf::Quads, 4)
 {
 	gameTitlesButtons.reserve(gameTitles.size());
+
+	// init main menu background
+	InitBackground();
 
 	// set btnMainMenu position
 	btnMainMenu.SetButtonPosition(sf::Vector2f(
@@ -52,8 +58,49 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 	}
 }
 
+void MainMenu::InitBackground()
+{
+	// load all background image texture
+	for (int i = 0; i < ASSETS::MAINMENU_BACKGROUND_SIZE; i++)
+	{
+		if (!bgImages[i].loadFromFile(ASSETS::MAINMENU_BACKGROUND[i]))
+		{
+			std::cout << "failed to load texture";
+		}
+		else
+		{
+			bgImages[i].setSmooth(true);
+		}
+	}
+
+	// init game image rect container
+	bgRect.setSize(sf::Vector2f(window.getSize().y, window.getSize().y));
+	bgRect.setFillColor(sf::Color::White);
+	bgRect.setPosition(window.getSize().x - bgRect.getSize().x, 0);
+	bgRect.setTexture(&bgImages[1]);
+
+	// init gradient overlay
+	gradOverlay[0].position = sf::Vector2f(window.getSize().x - bgRect.getSize().x, 0);
+	gradOverlay[0].color = sf::Color::Black;
+	gradOverlay[1].position = sf::Vector2f(window.getSize().x - bgRect.getSize().x, window.getSize().y);
+	gradOverlay[1].color = sf::Color::Black;
+	gradOverlay[2].position = sf::Vector2f(window.getSize().x, window.getSize().y);
+	gradOverlay[2].color = sf::Color(0, 0, 0, 100);
+	gradOverlay[3].position = sf::Vector2f(window.getSize().x, 0);
+	gradOverlay[3].color = sf::Color(0, 0, 0, 100);
+}
+
 void MainMenu::Update(sf::Event& event)
 {
+	// change background image base on last hovered game button
+	for (int i = 0; i < gameTitlesButtons.size(); i++)
+	{
+		if (gameTitlesButtons[i].IsTriggerable())
+		{
+			bgRect.setTexture(&bgImages[i], true);
+		}
+	}
+
 	if (currentGameState == GameState::NoGame)
 	{
 		for (int i = 0; i < gameTitlesButtons.size(); i++)
@@ -103,6 +150,8 @@ void MainMenu::Draw()
 	switch (currentGameState)
 	{
 	case GameState::NoGame:
+		window.draw(bgRect);
+		window.draw(gradOverlay);
 		DrawTitle();
 		DrawChooseMenu();
 		buildVersion.Draw();
