@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <fstream>
 
 class MainMenu
 {
@@ -16,6 +17,7 @@ public:
 	void Draw();
 	void DrawTitle();
 	void DrawChooseMenu();
+	void SetGameBuildNumber();
 
 private:
 	enum class GameState
@@ -33,6 +35,7 @@ private:
 	sf::RenderWindow& window;
 	UI::Text title;
 	UI::Text chooseGame;
+	UI::Text buildVersion;
 	UI::Button btnMainMenu;
 
 	GameState currentGameState = GameState::NoGame;

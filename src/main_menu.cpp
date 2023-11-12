@@ -8,6 +8,7 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 		200
 	), window),
 	chooseGame("Choose Game to Play", 18, sf::Color::White, sf::Vector2f(), window),
+	buildVersion("v1.1.0", 18, sf::Color::White, sf::Vector2f(), window),
 	btnMainMenu(
 		"Esc | Main Menu", 16,
 		sf::Vector2f(),
@@ -24,6 +25,15 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 		// both subtract by 10 for spacing
 		window.getSize().x - btnMainMenu.GetButtonSize().x / 2 - 10,
 		window.getSize().y - btnMainMenu.GetButtonSize().y / 2 - 10
+	));
+
+	// set build number
+	SetGameBuildNumber();
+
+	// set build version text position
+	buildVersion.SetPosition(sf::Vector2f(
+		buildVersion.GetSize().x / 2 + 10,
+		window.getSize().y - buildVersion.GetSize().y / 2 - 15
 	));
 
 	for (int i = 0; i < gameTitles.size(); i++)
@@ -98,6 +108,7 @@ void MainMenu::Draw()
 	case GameState::NoGame:
 		DrawTitle();
 		DrawChooseMenu();
+		buildVersion.Draw();
 		break;
 	case GameState::Tictactoe:
 	case GameState::Minesweeper:
@@ -128,6 +139,19 @@ void MainMenu::DrawChooseMenu()
 	{
 		gameTitlesButtons[i].Draw();
 	}
+}
+
+void MainMenu::SetGameBuildNumber()
+{
+	std::string buildNumber;
+	std::ifstream ReadFile("buildnumber.txt");
+
+	while (std::getline(ReadFile, buildNumber))
+	{
+		buildVersion.SetString("v" + buildNumber);
+	}
+
+	ReadFile.close();
 }
 
 void MainMenu::GoBackToMainMenu()
