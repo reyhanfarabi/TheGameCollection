@@ -40,9 +40,9 @@ private:
 	GameState currentGameState = GameState::NoGame;
 	std::vector<std::unique_ptr<BaseGame>> currentGame;
 	
-	std::vector<std::string> gameTitles = { "Tic-tac-toe", "Minesweeper"};
+	std::vector<std::string> gameTitles = { "TIC-TAC-TOE", "MINESWEEPER"};
 	std::vector<UI::Button> gameTitlesButtons;
-	const sf::Vector2f BTN_CHOOSE_SIZE = { 140.0f, 50.0f };
+	const sf::Vector2f BTN_CHOOSE_SIZE = { 175.0f, 50.0f };
 
 	sf::VertexArray gradOverlay;
 	sf::RectangleShape bgRect;

@@ -5,10 +5,7 @@
 MainMenu::MainMenu(sf::RenderWindow& wnd)
 	:
 	window(wnd),
-	title("The Game Collection", 36, sf::Color::White, sf::Vector2f(
-		window.getSize().x / 2,
-		200
-	), window),
+	title("The Game Collection", 40, sf::Color::White, sf::Vector2f(), window),
 	chooseGame("Choose Game to Play", 18, sf::Color::White, sf::Vector2f(), window),
 	buildVersion("v" + BUILD_NUMBER, 18, sf::Color::White, sf::Vector2f(), window),
 	btnMainMenu(
@@ -25,6 +22,18 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 
 	// init main menu background
 	InitBackground();
+
+	// set title position
+	title.SetPosition(sf::Vector2f(
+		title.GetSize().x / 2 + 50,
+		100
+	));
+
+	// set choose game text position
+	chooseGame.SetPosition(sf::Vector2f(
+		chooseGame.GetSize().x / 2 + 50,
+		window.getSize().y / 2 - 15
+	));
 
 	// set btnMainMenu position
 	btnMainMenu.SetButtonPosition(sf::Vector2f(
@@ -44,9 +53,8 @@ MainMenu::MainMenu(sf::RenderWindow& wnd)
 		gameTitlesButtons.emplace_back(
 			gameTitles[i], 20,
 			sf::Vector2f(
-				window.getSize().x / 2 + (BTN_CHOOSE_SIZE.x * i) - (BTN_CHOOSE_SIZE.x / 2),
-				// add 50 for spacing on y-axis
-				window.getSize().y / 2 + 50
+				(BTN_CHOOSE_SIZE.x * i) + (BTN_CHOOSE_SIZE.x / 2) + 50,
+				window.getSize().y / 2 + 35
 			),
 			BTN_CHOOSE_SIZE,
 			UI::Padding(0.0f, 0.0f),
@@ -175,10 +183,6 @@ void MainMenu::DrawTitle()
 
 void MainMenu::DrawChooseMenu()
 {
-	chooseGame.SetPosition(sf::Vector2f(
-		window.getSize().x / 2,
-		window.getSize().y / 2
-	));
 	chooseGame.Draw();
 
 	for (int i = 0; i < gameTitlesButtons.size(); i++)
