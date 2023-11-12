@@ -7,7 +7,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <fstream>
 
 class MainMenu
 {
@@ -17,7 +16,6 @@ public:
 	void Draw();
 	void DrawTitle();
 	void DrawChooseMenu();
-	void SetGameBuildNumber();
 
 private:
 	enum class GameState

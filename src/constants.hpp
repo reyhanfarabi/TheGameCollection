@@ -2,6 +2,8 @@
 
 #include <string>
 
+static const std::string BUILD_NUMBER = "1.1.1";
+
 namespace STR_CONST
 {
 	const std::string YOUR_TURN = "YOUR TURN";
