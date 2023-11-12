@@ -17,6 +17,15 @@ namespace STR_CONST
 namespace ASSETS
 {
 	//
+	// Main Menu Assets
+	//
+	const int MAINMENU_BACKGROUND_SIZE = 2;
+	const std::string MAINMENU_BACKGROUND[MAINMENU_BACKGROUND_SIZE] = {
+		"assets/pics/tictactoe.png",
+		"assets/pics/minesweeper.png"
+	};
+
+	//
 	// Minesweeper Assets
 	//
 	const std::string MINESWEEPER_SPRITES = "assets/sprites/minesweeper-tiles-64x64.png";
