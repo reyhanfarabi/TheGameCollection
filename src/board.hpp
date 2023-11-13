@@ -18,6 +18,7 @@ public:
 		int tileSize,
 		int gridWidth,
 		int gridHeight,
+		int outlineThickness,
 		float xOffset,
 		float yOffset,
 		sf::RenderWindow& wnd,
@@ -26,6 +27,7 @@ public:
 	Board(
 		int tileSize,
 		int gridWidth,
+		int outlineThickness,
 		int gridHeight,
 		float xOffset,
 		float yOffset,

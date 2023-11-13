@@ -6,6 +6,7 @@ Board::Board(
 	int tileSize, 
 	int gridWidth,
 	int gridHeight,
+	int outlineThickness,
 	float xOffset,
 	float yOffset,
 	sf::RenderWindow& window,
@@ -32,7 +33,7 @@ Board::Board(
 			);
 
 			GetTile({ x, y }).setFillColor(sf::Color::Black);
-			GetTile({ x, y }).setOutlineThickness(1);
+			GetTile({ x, y }).setOutlineThickness(outlineThickness);
 			GetTile({ x, y }).setOutlineColor(sf::Color::White);
 		}
 	}
@@ -42,6 +43,7 @@ Board::Board(
 	int tileSize,
 	int gridWidth,
 	int gridHeight,
+	int outlineThickness,
 	float xOffset,
 	float yOffset,
 	sf::RenderWindow& wnd,
@@ -53,6 +55,7 @@ Board::Board(
 	Board(
 		tileSize,
 		gridWidth, gridHeight,
+		outlineThickness,
 		xOffset, yOffset,
 		wnd, type
 	)
@@ -71,7 +74,7 @@ Board::Board(
 			{
 				// set tile texture properties
 				GetTile({ x, y }).setFillColor(sf::Color::White);
-				GetTile({ x, y }).setOutlineThickness(0);
+				GetTile({ x, y }).setOutlineThickness(outlineThickness);
 				GetTile({ x, y }).setTexture(&texture, true);
 				GetTile({ x, y }).setTextureRect(sf::IntRect(
 					spritePosition,
