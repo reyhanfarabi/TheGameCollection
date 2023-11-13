@@ -4,6 +4,7 @@
 #include "base_game.hpp"
 #include "tictactoe.hpp"
 #include "minesweeper.hpp"
+#include "snake.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -23,6 +24,7 @@ private:
 	{
 		Tictactoe,
 		Minesweeper,
+		Snake,
 		NoGame
 	};
 
@@ -40,7 +42,11 @@ private:
 	GameState currentGameState = GameState::NoGame;
 	std::vector<std::unique_ptr<BaseGame>> currentGame;
 	
-	std::vector<std::string> gameTitles = { "TIC-TAC-TOE", "MINESWEEPER"};
+	std::vector<std::string> gameTitles = {
+		"TIC-TAC-TOE",
+		"MINESWEEPER",
+		"SNAKE"
+	};
 	std::vector<UI::Button> gameTitlesButtons;
 	const sf::Vector2f BTN_CHOOSE_SIZE = { 175.0f, 50.0f };
 
