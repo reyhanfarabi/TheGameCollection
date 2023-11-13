@@ -11,6 +11,7 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	board(
 		TILE_SIZE,
 		GRID_WIDTH, GRID_HEIGHT,
+		0,
 		X_OFFSET, Y_OFFSET,
 		window,
 		Board::TileType::Sprite,

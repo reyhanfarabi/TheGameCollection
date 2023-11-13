@@ -24,6 +24,7 @@
     <ClCompile Include="src\main_menu.cpp" />
     <ClCompile Include="src\minesweeper.cpp" />
     <ClCompile Include="src\sfml_window.cpp" />
+    <ClCompile Include="src\snake.cpp" />
     <ClCompile Include="src\tictactoe.cpp" />
     <ClCompile Include="src\ui.cpp" />
   </ItemGroup>
@@ -34,6 +35,7 @@
     <ClInclude Include="src\minesweeper.hpp" />
     <ClInclude Include="src\sfml_window.hpp" />
     <ClInclude Include="src\constants.hpp" />
+    <ClInclude Include="src\snake.hpp" />
     <ClInclude Include="src\tictactoe.hpp" />
     <ClInclude Include="src\ui.hpp" />
   </ItemGroup>

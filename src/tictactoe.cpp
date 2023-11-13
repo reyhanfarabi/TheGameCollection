@@ -9,6 +9,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		TILE_SIZE,
 		GRID_WIDTH,
 		GRID_HEIGHT,
+		1,
 		X_OFFSET,
 		Y_OFFSET,
 		window,

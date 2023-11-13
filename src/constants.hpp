@@ -19,10 +19,11 @@ namespace ASSETS
 	//
 	// Main Menu Assets
 	//
-	const int MAINMENU_BACKGROUND_SIZE = 2;
+	const int MAINMENU_BACKGROUND_SIZE = 3;
 	const std::string MAINMENU_BACKGROUND[MAINMENU_BACKGROUND_SIZE] = {
 		"assets/pics/tictactoe.png",
-		"assets/pics/minesweeper.png"
+		"assets/pics/minesweeper.png",
+		"assets/pics/snake.png"
 	};
 
 	//
