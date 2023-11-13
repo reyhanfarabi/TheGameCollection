@@ -5,7 +5,7 @@
 class BaseGame
 {
 public:
-	virtual void Update(sf::Event& event) = 0;
+	virtual void Update(sf::Event& event, float& dt) = 0;
 	virtual void Draw() = 0;
 	virtual ~BaseGame() = default;
 };

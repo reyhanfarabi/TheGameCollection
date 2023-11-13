@@ -49,7 +49,7 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	));
 }
 
-void Minesweeper::Update(sf::Event& event)
+void Minesweeper::Update(sf::Event& event, float& dt)
 {
 	if (!isGameOver)
 	{

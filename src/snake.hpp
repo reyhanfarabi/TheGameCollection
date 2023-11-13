@@ -11,11 +11,20 @@ class Snake : public BaseGame
 {
 public:
 	Snake(sf::RenderWindow& wnd);
-	void Update(sf::Event& event) override;
+	void Update(sf::Event& event, float& dt) override;
 	void Draw() override;
 
 private:
+	enum class State
+	{
+		Head,
+		Body,
+		Empty
+	};
+
+private:
 	void InitRectPlayArea();
+	int GetTileIndex(sf::Vector2i loc);
 
 private:
 	static constexpr int TILE_SIZE = 20;
@@ -29,4 +38,14 @@ private:
 	Board board;
 	sf::RectangleShape rectPlayArea;
 	UI::Text txtTitle;
+
+	float movePeriod = 0.4f;
+	float moveCounter = 0.0f;
+	const sf::Vector2i UP = sf::Vector2i(0, -1);
+	const sf::Vector2i DOWN = sf::Vector2i(0, 1);
+	const sf::Vector2i RIGHT = sf::Vector2i(1, 0);
+	const sf::Vector2i LEFT = sf::Vector2i(-1, 0);
+	sf::Vector2i currDirection = RIGHT;
+	std::vector<sf::Vector2i> snakeBodyLoc;
+	std::vector<State> tileState;
 };

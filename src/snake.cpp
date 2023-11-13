@@ -13,7 +13,8 @@ Snake::Snake(sf::RenderWindow& wnd)
 		window,
 		Board::TileType::Empty
 	),
-	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window)
+	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
+	tileState(TILE_STATE_SIZE)
 {
 	// disable board tile hover
 	board.SetEnableTileHover(false);
@@ -28,10 +29,52 @@ Snake::Snake(sf::RenderWindow& wnd)
 
 	// init play area rect
 	InitRectPlayArea();
+
+	// init tile state
+	for (int i = 0; i < TILE_STATE_SIZE; i++)
+	{
+		tileState[i] = State::Empty;
+	}
+
+	// set snake head location
+	snakeBodyLoc.emplace_back(sf::Vector2i(3, 8));
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
 }
 
-void Snake::Update(sf::Event& event)
+void Snake::Update(sf::Event& event, float& dt)
 {
+	// keyboard event
+	if (event.type == sf::Event::KeyPressed)
+	{
+		// set move direction base on pressed key
+		switch (event.key.scancode)
+		{
+		case sf::Keyboard::Scan::Up:
+			if (currDirection != DOWN) { currDirection = UP; }
+			break;
+		case sf::Keyboard::Scan::Down:
+			if (currDirection != UP) { currDirection = DOWN; }
+			break;
+		case sf::Keyboard::Scan::Right:
+			if (currDirection != LEFT) { currDirection = RIGHT; }
+			break;
+		case sf::Keyboard::Scan::Left:
+			if (currDirection != RIGHT) { currDirection = LEFT; }
+			break;
+		}
+	}
+
+	// update tile state
+	std::fill(tileState.begin(), tileState.end(), State::Empty);
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;	
+
+	// update snake position
+	moveCounter += dt;
+	if (moveCounter >= movePeriod)
+	{
+		moveCounter = 0.0f;
+		snakeBodyLoc[0] += currDirection;
+	}
 }
 
 void Snake::Draw()
@@ -42,7 +85,20 @@ void Snake::Draw()
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			board.SetTileColor({ x, y }, sf::Color::Black);
+			switch (tileState[GetTileIndex(sf::Vector2i(x, y))])
+			{
+			case State::Head:
+				board.SetTileColor({ x, y }, sf::Color::White);
+				break;
+			case State::Body:
+				board.SetTileColor({ x, y }, sf::Color(255, 255, 255, 200));
+				break;
+			case State::Empty:
+			default:
+				board.SetTileColor({ x, y }, sf::Color::Black);
+				break;
+			}
+
 			board.DrawTile(sf::Vector2i(x, y));
 		}
 	}
@@ -61,4 +117,9 @@ void Snake::InitRectPlayArea()
 	rectPlayArea.setOutlineThickness(1);
 	rectPlayArea.setOutlineColor(sf::Color::White);
 	rectPlayArea.setFillColor(sf::Color::Transparent);
+}
+
+int Snake::GetTileIndex(sf::Vector2i loc)
+{
+	return board.GetTileIndex(loc);
 }
