@@ -13,7 +13,8 @@ Snake::Snake(sf::RenderWindow& wnd)
 		window,
 		Board::TileType::Empty
 	),
-	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window)
+	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
+	head(0, 10)
 {
 	// disable board tile hover
 	board.SetEnableTileHover(false);
@@ -32,6 +33,34 @@ Snake::Snake(sf::RenderWindow& wnd)
 
 void Snake::Update(sf::Event& event, float& dt)
 {
+	// keyboard event
+	if (event.type == sf::Event::KeyPressed)
+	{
+		// set move direction base on pressed key
+		switch (event.key.scancode)
+		{
+		case sf::Keyboard::Scan::Up:
+			if (currDirection != DOWN) { currDirection = UP; }
+			break;
+		case sf::Keyboard::Scan::Down:
+			if (currDirection != UP) { currDirection = DOWN; }
+			break;
+		case sf::Keyboard::Scan::Right:
+			if (currDirection != LEFT) { currDirection = RIGHT; }
+			break;
+		case sf::Keyboard::Scan::Left:
+			if (currDirection != RIGHT) { currDirection = LEFT; }
+			break;
+		}
+	}
+
+	// update snake position
+	moveCounter += dt;
+	if (moveCounter >= movePeriod)
+	{
+		moveCounter = 0.0f;
+		head += currDirection;
+	}
 }
 
 void Snake::Draw()
@@ -42,7 +71,14 @@ void Snake::Draw()
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			board.SetTileColor({ x, y }, sf::Color::Black);
+			if (sf::Vector2i(x, y) == head)
+			{
+				board.SetTileColor({ x, y }, sf::Color::White);
+			}
+			else
+			{
+				board.SetTileColor({ x, y }, sf::Color::Black);
+			}
 			board.DrawTile(sf::Vector2i(x, y));
 		}
 	}
