@@ -25,6 +25,9 @@ Snake::Snake(sf::RenderWindow& wnd)
 		// add 10 for spacing
 		txtTitle.GetSize().y / 2 + 10
 	));
+
+	// init play area rect
+	InitRectPlayArea();
 }
 
 void Snake::Update(sf::Event& event)
@@ -43,4 +46,19 @@ void Snake::Draw()
 			board.DrawTile(sf::Vector2i(x, y));
 		}
 	}
+
+	window.draw(rectPlayArea);
+}
+
+void Snake::InitRectPlayArea()
+{
+	// set play area rect configuration
+	rectPlayArea.setSize(sf::Vector2f(
+		TILE_SIZE * GRID_WIDTH,
+		TILE_SIZE * GRID_HEIGHT
+	));
+	rectPlayArea.setPosition(sf::Vector2f(X_OFFSET, Y_OFFSET));
+	rectPlayArea.setOutlineThickness(1);
+	rectPlayArea.setOutlineColor(sf::Color::White);
+	rectPlayArea.setFillColor(sf::Color::Transparent);
 }

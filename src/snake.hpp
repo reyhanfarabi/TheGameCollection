@@ -15,6 +15,9 @@ public:
 	void Draw() override;
 
 private:
+	void InitRectPlayArea();
+
+private:
 	static constexpr int TILE_SIZE = 20;
 	static constexpr int GRID_WIDTH = 20;
 	static constexpr int GRID_HEIGHT = 20;
@@ -24,5 +27,6 @@ private:
 
 	sf::RenderWindow& window;
 	Board board;
+	sf::RectangleShape rectPlayArea;
 	UI::Text txtTitle;
 };
