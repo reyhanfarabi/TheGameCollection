@@ -52,7 +52,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	));
 }
 
-void TicTacToe::Update(sf::Event& event)
+void TicTacToe::Update(sf::Event& event, float& dt)
 {
 	if (!isGameOver)
 	{

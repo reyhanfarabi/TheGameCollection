@@ -14,7 +14,7 @@ class MainMenu
 public:
 	MainMenu(sf::RenderWindow& wnd);
 	void InitBackground();
-	void Update(sf::Event& event);
+	void Update(sf::Event& event, float& dt);
 	void Draw();
 	void DrawTitle();
 	void DrawChooseMenu();

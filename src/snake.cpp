@@ -30,7 +30,7 @@ Snake::Snake(sf::RenderWindow& wnd)
 	InitRectPlayArea();
 }
 
-void Snake::Update(sf::Event& event)
+void Snake::Update(sf::Event& event, float& dt)
 {
 }
 

@@ -11,7 +11,7 @@ class TicTacToe : public BaseGame
 {
 public:
 	TicTacToe(sf::RenderWindow& window);
-	void Update(sf::Event& event) override;
+	void Update(sf::Event& event, float& dt) override;
 	void Draw() override;
 
 private:

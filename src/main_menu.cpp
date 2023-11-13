@@ -98,7 +98,7 @@ void MainMenu::InitBackground()
 	gradOverlay[3].color = sf::Color(0, 0, 0, 100);
 }
 
-void MainMenu::Update(sf::Event& event)
+void MainMenu::Update(sf::Event& event, float& dt)
 {
 	// change background image base on last hovered game button
 	for (int i = 0; i < gameTitlesButtons.size(); i++)
@@ -125,7 +125,7 @@ void MainMenu::Update(sf::Event& event)
 	}
 	else
 	{
-		currentGame[0]->Update(event);
+		currentGame[0]->Update(event, dt);
 	}
 
 	// game module event
