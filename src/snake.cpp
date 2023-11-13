@@ -14,7 +14,7 @@ Snake::Snake(sf::RenderWindow& wnd)
 		Board::TileType::Empty
 	),
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
-	head(0, 10)
+	tileState(TILE_STATE_SIZE)
 {
 	// disable board tile hover
 	board.SetEnableTileHover(false);
@@ -29,6 +29,16 @@ Snake::Snake(sf::RenderWindow& wnd)
 
 	// init play area rect
 	InitRectPlayArea();
+
+	// init tile state
+	for (int i = 0; i < TILE_STATE_SIZE; i++)
+	{
+		tileState[i] = State::Empty;
+	}
+
+	// set snake head location
+	snakeBodyLoc.emplace_back(sf::Vector2i(3, 8));
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
 }
 
 void Snake::Update(sf::Event& event, float& dt)
@@ -54,12 +64,16 @@ void Snake::Update(sf::Event& event, float& dt)
 		}
 	}
 
+	// update tile state
+	std::fill(tileState.begin(), tileState.end(), State::Empty);
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;	
+
 	// update snake position
 	moveCounter += dt;
 	if (moveCounter >= movePeriod)
 	{
 		moveCounter = 0.0f;
-		head += currDirection;
+		snakeBodyLoc[0] += currDirection;
 	}
 }
 
@@ -71,14 +85,20 @@ void Snake::Draw()
 	{
 		for (int x = 0; x < GRID_WIDTH; x++)
 		{
-			if (sf::Vector2i(x, y) == head)
+			switch (tileState[GetTileIndex(sf::Vector2i(x, y))])
 			{
+			case State::Head:
 				board.SetTileColor({ x, y }, sf::Color::White);
-			}
-			else
-			{
+				break;
+			case State::Body:
+				board.SetTileColor({ x, y }, sf::Color(255, 255, 255, 200));
+				break;
+			case State::Empty:
+			default:
 				board.SetTileColor({ x, y }, sf::Color::Black);
+				break;
 			}
+
 			board.DrawTile(sf::Vector2i(x, y));
 		}
 	}
@@ -97,4 +117,9 @@ void Snake::InitRectPlayArea()
 	rectPlayArea.setOutlineThickness(1);
 	rectPlayArea.setOutlineColor(sf::Color::White);
 	rectPlayArea.setFillColor(sf::Color::Transparent);
+}
+
+int Snake::GetTileIndex(sf::Vector2i loc)
+{
+	return board.GetTileIndex(loc);
 }

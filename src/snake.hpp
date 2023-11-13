@@ -15,7 +15,16 @@ public:
 	void Draw() override;
 
 private:
+	enum class State
+	{
+		Head,
+		Body,
+		Empty
+	};
+
+private:
 	void InitRectPlayArea();
+	int GetTileIndex(sf::Vector2i loc);
 
 private:
 	static constexpr int TILE_SIZE = 20;
@@ -37,5 +46,6 @@ private:
 	const sf::Vector2i RIGHT = sf::Vector2i(1, 0);
 	const sf::Vector2i LEFT = sf::Vector2i(-1, 0);
 	sf::Vector2i currDirection = RIGHT;
-	sf::Vector2i head;
+	std::vector<sf::Vector2i> snakeBodyLoc;
+	std::vector<State> tileState;
 };
