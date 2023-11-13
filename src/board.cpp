@@ -84,8 +84,11 @@ Board::Board(
 
 void Board::DrawTile(const sf::Vector2i& tilePos)
 {
-	// highlight tile when hover
-	HoverTile(GetTile(tilePos));
+	if (isTileHoverEnable)
+	{
+		// highlight tile when hover
+		HoverTile(GetTile(tilePos));
+	}
 
 	// draw tile
 	window.draw(GetTile(tilePos));
@@ -99,6 +102,11 @@ void Board::SetTileColor(const sf::Vector2i& tilePos, const sf::Color color)
 void Board::SetTileTextureRect(const sf::Vector2i& tilePos, const sf::IntRect& textureRect)
 {
 	GetTile(tilePos).setTextureRect(textureRect);
+}
+
+void Board::SetEnableTileHover(bool isEnable)
+{
+	isTileHoverEnable = isEnable;
 }
 
 sf::Vector2i Board::GetHoveredTilePos()

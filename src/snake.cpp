@@ -14,6 +14,9 @@ Snake::Snake(sf::RenderWindow& wnd)
 	),
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window)
 {
+	// disable board tile hover
+	board.SetEnableTileHover(false);
+
 	// set position to text title
 	txtTitle.SetPosition(sf::Vector2f(
 		// subtract 10 for spacing

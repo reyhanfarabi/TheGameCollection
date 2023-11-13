@@ -39,6 +39,7 @@ public:
 
 	void SetTileColor(const sf::Vector2i& tilePos, const sf::Color color);
 	void SetTileTextureRect(const sf::Vector2i& tilePos, const sf::IntRect& textureRect);
+	void SetEnableTileHover(bool isEnable);
 	int GetTileIndex(const sf::Vector2i& tilePos);
 	sf::Vector2i GetHoveredTilePos();
 
@@ -54,6 +55,7 @@ private:
 	const float X_OFFSET;
 	const float Y_OFFSET;
 	TileType tileType;
+	bool isTileHoverEnable = true;
 
 	sf::RenderWindow& window;
 	std::vector<sf::RectangleShape> tiles;
