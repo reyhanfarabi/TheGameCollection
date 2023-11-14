@@ -19,7 +19,8 @@ private:
 	{
 		Head,
 		Body,
-		Empty
+		Empty,
+		Food
 	};
 
 private:
@@ -48,4 +49,5 @@ private:
 	sf::Vector2i currDirection = RIGHT;
 	std::vector<sf::Vector2i> snakeBodyLoc;
 	std::vector<State> tileState;
+	sf::Vector2i foodLoc;
 };

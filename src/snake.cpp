@@ -39,6 +39,9 @@ Snake::Snake(sf::RenderWindow& wnd)
 	// set snake head location
 	snakeBodyLoc.emplace_back(sf::Vector2i(3, 8));
 	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
+
+	// set food location
+	foodLoc = sf::Vector2i(7, 3);
 }
 
 void Snake::Update(sf::Event& event, float& dt)
@@ -66,7 +69,8 @@ void Snake::Update(sf::Event& event, float& dt)
 
 	// update tile state
 	std::fill(tileState.begin(), tileState.end(), State::Empty);
-	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;	
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
+	tileState[GetTileIndex(foodLoc)] = State::Food;
 
 	// update snake position
 	moveCounter += dt;
@@ -92,6 +96,9 @@ void Snake::Draw()
 				break;
 			case State::Body:
 				board.SetTileColor({ x, y }, sf::Color(255, 255, 255, 200));
+				break;
+			case State::Food:
+				board.SetTileColor({ x, y }, sf::Color::Green);
 				break;
 			case State::Empty:
 			default:
