@@ -148,7 +148,15 @@ void Snake::InitRectPlayArea()
 
 sf::Vector2i Snake::GenerateNewFoodLocation()
 {
-	return sf::Vector2i(xDist(gen), yDist(gen));
+	sf::Vector2i newLoc = sf::Vector2i(xDist(gen), yDist(gen));
+	auto itr = std::find(snakeBodyLoc.begin(), snakeBodyLoc.end(), newLoc);
+
+	while (itr != snakeBodyLoc.end())
+	{
+		newLoc = sf::Vector2i(xDist(gen), yDist(gen));
+	}
+
+	return newLoc;
 }
 
 int Snake::GetTileIndex(sf::Vector2i loc)
