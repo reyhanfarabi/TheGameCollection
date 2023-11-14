@@ -44,6 +44,8 @@ private:
 	UI::Text txtTitle;
 
 	float movePeriod = 0.4f;
+	float movePeriodMin = 0.02f;
+	float movePeriodReduceFactor = 0.02f;
 	float moveCounter = 0.0f;
 	const sf::Vector2i UP = sf::Vector2i(0, -1);
 	const sf::Vector2i DOWN = sf::Vector2i(0, 1);

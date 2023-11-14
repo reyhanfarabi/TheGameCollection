@@ -81,6 +81,9 @@ void Snake::Update(sf::Event& event, float& dt)
 		{
 			// generate new food location
 			foodLoc = GenerateNewFoodLocation();
+
+			// speed up snake movement
+			if (movePeriod > movePeriodMin) { movePeriod -= movePeriodReduceFactor; }
 		}
 		else
 		{
