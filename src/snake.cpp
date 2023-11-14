@@ -37,7 +37,7 @@ Snake::Snake(sf::RenderWindow& wnd)
 	}
 
 	// set snake head location
-	snakeBodyLoc.emplace_back(sf::Vector2i(3, 8));
+	snakeBodyLoc.emplace_front(sf::Vector2i(3, 8));
 	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
 
 	// set food location
@@ -67,17 +67,30 @@ void Snake::Update(sf::Event& event, float& dt)
 		}
 	}
 
-	// update tile state
-	std::fill(tileState.begin(), tileState.end(), State::Empty);
-	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
-	tileState[GetTileIndex(foodLoc)] = State::Food;
-
 	// update snake position
 	moveCounter += dt;
 	if (moveCounter >= movePeriod)
 	{
 		moveCounter = 0.0f;
-		snakeBodyLoc[0] += currDirection;
+		sf::Vector2i nextLoc = snakeBodyLoc[0] + currDirection;
+		snakeBodyLoc.push_front(nextLoc);
+		if (nextLoc == foodLoc)
+		{
+			// generate new food location
+		}
+		else
+		{
+			snakeBodyLoc.pop_back();
+		}
+	}
+
+	// update tile state
+	std::fill(tileState.begin(), tileState.end(), State::Empty);
+	tileState[GetTileIndex(foodLoc)] = State::Food;
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
+	for (int i = 1; i < snakeBodyLoc.size(); i++)
+	{
+		tileState[GetTileIndex(snakeBodyLoc[i])] = State::Body;
 	}
 }
 
