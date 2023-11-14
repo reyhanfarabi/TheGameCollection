@@ -14,7 +14,10 @@ Snake::Snake(sf::RenderWindow& wnd)
 		Board::TileType::Empty
 	),
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
-	tileState(TILE_STATE_SIZE)
+	tileState(TILE_STATE_SIZE),
+	gen(rd()),
+	xDist(0, GRID_WIDTH - 1),
+	yDist(0, GRID_HEIGHT - 1)
 {
 	// disable board tile hover
 	board.SetEnableTileHover(false);
@@ -37,8 +40,11 @@ Snake::Snake(sf::RenderWindow& wnd)
 	}
 
 	// set snake head location
-	snakeBodyLoc.emplace_back(sf::Vector2i(3, 8));
+	snakeBodyLoc.emplace_front(sf::Vector2i(3, 8));
 	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
+
+	// set food location
+	foodLoc = GenerateNewFoodLocation();
 }
 
 void Snake::Update(sf::Event& event, float& dt)
@@ -64,16 +70,34 @@ void Snake::Update(sf::Event& event, float& dt)
 		}
 	}
 
-	// update tile state
-	std::fill(tileState.begin(), tileState.end(), State::Empty);
-	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;	
-
 	// update snake position
 	moveCounter += dt;
 	if (moveCounter >= movePeriod)
 	{
 		moveCounter = 0.0f;
-		snakeBodyLoc[0] += currDirection;
+		sf::Vector2i nextLoc = snakeBodyLoc[0] + currDirection;
+		snakeBodyLoc.push_front(nextLoc);
+		if (nextLoc == foodLoc)
+		{
+			// generate new food location
+			foodLoc = GenerateNewFoodLocation();
+
+			// speed up snake movement
+			if (movePeriod > movePeriodMin) { movePeriod -= movePeriodReduceFactor; }
+		}
+		else
+		{
+			snakeBodyLoc.pop_back();
+		}
+	}
+
+	// update tile state
+	std::fill(tileState.begin(), tileState.end(), State::Empty);
+	tileState[GetTileIndex(foodLoc)] = State::Food;
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
+	for (int i = 1; i < snakeBodyLoc.size(); i++)
+	{
+		tileState[GetTileIndex(snakeBodyLoc[i])] = State::Body;
 	}
 }
 
@@ -92,6 +116,9 @@ void Snake::Draw()
 				break;
 			case State::Body:
 				board.SetTileColor({ x, y }, sf::Color(255, 255, 255, 200));
+				break;
+			case State::Food:
+				board.SetTileColor({ x, y }, sf::Color::Green);
 				break;
 			case State::Empty:
 			default:
@@ -117,6 +144,19 @@ void Snake::InitRectPlayArea()
 	rectPlayArea.setOutlineThickness(1);
 	rectPlayArea.setOutlineColor(sf::Color::White);
 	rectPlayArea.setFillColor(sf::Color::Transparent);
+}
+
+sf::Vector2i Snake::GenerateNewFoodLocation()
+{
+	sf::Vector2i newLoc = sf::Vector2i(xDist(gen), yDist(gen));
+	auto itr = std::find(snakeBodyLoc.begin(), snakeBodyLoc.end(), newLoc);
+
+	while (itr != snakeBodyLoc.end())
+	{
+		newLoc = sf::Vector2i(xDist(gen), yDist(gen));
+	}
+
+	return newLoc;
 }
 
 int Snake::GetTileIndex(sf::Vector2i loc)
