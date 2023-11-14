@@ -14,7 +14,10 @@ Snake::Snake(sf::RenderWindow& wnd)
 		Board::TileType::Empty
 	),
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
-	tileState(TILE_STATE_SIZE)
+	tileState(TILE_STATE_SIZE),
+	gen(rd()),
+	xDist(0, GRID_WIDTH),
+	yDist(0, GRID_HEIGHT)
 {
 	// disable board tile hover
 	board.SetEnableTileHover(false);
@@ -41,7 +44,7 @@ Snake::Snake(sf::RenderWindow& wnd)
 	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
 
 	// set food location
-	foodLoc = sf::Vector2i(7, 3);
+	foodLoc = GenerateNewFoodLocation();
 }
 
 void Snake::Update(sf::Event& event, float& dt)
@@ -77,6 +80,7 @@ void Snake::Update(sf::Event& event, float& dt)
 		if (nextLoc == foodLoc)
 		{
 			// generate new food location
+			foodLoc = GenerateNewFoodLocation();
 		}
 		else
 		{
@@ -137,6 +141,11 @@ void Snake::InitRectPlayArea()
 	rectPlayArea.setOutlineThickness(1);
 	rectPlayArea.setOutlineColor(sf::Color::White);
 	rectPlayArea.setFillColor(sf::Color::Transparent);
+}
+
+sf::Vector2i Snake::GenerateNewFoodLocation()
+{
+	return sf::Vector2i(xDist(gen), yDist(gen));
 }
 
 int Snake::GetTileIndex(sf::Vector2i loc)

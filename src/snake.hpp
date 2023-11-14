@@ -7,6 +7,7 @@
 
 #include <SFML\Graphics.hpp>
 #include <deque>
+#include <random>
 
 class Snake : public BaseGame
 {
@@ -27,6 +28,7 @@ private:
 private:
 	void InitRectPlayArea();
 	int GetTileIndex(sf::Vector2i loc);
+	sf::Vector2i GenerateNewFoodLocation();
 
 private:
 	static constexpr int TILE_SIZE = 20;
@@ -51,4 +53,9 @@ private:
 	std::deque<sf::Vector2i> snakeBodyLoc;
 	std::vector<State> tileState;
 	sf::Vector2i foodLoc;
+
+	std::random_device rd;
+	std::mt19937 gen;
+	std::uniform_int_distribution<int> xDist;
+	std::uniform_int_distribution<int> yDist;
 };
