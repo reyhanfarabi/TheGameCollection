@@ -16,8 +16,8 @@ Snake::Snake(sf::RenderWindow& wnd)
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	tileState(TILE_STATE_SIZE),
 	gen(rd()),
-	xDist(0, GRID_WIDTH),
-	yDist(0, GRID_HEIGHT)
+	xDist(0, GRID_WIDTH - 1),
+	yDist(0, GRID_HEIGHT - 1)
 {
 	// disable board tile hover
 	board.SetEnableTileHover(false);
