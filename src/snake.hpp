@@ -27,6 +27,7 @@ private:
 
 private:
 	void InitRectPlayArea();
+	void DrawScore();
 	int GetTileIndex(sf::Vector2i loc);
 	sf::Vector2i GenerateNewFoodLocation();
 	bool IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc);
@@ -37,15 +38,18 @@ private:
 	static constexpr int GRID_WIDTH = 20;
 	static constexpr int GRID_HEIGHT = 20;
 	static constexpr int TILE_STATE_SIZE = GRID_WIDTH * GRID_HEIGHT;
+	static constexpr int FOOD_POINT = 200;
 	const float X_OFFSET;
 	const float Y_OFFSET;
 	bool isGameOver = false;
+	int score = 0;
 
 	sf::RenderWindow& window;
 	Board board;
 	sf::RectangleShape rectPlayArea;
 	UI::Text txtTitle;
 	UI::Text txtEndGame;
+	UI::Text txtScore;
 
 	float movePeriod = 0.4f;
 	float movePeriodMin = 0.1f;

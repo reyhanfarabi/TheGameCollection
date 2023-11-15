@@ -16,8 +16,9 @@ Snake::Snake(sf::RenderWindow& wnd)
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	txtEndGame(STR_CONST::GAME_OVER, 24, sf::Color::White, sf::Vector2f(
 		window.getSize().x / 2,
-		window.getSize().y / 2
+		window.getSize().y / 2 - 20
 	), window),
+	txtScore(std::to_string(score), 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	tileState(TILE_STATE_SIZE),
 	gen(rd()),
 	xDist(0, GRID_WIDTH - 1),
@@ -93,7 +94,8 @@ void Snake::Update(sf::Event& event, float& dt)
 					// speed up snake movement
 					if (movePeriod > movePeriodMin) { movePeriod -= movePeriodReduceFactor; }
 
-					// TODO: add score mechanic
+					// add score
+					score += FOOD_POINT;
 				}
 				else
 				{
@@ -128,6 +130,8 @@ void Snake::Draw()
 
 	if (!isGameOver)
 	{
+		DrawScore();
+
 		for (int y = 0; y < GRID_HEIGHT; y++)
 		{
 			for (int x = 0; x < GRID_WIDTH; x++)
@@ -154,14 +158,11 @@ void Snake::Draw()
 		}
 
 		window.draw(rectPlayArea);
-
-		// TODO: add show score
 	}
 	else
 	{
 		txtEndGame.Draw();
-
-		// TODO: draw final score
+		DrawScore();
 		// TODO: add button to restart game
 	}
 }
@@ -177,6 +178,32 @@ void Snake::InitRectPlayArea()
 	rectPlayArea.setOutlineThickness(1);
 	rectPlayArea.setOutlineColor(sf::Color::White);
 	rectPlayArea.setFillColor(sf::Color::Transparent);
+}
+
+void Snake::DrawScore()
+{
+	if (!isGameOver)
+	{
+		// set position on top right corner when game is still ongoing
+		txtScore.SetPosition(sf::Vector2f(
+			// subtract 10 for spacing
+			window.getSize().x - txtScore.GetSize().x / 2 - 10,
+			// add 10 for spacing
+			txtScore.GetSize().y / 2 + 10
+		));
+		txtScore.SetString(std::to_string(score));
+	}
+	else
+	{
+		// set position on center below game over text when game is over
+		txtScore.SetPosition(sf::Vector2f(
+			window.getSize().x / 2,
+			window.getSize().y / 2 + 20
+		));
+		txtScore.SetString("Your Final Score is " + std::to_string(score));
+	}
+	
+	txtScore.Draw();
 }
 
 sf::Vector2i Snake::GenerateNewFoodLocation()
