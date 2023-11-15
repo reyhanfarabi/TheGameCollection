@@ -16,7 +16,7 @@ Snake::Snake(sf::RenderWindow& wnd)
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	txtEndGame(STR_CONST::GAME_OVER, 24, sf::Color::White, sf::Vector2f(
 		window.getSize().x / 2,
-		window.getSize().y / 2
+		window.getSize().y / 2 - 20
 	), window),
 	txtScore(std::to_string(score), 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	tileState(TILE_STATE_SIZE),
@@ -162,8 +162,7 @@ void Snake::Draw()
 	else
 	{
 		txtEndGame.Draw();
-
-		// TODO: draw final score
+		DrawScore();
 		// TODO: add button to restart game
 	}
 }
@@ -183,13 +182,27 @@ void Snake::InitRectPlayArea()
 
 void Snake::DrawScore()
 {
-	txtScore.SetPosition(sf::Vector2f(
-		// subtract 10 for spacing
-		window.getSize().x - txtScore.GetSize().x / 2 - 10,
-		// add 10 for spacing
-		txtScore.GetSize().y / 2 + 10
-	));
-	txtScore.SetString(std::to_string(score));
+	if (!isGameOver)
+	{
+		// set position on top right corner when game is still ongoing
+		txtScore.SetPosition(sf::Vector2f(
+			// subtract 10 for spacing
+			window.getSize().x - txtScore.GetSize().x / 2 - 10,
+			// add 10 for spacing
+			txtScore.GetSize().y / 2 + 10
+		));
+		txtScore.SetString(std::to_string(score));
+	}
+	else
+	{
+		// set position on center below game over text when game is over
+		txtScore.SetPosition(sf::Vector2f(
+			window.getSize().x / 2,
+			window.getSize().y / 2 + 20
+		));
+		txtScore.SetString("Your Final Score is " + std::to_string(score));
+	}
+	
 	txtScore.Draw();
 }
 
