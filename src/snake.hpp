@@ -29,6 +29,7 @@ private:
 	void InitRectPlayArea();
 	int GetTileIndex(sf::Vector2i loc);
 	sf::Vector2i GenerateNewFoodLocation();
+	bool IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc);
 
 private:
 	static constexpr int TILE_SIZE = 20;
@@ -37,6 +38,7 @@ private:
 	static constexpr int TILE_STATE_SIZE = GRID_WIDTH * GRID_HEIGHT;
 	const float X_OFFSET;
 	const float Y_OFFSET;
+	bool isGameOver = false;
 
 	sf::RenderWindow& window;
 	Board board;
