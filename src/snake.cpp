@@ -78,7 +78,7 @@ void Snake::Update(sf::Event& event, float& dt)
 		{
 			moveCounter = 0.0f;
 			sf::Vector2i nextLoc = snakeBodyLoc[0] + currDirection;
-			if (IsNextLocInsidePlayArea(nextLoc))
+			if (IsNextLocInsidePlayArea(nextLoc) && IsNextLocNotSelf(nextLoc))
 			{
 				snakeBodyLoc.push_front(nextLoc);
 				if (nextLoc == foodLoc)
@@ -193,6 +193,18 @@ bool Snake::IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc)
 		nextLoc.x < GRID_WIDTH &&
 		nextLoc.y >= 0 &&
 		nextLoc.y < GRID_HEIGHT;
+}
+
+bool Snake::IsNextLocNotSelf(const sf::Vector2i& nextLoc)
+{
+	auto itr = std::find(snakeBodyLoc.begin(), snakeBodyLoc.end(), nextLoc);
+
+	if (itr != snakeBodyLoc.end())
+	{
+		return false;
+	}
+
+	return true;
 }
 
 int Snake::GetTileIndex(sf::Vector2i loc)

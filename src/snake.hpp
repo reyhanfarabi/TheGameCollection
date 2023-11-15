@@ -30,6 +30,7 @@ private:
 	int GetTileIndex(sf::Vector2i loc);
 	sf::Vector2i GenerateNewFoodLocation();
 	bool IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc);
+	bool IsNextLocNotSelf(const sf::Vector2i& nextLoc);		// check if next loc is not to snake itself
 
 private:
 	static constexpr int TILE_SIZE = 20;
