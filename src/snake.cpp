@@ -14,6 +14,10 @@ Snake::Snake(sf::RenderWindow& wnd)
 		Board::TileType::Empty
 	),
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
+	txtEndGame(STR_CONST::GAME_OVER, 24, sf::Color::White, sf::Vector2f(
+		window.getSize().x / 2,
+		window.getSize().y / 2
+	), window),
 	tileState(TILE_STATE_SIZE),
 	gen(rd()),
 	xDist(0, GRID_WIDTH - 1),
@@ -155,7 +159,9 @@ void Snake::Draw()
 	}
 	else
 	{
-		// TODO: draw game over screen and final score
+		txtEndGame.Draw();
+
+		// TODO: draw final score
 		// TODO: add button to restart game
 	}
 }

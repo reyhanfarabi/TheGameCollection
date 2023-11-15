@@ -45,6 +45,7 @@ private:
 	Board board;
 	sf::RectangleShape rectPlayArea;
 	UI::Text txtTitle;
+	UI::Text txtEndGame;
 
 	float movePeriod = 0.4f;
 	float movePeriodMin = 0.1f;
