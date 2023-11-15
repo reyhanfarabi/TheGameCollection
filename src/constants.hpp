@@ -9,6 +9,7 @@ namespace STR_CONST
 	const std::string YOUR_TURN = "YOUR TURN";
 	const std::string OPPONENT_TURN = "OPPONENT TURN";
 	const std::string GAME_FINISH = "GAME FINISH!";
+	const std::string GAME_OVER = "GAME OVER!";
 	const std::string RESTART_GAME = "RESTART GAME";
 	const std::string YOU_LOSE = "YOU LOSE";
 	const std::string YOU_WIN = "YOU WIN";

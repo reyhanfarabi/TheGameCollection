@@ -14,6 +14,10 @@ Snake::Snake(sf::RenderWindow& wnd)
 		Board::TileType::Empty
 	),
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
+	txtEndGame(STR_CONST::GAME_OVER, 24, sf::Color::White, sf::Vector2f(
+		window.getSize().x / 2,
+		window.getSize().y / 2
+	), window),
 	tileState(TILE_STATE_SIZE),
 	gen(rd()),
 	xDist(0, GRID_WIDTH - 1),
@@ -49,55 +53,72 @@ Snake::Snake(sf::RenderWindow& wnd)
 
 void Snake::Update(sf::Event& event, float& dt)
 {
-	// keyboard event
-	if (event.type == sf::Event::KeyPressed)
+	if (!isGameOver)
 	{
-		// set move direction base on pressed key
-		switch (event.key.scancode)
+		// keyboard event
+		if (event.type == sf::Event::KeyPressed)
 		{
-		case sf::Keyboard::Scan::Up:
-			if (currDirection != DOWN) { currDirection = UP; }
-			break;
-		case sf::Keyboard::Scan::Down:
-			if (currDirection != UP) { currDirection = DOWN; }
-			break;
-		case sf::Keyboard::Scan::Right:
-			if (currDirection != LEFT) { currDirection = RIGHT; }
-			break;
-		case sf::Keyboard::Scan::Left:
-			if (currDirection != RIGHT) { currDirection = LEFT; }
-			break;
+			// set move direction base on pressed key
+			switch (event.key.scancode)
+			{
+			case sf::Keyboard::Scan::Up:
+				if (currDirection != DOWN) { currDirection = UP; }
+				break;
+			case sf::Keyboard::Scan::Down:
+				if (currDirection != UP) { currDirection = DOWN; }
+				break;
+			case sf::Keyboard::Scan::Right:
+				if (currDirection != LEFT) { currDirection = RIGHT; }
+				break;
+			case sf::Keyboard::Scan::Left:
+				if (currDirection != RIGHT) { currDirection = LEFT; }
+				break;
+			}
+		}
+
+		// update snake position
+		moveCounter += dt;
+		if (moveCounter >= movePeriod)
+		{
+			moveCounter = 0.0f;
+			sf::Vector2i nextLoc = snakeBodyLoc[0] + currDirection;
+			if (IsNextLocInsidePlayArea(nextLoc) && IsNextLocNotSelf(nextLoc))
+			{
+				snakeBodyLoc.push_front(nextLoc);
+				if (nextLoc == foodLoc)
+				{
+					// generate new food location
+					foodLoc = GenerateNewFoodLocation();
+
+					// speed up snake movement
+					if (movePeriod > movePeriodMin) { movePeriod -= movePeriodReduceFactor; }
+
+					// TODO: add score mechanic
+				}
+				else
+				{
+					snakeBodyLoc.pop_back();
+				}
+			}
+			else
+			{
+				isGameOver = true;
+				return;
+			}
+		}
+
+		// update tile state
+		std::fill(tileState.begin(), tileState.end(), State::Empty);
+		tileState[GetTileIndex(foodLoc)] = State::Food;
+		tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
+		for (int i = 1; i < snakeBodyLoc.size(); i++)
+		{
+			tileState[GetTileIndex(snakeBodyLoc[i])] = State::Body;
 		}
 	}
-
-	// update snake position
-	moveCounter += dt;
-	if (moveCounter >= movePeriod)
+	else
 	{
-		moveCounter = 0.0f;
-		sf::Vector2i nextLoc = snakeBodyLoc[0] + currDirection;
-		snakeBodyLoc.push_front(nextLoc);
-		if (nextLoc == foodLoc)
-		{
-			// generate new food location
-			foodLoc = GenerateNewFoodLocation();
-
-			// speed up snake movement
-			if (movePeriod > movePeriodMin) { movePeriod -= movePeriodReduceFactor; }
-		}
-		else
-		{
-			snakeBodyLoc.pop_back();
-		}
-	}
-
-	// update tile state
-	std::fill(tileState.begin(), tileState.end(), State::Empty);
-	tileState[GetTileIndex(foodLoc)] = State::Food;
-	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
-	for (int i = 1; i < snakeBodyLoc.size(); i++)
-	{
-		tileState[GetTileIndex(snakeBodyLoc[i])] = State::Body;
+		// TODO: add trigger to restart game
 	}
 }
 
@@ -105,32 +126,44 @@ void Snake::Draw()
 {
 	txtTitle.Draw();
 
-	for (int y = 0; y < GRID_HEIGHT; y++)
+	if (!isGameOver)
 	{
-		for (int x = 0; x < GRID_WIDTH; x++)
+		for (int y = 0; y < GRID_HEIGHT; y++)
 		{
-			switch (tileState[GetTileIndex(sf::Vector2i(x, y))])
+			for (int x = 0; x < GRID_WIDTH; x++)
 			{
-			case State::Head:
-				board.SetTileColor({ x, y }, sf::Color::White);
-				break;
-			case State::Body:
-				board.SetTileColor({ x, y }, sf::Color(255, 255, 255, 200));
-				break;
-			case State::Food:
-				board.SetTileColor({ x, y }, sf::Color::Green);
-				break;
-			case State::Empty:
-			default:
-				board.SetTileColor({ x, y }, sf::Color::Black);
-				break;
+				switch (tileState[GetTileIndex(sf::Vector2i(x, y))])
+				{
+				case State::Head:
+					board.SetTileColor({ x, y }, sf::Color::White);
+					break;
+				case State::Body:
+					board.SetTileColor({ x, y }, sf::Color(255, 255, 255, 200));
+					break;
+				case State::Food:
+					board.SetTileColor({ x, y }, sf::Color::Green);
+					break;
+				case State::Empty:
+				default:
+					board.SetTileColor({ x, y }, sf::Color::Black);
+					break;
+				}
+
+				board.DrawTile(sf::Vector2i(x, y));
 			}
-
-			board.DrawTile(sf::Vector2i(x, y));
 		}
-	}
 
-	window.draw(rectPlayArea);
+		window.draw(rectPlayArea);
+
+		// TODO: add show score
+	}
+	else
+	{
+		txtEndGame.Draw();
+
+		// TODO: draw final score
+		// TODO: add button to restart game
+	}
 }
 
 void Snake::InitRectPlayArea()
@@ -157,6 +190,27 @@ sf::Vector2i Snake::GenerateNewFoodLocation()
 	}
 
 	return newLoc;
+}
+
+bool Snake::IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc)
+{
+	return 
+		nextLoc.x >= 0 &&
+		nextLoc.x < GRID_WIDTH &&
+		nextLoc.y >= 0 &&
+		nextLoc.y < GRID_HEIGHT;
+}
+
+bool Snake::IsNextLocNotSelf(const sf::Vector2i& nextLoc)
+{
+	auto itr = std::find(snakeBodyLoc.begin(), snakeBodyLoc.end(), nextLoc);
+
+	if (itr != snakeBodyLoc.end())
+	{
+		return false;
+	}
+
+	return true;
 }
 
 int Snake::GetTileIndex(sf::Vector2i loc)
