@@ -28,7 +28,10 @@ private:
 private:
 	void InitRectPlayArea();
 	void DrawScore();
+	void TriggerRestart();
+	void SetGameStartCondition();
 	int GetTileIndex(sf::Vector2i loc);
+	sf::Vector2i GetRandomDirection();
 	sf::Vector2i GenerateNewFoodLocation();
 	bool IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc);
 	bool IsNextLocNotSelf(const sf::Vector2i& nextLoc);		// check if next loc is not to snake itself
@@ -50,6 +53,7 @@ private:
 	UI::Text txtTitle;
 	UI::Text txtEndGame;
 	UI::Text txtScore;
+	UI::Button btnRestart;
 
 	float movePeriod = 0.4f;
 	float movePeriodMin = 0.1f;
@@ -68,4 +72,5 @@ private:
 	std::mt19937 gen;
 	std::uniform_int_distribution<int> xDist;
 	std::uniform_int_distribution<int> yDist;
+	std::uniform_int_distribution<int> dirDist;
 };
