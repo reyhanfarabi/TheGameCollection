@@ -11,7 +11,7 @@ class Minesweeper : public BaseGame
 {
 public:
 	Minesweeper(sf::RenderWindow& wnd);
-	void Update(sf::Event& event) override;
+	void Update(sf::Event& event, float& dt) override;
 	void Draw() override;
 
 private:

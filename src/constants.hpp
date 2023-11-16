@@ -9,6 +9,7 @@ namespace STR_CONST
 	const std::string YOUR_TURN = "YOUR TURN";
 	const std::string OPPONENT_TURN = "OPPONENT TURN";
 	const std::string GAME_FINISH = "GAME FINISH!";
+	const std::string GAME_OVER = "GAME OVER!";
 	const std::string RESTART_GAME = "RESTART GAME";
 	const std::string YOU_LOSE = "YOU LOSE";
 	const std::string YOU_WIN = "YOU WIN";
@@ -19,10 +20,11 @@ namespace ASSETS
 	//
 	// Main Menu Assets
 	//
-	const int MAINMENU_BACKGROUND_SIZE = 2;
+	const int MAINMENU_BACKGROUND_SIZE = 3;
 	const std::string MAINMENU_BACKGROUND[MAINMENU_BACKGROUND_SIZE] = {
 		"assets/pics/tictactoe.png",
-		"assets/pics/minesweeper.png"
+		"assets/pics/minesweeper.png",
+		"assets/pics/snake.png"
 	};
 
 	//

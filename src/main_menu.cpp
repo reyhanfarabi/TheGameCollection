@@ -98,7 +98,7 @@ void MainMenu::InitBackground()
 	gradOverlay[3].color = sf::Color(0, 0, 0, 100);
 }
 
-void MainMenu::Update(sf::Event& event)
+void MainMenu::Update(sf::Event& event, float& dt)
 {
 	// change background image base on last hovered game button
 	for (int i = 0; i < gameTitlesButtons.size(); i++)
@@ -125,7 +125,7 @@ void MainMenu::Update(sf::Event& event)
 	}
 	else
 	{
-		currentGame[0]->Update(event);
+		currentGame[0]->Update(event, dt);
 	}
 
 	// game module event
@@ -166,6 +166,7 @@ void MainMenu::Draw()
 		break;
 	case GameState::Tictactoe:
 	case GameState::Minesweeper:
+	case GameState::Snake:
 		currentGame[0]->Draw();
 		btnMainMenu.Draw();
 		break;
@@ -209,6 +210,10 @@ void MainMenu::SetGame(const int& gameTitleIndex)
 	case 1:
 		currentGameState = GameState::Minesweeper;
 		currentGame.emplace_back(std::make_unique<Minesweeper>(window));
+		break;
+	case 2:
+		currentGameState = GameState::Snake;
+		currentGame.emplace_back(std::make_unique<Snake>(window));
 		break;
 	default:
 		currentGameState = GameState::NoGame;

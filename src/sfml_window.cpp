@@ -28,8 +28,9 @@ void SFMLWindow::Run()
 				window.close();
 			}
 
-			Update(event);
 		}
+
+		Update(event);
 
 		window.clear();
 
@@ -42,7 +43,7 @@ void SFMLWindow::Run()
 void SFMLWindow::Update(sf::Event& event)
 {
 	// update game logic here
-	mainMenu.Update(event);
+	mainMenu.Update(event, dt);
 }
 
 void SFMLWindow::Draw()

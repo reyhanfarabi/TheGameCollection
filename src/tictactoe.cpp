@@ -9,6 +9,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 		TILE_SIZE,
 		GRID_WIDTH,
 		GRID_HEIGHT,
+		1,
 		X_OFFSET,
 		Y_OFFSET,
 		window,
@@ -51,7 +52,7 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	));
 }
 
-void TicTacToe::Update(sf::Event& event)
+void TicTacToe::Update(sf::Event& event, float& dt)
 {
 	if (!isGameOver)
 	{
