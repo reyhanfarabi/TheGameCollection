@@ -31,6 +31,7 @@ private:
 	void TriggerRestart();
 	void SetGameStartCondition();
 	int GetTileIndex(sf::Vector2i loc);
+	sf::Vector2i GetRandomDirection();
 	sf::Vector2i GenerateNewFoodLocation();
 	bool IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc);
 	bool IsNextLocNotSelf(const sf::Vector2i& nextLoc);		// check if next loc is not to snake itself
@@ -71,4 +72,5 @@ private:
 	std::mt19937 gen;
 	std::uniform_int_distribution<int> xDist;
 	std::uniform_int_distribution<int> yDist;
+	std::uniform_int_distribution<int> dirDist;
 };

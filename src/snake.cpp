@@ -30,7 +30,8 @@ Snake::Snake(sf::RenderWindow& wnd)
 	tileState(TILE_STATE_SIZE),
 	gen(rd()),
 	xDist(0, GRID_WIDTH - 1),
-	yDist(0, GRID_HEIGHT - 1)
+	yDist(0, GRID_HEIGHT - 1),
+	dirDist(0, 3)		// max is 3 because direction only has 4 type (UP, DOWN, RIGHT, LEFT)
 {
 	// disable board tile hover
 	board.SetEnableTileHover(false);
@@ -225,13 +226,22 @@ void Snake::SetGameStartCondition()
 		tileState[i] = State::Empty;
 	}
 
+	// generate snake random direction
+	currDirection = GetRandomDirection();
+
 	// set snake head location
 	snakeBodyLoc.clear();
-	snakeBodyLoc.emplace_front(sf::Vector2i(3, 8));
+	snakeBodyLoc.emplace_front(sf::Vector2i(xDist(gen), yDist(gen)));
 	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
 
 	// set food location
 	foodLoc = GenerateNewFoodLocation();
+}
+
+sf::Vector2i Snake::GetRandomDirection()
+{
+	std::vector<sf::Vector2i> directions = { UP, DOWN, LEFT, RIGHT };
+	return directions[dirDist(gen)];
 }
 
 sf::Vector2i Snake::GenerateNewFoodLocation()
