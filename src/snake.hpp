@@ -28,6 +28,8 @@ private:
 private:
 	void InitRectPlayArea();
 	void DrawScore();
+	void TriggerRestart();
+	void SetGameStartCondition();
 	int GetTileIndex(sf::Vector2i loc);
 	sf::Vector2i GenerateNewFoodLocation();
 	bool IsNextLocInsidePlayArea(const sf::Vector2i& nextLoc);
@@ -50,6 +52,7 @@ private:
 	UI::Text txtTitle;
 	UI::Text txtEndGame;
 	UI::Text txtScore;
+	UI::Button btnRestart;
 
 	float movePeriod = 0.4f;
 	float movePeriodMin = 0.1f;

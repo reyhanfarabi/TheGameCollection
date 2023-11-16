@@ -16,9 +16,17 @@ Snake::Snake(sf::RenderWindow& wnd)
 	txtTitle("SNAKE", 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
 	txtEndGame(STR_CONST::GAME_OVER, 24, sf::Color::White, sf::Vector2f(
 		window.getSize().x / 2,
-		window.getSize().y / 2 - 20
+		window.getSize().y / 2 - 40
 	), window),
 	txtScore(std::to_string(score), 18, sf::Color::White, sf::Vector2f(0.0f, 0.0f), window),
+	btnRestart(
+		STR_CONST::RESTART_GAME, 20,
+		sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2 + 50),
+		UI::Padding(14.0f, 8.0f),
+		sf::Color::White, sf::Color::Black,
+		sf::Color::Black, sf::Color::White,
+		1, sf::Color::White, sf::Color::White,
+		window),
 	tileState(TILE_STATE_SIZE),
 	gen(rd()),
 	xDist(0, GRID_WIDTH - 1),
@@ -38,18 +46,7 @@ Snake::Snake(sf::RenderWindow& wnd)
 	// init play area rect
 	InitRectPlayArea();
 
-	// init tile state
-	for (int i = 0; i < TILE_STATE_SIZE; i++)
-	{
-		tileState[i] = State::Empty;
-	}
-
-	// set snake head location
-	snakeBodyLoc.emplace_front(sf::Vector2i(3, 8));
-	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
-
-	// set food location
-	foodLoc = GenerateNewFoodLocation();
+	SetGameStartCondition();
 }
 
 void Snake::Update(sf::Event& event, float& dt)
@@ -120,7 +117,14 @@ void Snake::Update(sf::Event& event, float& dt)
 	}
 	else
 	{
-		// TODO: add trigger to restart game
+		// trigger to restart game
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			if (event.mouseButton.button == sf::Mouse::Left && btnRestart.IsTriggerable())
+			{
+				TriggerRestart();
+			}
+		}
 	}
 }
 
@@ -163,7 +167,7 @@ void Snake::Draw()
 	{
 		txtEndGame.Draw();
 		DrawScore();
-		// TODO: add button to restart game
+		btnRestart.Draw();
 	}
 }
 
@@ -198,12 +202,36 @@ void Snake::DrawScore()
 		// set position on center below game over text when game is over
 		txtScore.SetPosition(sf::Vector2f(
 			window.getSize().x / 2,
-			window.getSize().y / 2 + 20
+			window.getSize().y / 2
 		));
 		txtScore.SetString("Your Final Score is " + std::to_string(score));
 	}
 	
 	txtScore.Draw();
+}
+
+void Snake::TriggerRestart()
+{
+	isGameOver = false;
+	score = 0;
+	SetGameStartCondition();
+}
+
+void Snake::SetGameStartCondition()
+{
+	// set all tile state to empty
+	for (int i = 0; i < TILE_STATE_SIZE; i++)
+	{
+		tileState[i] = State::Empty;
+	}
+
+	// set snake head location
+	snakeBodyLoc.clear();
+	snakeBodyLoc.emplace_front(sf::Vector2i(3, 8));
+	tileState[GetTileIndex(snakeBodyLoc[0])] = State::Head;
+
+	// set food location
+	foodLoc = GenerateNewFoodLocation();
 }
 
 sf::Vector2i Snake::GenerateNewFoodLocation()
