@@ -217,6 +217,8 @@ void Snake::TriggerRestart()
 {
 	isGameOver = false;
 	score = 0;
+	moveCounter = 0.0f;
+	movePeriod = 0.4f;
 	SetGameStartCondition();
 }
 
