@@ -13,7 +13,11 @@ class SFMLWindow
 public:
 	SFMLWindow();
 	void Run();
-	void Update(sf::Event& event);
+
+private:
+	void MouseEvent(sf::Event& event);
+	void KeyboardEvent(sf::Event& event);
+	void Update();
 	void Draw();
 
 private:

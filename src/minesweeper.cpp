@@ -49,70 +49,75 @@ Minesweeper::Minesweeper(sf::RenderWindow& wnd)
 	));
 }
 
-void Minesweeper::Update(sf::Event& event, float& dt)
+void Minesweeper::Update(float& dt)
 {
 	if (!isGameOver)
 	{
-		if (event.type == sf::Event::MouseButtonPressed)
-		{
-			if (event.mouseButton.button == sf::Mouse::Left)
-			{
-				// place bombs on first tile click (start of game)
-				if (!isBombPlaced)
-				{
-					PlaceBombToTiles(GetHoveredTileIndex());
-					isBombPlaced = true;
-					SetTilesAdjoiningBombCount();
-				}
-
-				// set tile to opened if current state is hidden
-				if (tileState[GetHoveredTileIndex()] == State::Hidden)
-				{
-					tileState[GetHoveredTileIndex()] = State::Opened;
-				}
-
-				// set game over when clicked tile have bomb
-				TriggerGameOver();
-			}
-			else if (event.mouseButton.button == sf::Mouse::Right)
-			{
-				// place bombs on first tile click (start of game)
-				if (!isBombPlaced)
-				{
-					PlaceBombToTiles(GetHoveredTileIndex());
-					isBombPlaced = true;
-					SetTilesAdjoiningBombCount();
-				}
-				
-				// set tile to be flagged if current state is hidden
-				if (tileState[GetHoveredTileIndex()] == State::Hidden)
-				{
-					tileState[GetHoveredTileIndex()] = State::Flagged;
-				}
-				// remove flag if current state is flagged
-				else if (tileState[GetHoveredTileIndex()] == State::Flagged)
-				{
-					tileState[GetHoveredTileIndex()] = State::Hidden;
-				}
-			}
-		}
-
 		if (isBombPlaced)
 		{
 			AutoOpenTile();
 		}
 	}
-	else
+}
+
+void Minesweeper::MouseEvent(sf::Event& event)
+{
+	switch (event.mouseButton.button)
 	{
-		if (event.type == sf::Event::MouseButtonPressed)
+	case sf::Mouse::Left:
+		if (!isGameOver)
 		{
-			if (event.mouseButton.button == sf::Mouse::Left && btnRestart.IsTriggerable())
+			// place bombs on first tile click (start of game)
+			if (!isBombPlaced)
 			{
-				TriggerRestart();
+				PlaceBombToTiles(GetHoveredTileIndex());
+				isBombPlaced = true;
+				SetTilesAdjoiningBombCount();
+			}
+
+			// set tile to opened if current state is hidden
+			if (tileState[GetHoveredTileIndex()] == State::Hidden)
+			{
+				tileState[GetHoveredTileIndex()] = State::Opened;
+			}
+
+			// set game over when clicked tile have bomb
+			TriggerGameOver();
+		}
+		else
+		{
+			if (btnRestart.IsTriggerable()) { TriggerRestart(); }
+		}
+		break;
+	case sf::Mouse::Right:
+		if (!isGameOver)
+		{
+			// place bombs on first tile click (start of game)
+			if (!isBombPlaced)
+			{
+				PlaceBombToTiles(GetHoveredTileIndex());
+				isBombPlaced = true;
+				SetTilesAdjoiningBombCount();
+			}
+
+			// set tile to be flagged if current state is hidden
+			if (tileState[GetHoveredTileIndex()] == State::Hidden)
+			{
+				tileState[GetHoveredTileIndex()] = State::Flagged;
+			}
+			// remove flag if current state is flagged
+			else if (tileState[GetHoveredTileIndex()] == State::Flagged)
+			{
+				tileState[GetHoveredTileIndex()] = State::Hidden;
 			}
 		}
+		break;
+	default:
+		break;
 	}
 }
+
+void Minesweeper::KeyboardEvent(sf::Event& event) {}
 
 void Minesweeper::Draw()
 {

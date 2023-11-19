@@ -50,31 +50,10 @@ Snake::Snake(sf::RenderWindow& wnd)
 	SetGameStartCondition();
 }
 
-void Snake::Update(sf::Event& event, float& dt)
+void Snake::Update(float& dt)
 {
 	if (!isGameOver)
 	{
-		// keyboard event
-		if (event.type == sf::Event::KeyPressed)
-		{
-			// set move direction base on pressed key
-			switch (event.key.scancode)
-			{
-			case sf::Keyboard::Scan::Up:
-				if (currDirection != DOWN) { currDirection = UP; }
-				break;
-			case sf::Keyboard::Scan::Down:
-				if (currDirection != UP) { currDirection = DOWN; }
-				break;
-			case sf::Keyboard::Scan::Right:
-				if (currDirection != LEFT) { currDirection = RIGHT; }
-				break;
-			case sf::Keyboard::Scan::Left:
-				if (currDirection != RIGHT) { currDirection = LEFT; }
-				break;
-			}
-		}
-
 		// update snake position
 		moveCounter += dt;
 		if (moveCounter >= movePeriod)
@@ -116,16 +95,39 @@ void Snake::Update(sf::Event& event, float& dt)
 			tileState[GetTileIndex(snakeBodyLoc[i])] = State::Body;
 		}
 	}
-	else
+}
+
+void Snake::MouseEvent(sf::Event& event)
+{
+	switch (event.mouseButton.button)
 	{
-		// trigger to restart game
-		if (event.type == sf::Event::MouseButtonPressed)
+	case sf::Mouse::Left:
+		if (isGameOver)
 		{
-			if (event.mouseButton.button == sf::Mouse::Left && btnRestart.IsTriggerable())
-			{
-				TriggerRestart();
-			}
+			if (btnRestart.IsTriggerable()) { TriggerRestart(); }
 		}
+		break;
+	default:
+		break;
+	}
+}
+
+void Snake::KeyboardEvent(sf::Event& event)
+{
+	switch (event.key.scancode)
+	{
+	case sf::Keyboard::Scan::Up:
+		if (currDirection != DOWN) { currDirection = UP; }
+		break;
+	case sf::Keyboard::Scan::Down:
+		if (currDirection != UP) { currDirection = DOWN; }
+		break;
+	case sf::Keyboard::Scan::Right:
+		if (currDirection != LEFT) { currDirection = RIGHT; }
+		break;
+	case sf::Keyboard::Scan::Left:
+		if (currDirection != RIGHT) { currDirection = LEFT; }
+		break;
 	}
 }
 

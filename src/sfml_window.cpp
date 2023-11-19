@@ -22,15 +22,26 @@ void SFMLWindow::Run()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			// handle close window
-			if (event.type == sf::Event::Closed)
+			switch (event.type)
 			{
+			// handle close window
+			case sf::Event::Closed:
 				window.close();
+				break;
+			// handle mouse event
+			case sf::Event::MouseButtonPressed:
+				MouseEvent(event);
+				break;
+			// handle keyboard event
+			case sf::Event::KeyPressed:
+				KeyboardEvent(event);
+				break;
+			default:
+				break;
 			}
-
 		}
 
-		Update(event);
+		Update();
 
 		window.clear();
 
@@ -40,10 +51,20 @@ void SFMLWindow::Run()
 	}
 }
 
-void SFMLWindow::Update(sf::Event& event)
+void SFMLWindow::MouseEvent(sf::Event& event)
+{
+	mainMenu.MouseEvent(event);
+}
+
+void SFMLWindow::KeyboardEvent(sf::Event& event)
+{
+	mainMenu.KeyboardEvent(event);
+}
+
+void SFMLWindow::Update()
 {
 	// update game logic here
-	mainMenu.Update(event, dt);
+	mainMenu.Update(dt);
 }
 
 void SFMLWindow::Draw()

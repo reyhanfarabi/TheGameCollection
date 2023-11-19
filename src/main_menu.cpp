@@ -98,7 +98,48 @@ void MainMenu::InitBackground()
 	gradOverlay[3].color = sf::Color(0, 0, 0, 100);
 }
 
-void MainMenu::Update(sf::Event& event, float& dt)
+void MainMenu::MouseEvent(sf::Event& event)
+{
+	if (currentGameState != GameState::NoGame)
+	{
+		currentGame[0]->MouseEvent(event);
+	}
+
+	switch (event.mouseButton.button)
+	{
+	case sf::Mouse::Left:
+		if (currentGameState == GameState::NoGame)
+		{
+			ChooseButtonEvents();
+		}
+		else if (currentGameState != GameState::NoGame)
+		{
+			if (btnMainMenu.IsTriggerable()) { GoBackToMainMenu(); }
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void MainMenu::KeyboardEvent(sf::Event& event)
+{
+	if (currentGameState != GameState::NoGame)
+	{
+		currentGame[0]->KeyboardEvent(event);
+	}
+
+	switch (event.key.scancode)
+	{
+	case sf::Keyboard::Scan::Escape:
+		GoBackToMainMenu();
+		break;
+	default:
+		break;
+	}
+}
+
+void MainMenu::Update(float& dt)
 {
 	// change background image base on last hovered game button
 	for (int i = 0; i < gameTitlesButtons.size(); i++)
@@ -109,47 +150,10 @@ void MainMenu::Update(sf::Event& event, float& dt)
 		}
 	}
 
-	if (currentGameState == GameState::NoGame)
-	{
-		for (int i = 0; i < gameTitlesButtons.size(); i++)
-		{
-			if (event.type == sf::Event::MouseButtonPressed)
-			{
-				if (event.mouseButton.button == sf::Mouse::Left &&
-					gameTitlesButtons[i].IsTriggerable())
-				{
-					SetGame(i);
-				}
-			}
-		}
-	}
-	else
-	{
-		currentGame[0]->Update(event, dt);
-	}
-
-	// game module event
+	// handle game module update
 	if (currentGameState != GameState::NoGame)
 	{
-		// mouse event
-		if (event.type == sf::Event::MouseButtonPressed)
-		{
-			// go back to menu when button main menu is clicked
-			if (event.mouseButton.button == sf::Mouse::Left && btnMainMenu.IsTriggerable())
-			{
-				GoBackToMainMenu();
-			}
-		}
-
-		// keyboard event
-		if (event.type == sf::Event::KeyPressed)
-		{
-			// go back to menu when escape key is pressed 
-			if (event.key.scancode == sf::Keyboard::Scan::Escape)
-			{
-				GoBackToMainMenu();
-			}
-		}
+		currentGame[0]->Update(dt);
 	}
 }
 
@@ -196,6 +200,14 @@ void MainMenu::GoBackToMainMenu()
 {
 	currentGameState = GameState::NoGame;
 	currentGame.clear();
+}
+
+void MainMenu::ChooseButtonEvents()
+{
+	for (int i = 0; i < gameTitlesButtons.size(); i++)
+	{
+		if (gameTitlesButtons[i].IsTriggerable()) { SetGame(i); }
+	}
 }
 
 void MainMenu::SetGame(const int& gameTitleIndex)
