@@ -14,7 +14,9 @@ class MainMenu
 public:
 	MainMenu(sf::RenderWindow& wnd);
 	void InitBackground();
-	void Update(sf::Event& event, float& dt);
+	void Update(float& dt);
+	void MouseEvent(sf::Event& event);
+	void KeyboardEvent(sf::Event& event);
 	void Draw();
 	void DrawTitle();
 	void DrawChooseMenu();
@@ -31,6 +33,7 @@ private:
 private:
 	void SetGame(const int& gameTitleIndex);
 	void GoBackToMainMenu();
+	void ChooseButtonEvents();
 
 private:
 	sf::RenderWindow& window;

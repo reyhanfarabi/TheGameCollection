@@ -52,22 +52,10 @@ TicTacToe::TicTacToe(sf::RenderWindow& window)
 	));
 }
 
-void TicTacToe::Update(sf::Event& event, float& dt)
+void TicTacToe::Update(float& dt)
 {
 	if (!isGameOver)
 	{
-		if (event.type == sf::Event::MouseButtonPressed)
-		{
-			if (event.mouseButton.button == sf::Mouse::Left)
-			{
-				if (tileState[board.GetTileIndex(board.GetHoveredTilePos())] == State::Empty)
-				{
-					SetTileState(board.GetTileIndex(board.GetHoveredTilePos()));
-					SwitchCurrentPlayer();
-				}
-			}
-		}
-
 		// set game over if all tile is filled
 		isGameOver = IsAllTilesFilled();
 
@@ -96,18 +84,32 @@ void TicTacToe::Update(sf::Event& event, float& dt)
 			break;
 		}
 	}
-	else
+}
+
+void TicTacToe::MouseEvent(sf::Event& event)
+{
+	switch (event.mouseButton.button)
 	{
-		if (event.type == sf::Event::MouseButtonPressed)
+	case sf::Mouse::Left:
+		if (!isGameOver)
 		{
-			if (event.mouseButton.button == sf::Mouse::Left &&
-				btnRestart.IsTriggerable())
+			if (tileState[board.GetTileIndex(board.GetHoveredTilePos())] == State::Empty)
 			{
-				EventRestartGame();
+				SetTileState(board.GetTileIndex(board.GetHoveredTilePos()));
+				SwitchCurrentPlayer();
 			}
 		}
+		else
+		{
+			if (btnRestart.IsTriggerable()) { EventRestartGame(); }
+		}
+		break;
+	default:
+		break;
 	}
 }
+
+void TicTacToe::KeyboardEvent(sf::Event& event) {}
 
 void TicTacToe::Draw()
 {

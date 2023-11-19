@@ -13,7 +13,9 @@ class Snake : public BaseGame
 {
 public:
 	Snake(sf::RenderWindow& wnd);
-	void Update(sf::Event& event, float& dt) override;
+	void Update(float& dt) override;
+	void MouseEvent(sf::Event& event) override;
+	void KeyboardEvent(sf::Event& event) override;
 	void Draw() override;
 
 private:
