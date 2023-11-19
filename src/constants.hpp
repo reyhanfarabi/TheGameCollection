@@ -2,7 +2,7 @@
 
 #include <string>
 
-static const std::string BUILD_NUMBER = "1.2.0";
+static const std::string BUILD_NUMBER = "1.2.1";
 
 namespace STR_CONST
 {
