@@ -171,6 +171,7 @@ void MainMenu::Draw()
 	case GameState::Tictactoe:
 	case GameState::Minesweeper:
 	case GameState::Snake:
+	case GameState::BattleShip:
 		currentGame[0]->Draw();
 		btnMainMenu.Draw();
 		break;
@@ -226,6 +227,10 @@ void MainMenu::SetGame(const int& gameTitleIndex)
 	case 2:
 		currentGameState = GameState::Snake;
 		currentGame.emplace_back(std::make_unique<Snake>(window));
+		break;
+	case 3:
+		currentGameState = GameState::BattleShip;
+		currentGame.emplace_back(std::make_unique<Battleship>(window));
 		break;
 	default:
 		currentGameState = GameState::NoGame;

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\battleship.cpp" />
     <ClCompile Include="src\board.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\main_menu.cpp" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\base_game.hpp" />
+    <ClInclude Include="src\battleship.hpp" />
     <ClInclude Include="src\board.hpp" />
     <ClInclude Include="src\main_menu.hpp" />
     <ClInclude Include="src\minesweeper.hpp" />
