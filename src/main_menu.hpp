@@ -5,6 +5,7 @@
 #include "tictactoe.hpp"
 #include "minesweeper.hpp"
 #include "snake.hpp"
+#include "battleship.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -27,6 +28,7 @@ private:
 		Tictactoe,
 		Minesweeper,
 		Snake,
+		BattleShip,
 		NoGame
 	};
 
@@ -48,7 +50,8 @@ private:
 	std::vector<std::string> gameTitles = {
 		"TIC-TAC-TOE",
 		"MINESWEEPER",
-		"SNAKE"
+		"SNAKE",
+		"BATTLESHIP"
 	};
 	std::vector<UI::Button> gameTitlesButtons;
 	const sf::Vector2f BTN_CHOOSE_SIZE = { 175.0f, 50.0f };
